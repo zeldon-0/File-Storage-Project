@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "a4KRxRFu/nSQAagl7UnNcXMzcZL8xjhYi0zZZqA9StQWuuEjE3gog0RI/gyz4SiXB77sMS8Vycy6xmmZZ+GXSQ==",
+  "success": true,
+  "projectFilePath": "C:\\Misc\\EPAM Training\\FileStorage\\BLL\\BLL.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Вадим\\.nuget\\packages\\microsoft.net.compilers.toolset\\3.5.0\\microsoft.net.compilers.toolset.3.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}

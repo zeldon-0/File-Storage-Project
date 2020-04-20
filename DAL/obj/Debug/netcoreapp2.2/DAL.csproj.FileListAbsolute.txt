@@ -1,0 +1,5 @@
+C:\Misc\EPAM Training\FileStorage\DAL\bin\Debug\netcoreapp2.2\DAL.deps.json
+C:\Misc\EPAM Training\FileStorage\DAL\bin\Debug\netcoreapp2.2\DAL.dll
+C:\Misc\EPAM Training\FileStorage\DAL\obj\Debug\netcoreapp2.2\DAL.csprojAssemblyReference.cache
+C:\Misc\EPAM Training\FileStorage\DAL\obj\Debug\netcoreapp2.2\DAL.AssemblyInfoInputs.cache
+C:\Misc\EPAM Training\FileStorage\DAL\obj\Debug\netcoreapp2.2\DAL.AssemblyInfo.cs
