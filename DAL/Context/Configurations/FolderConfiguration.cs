@@ -13,10 +13,17 @@ namespace DAL.Context.Configurations
         {
             builder.HasKey(u => u.Id);
 
-            builder.HasOne(fo => fo.Parent)
-                    .WithMany(p => p.Subfolders);
+            builder.HasMany(fo => fo.Subfolders)
+                    .WithOne(p => p.Parent)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(fo => fo.Files)
+                    .WithOne(fi => fi.Folder)
+                    .OnDelete(DeleteBehavior.Cascade);
+            
             builder.HasMany(fo => fo.FolderShares)
-                    .WithOne(fs => fs.Folder);
+                    .WithOne(fs => fs.Folder)
+                    .HasForeignKey(fs => fs.FolderId); ;
 
         }
     }

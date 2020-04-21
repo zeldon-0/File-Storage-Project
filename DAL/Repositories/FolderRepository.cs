@@ -7,43 +7,44 @@ using Microsoft.EntityFrameworkCore;
 using DAL.Entities;
 namespace DAL.Repositories
 {
-    public class FileRepository: ISingularRepository<File, Guid>
+    public class FolderRepository : ISingularRepository<Folder, Guid>
     {
         private FileStorageContext _context;
-        public FileRepository(FileStorageContext context)
+        public FolderRepository(FileStorageContext context)
         {
             _context = context;
         }
 
-        public async Task<File> Create(File f)
+        public async Task<Folder> Create(Folder f)
         {
             if (f != null)
-                await  _context.Files.AddAsync(f);
+                await _context.Folders.AddAsync(f);
             await Save();
             return f;
         }
 
         public async Task Delete(Guid id)
         {
-            File f= await _context.Files.FindAsync(id);
+            Folder f = await _context.Folders.FindAsync(id);
 
             if (f != null)
-                _context.Files.Remove(f);
+                _context.Folders.Remove(f);
             await Save();
 
         }
 
-        public async Task<IEnumerable<File>> GetAll()
+        public async Task<IEnumerable<Folder>> GetAll()
         {
-            return await _context.Files.ToListAsync();
+            return await _context.Folders.ToListAsync();
         }
 
-        public async Task<File> GetByID(Guid id)
+        public async Task<Folder> GetByID(Guid id)
         {
 
-            return await _context.Files
+            return await _context.Folders
                    .Include(f => f.Owner)
-                   .Include(f => f.Folder)
+                   .Include(f => f.Subfolders)
+                   .Include(f => f.Files)
                    .FirstOrDefaultAsync(f => f.Id == id);
         }
 
@@ -52,19 +53,18 @@ namespace DAL.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task Update(File f)
+        public async Task Update(Folder f)
         {
             if (f == null)
                 return;
 
-            File file = await GetByID(f.Id);
-            if (file != null)
+            Folder folder = await GetByID(f.Id);
+            if (folder != null)
             {
-                _context.Entry(file).CurrentValues.SetValues(f);
-                _context.Entry(file).State = EntityState.Modified;
+                _context.Entry(folder).CurrentValues.SetValues(f);
+                _context.Entry(folder).State = EntityState.Modified;
             }
             await Save();
-
         }
     }
 }

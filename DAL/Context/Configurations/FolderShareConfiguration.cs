@@ -12,8 +12,8 @@ namespace DAL.Context.Configurations
         {
             builder.HasKey(fs => new
                             {
-                                fs.Folder,
-                                fs.User
+                                fs.FolderId,
+                                fs.UserId
                             });
         }
     }

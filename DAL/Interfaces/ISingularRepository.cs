@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 namespace DAL.Interfaces
 {
-    interface ISingularRepository<T, Identificator> 
+    public interface ISingularRepository<T, Identificator> 
                 where T:class 
                 where Identificator:IComparable
     {

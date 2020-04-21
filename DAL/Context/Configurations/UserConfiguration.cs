@@ -17,15 +17,20 @@ namespace DAL.Context.Configurations
                     .WithOne(fi => fi.Owner);
             builder.HasMany(u => u.Folders)
                     .WithOne(fo => fo.Owner);
+
             builder.HasMany(u => u.FileShares)
-                    .WithOne(sf => sf.User);
+                    .WithOne(fs => fs.User)
+                    .HasForeignKey(fs => fs.UserId);
+
             builder.HasMany(u => u.FolderShares)
-                    .WithOne(sf => sf.User);
+                    .WithOne(fs => fs.User)
+                    .HasForeignKey(fs => fs.UserId);
 
             builder.Property(u => u.Email)
                     .IsRequired();
             builder.Property(u => u.UserName)
                     .IsRequired();
+
         }
     }
 }

@@ -8,7 +8,7 @@ using DAL.Entities;
 using DAL.Context.Configurations;
 namespace DAL.Context
 {
-    class FileStorageContext : IdentityDbContext<User, IdentityRole<int>, int>
+    public class FileStorageContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         public DbSet<File> Files { get; set; }
         public DbSet<Folder> Folders { get; set; }
@@ -23,7 +23,7 @@ namespace DAL.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);    
 
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new FileConfiguration());

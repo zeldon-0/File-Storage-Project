@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DAL.Interfaces
 {
-    interface ICompositeRepository<T> where T:class, IEntityType
+    public interface ICompositeRepository<T> where T:class
     {
         Task<T> GetByID(Guid itemId, int userId);
         Task<IEnumerable<T>> GetAll();
