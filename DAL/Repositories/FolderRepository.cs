@@ -4,67 +4,43 @@ using DAL.Interfaces;
 using DAL.Context;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using DAL.Entities;
 namespace DAL.Repositories
 {
-    public class FolderRepository : ISingularRepository<Folder, Guid>
+    public class FolderRepository : SingleKeyRepository<Folder, Guid>, IFolderRepository
     {
         private FileStorageContext _context;
         public FolderRepository(FileStorageContext context)
+            :base(context)
         {
-            _context = context;
-        }
-
-        public async Task<Folder> Create(Folder f)
-        {
-            if (f != null)
-                await _context.Folders.AddAsync(f);
-            await Save();
-            return f;
-        }
-
-        public async Task Delete(Guid id)
-        {
-            Folder f = await _context.Folders.FindAsync(id);
-
-            if (f != null)
-                _context.Folders.Remove(f);
-            await Save();
 
         }
 
-        public async Task<IEnumerable<Folder>> GetAll()
+        public async Task<Folder> GetFileFolder(Guid fileId)
         {
-            return await _context.Folders.ToListAsync();
+            File file =  await _context.Files.FindAsync(fileId);
+            return file.Folder;
         }
 
-        public async Task<Folder> GetByID(Guid id)
+        public async Task<Folder> GetFolderById(Guid id)
         {
-
-            return await _context.Folders
-                   .Include(f => f.Owner)
-                   .Include(f => f.Subfolders)
-                   .Include(f => f.Files)
-                   .FirstOrDefaultAsync(f => f.Id == id);
+            return await _context.Folders.FindAsync(id);
         }
 
-        public async Task Save()
+        public async Task<IEnumerable<Folder>> GetSharedFolders(int userId)
         {
-            await _context.SaveChangesAsync();
+            List<FolderShare> folderShares =
+               await _context.FolderShares
+               .Where(fs => fs.UserId == userId).ToListAsync();
+            return folderShares.Select(fs => fs.Folder);
         }
 
-        public async Task Update(Folder f)
+        public async Task<IEnumerable<Folder>> GetUserFolders(int userId)
         {
-            if (f == null)
-                return;
-
-            Folder folder = await GetByID(f.Id);
-            if (folder != null)
-            {
-                _context.Entry(folder).CurrentValues.SetValues(f);
-                _context.Entry(folder).State = EntityState.Modified;
-            }
-            await Save();
+            User user = await _context.Users
+                .FindAsync(userId);
+            return user.Folders;
         }
     }
 }

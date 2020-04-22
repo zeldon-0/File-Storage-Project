@@ -14,7 +14,7 @@ namespace DAL.UOW
         }
 
         private FileRepository _fileRepository;
-        public ISingularRepository<File, Guid> Files
+        public ISingularKeyRepository<File, Guid> Files
         {
             get
             {
@@ -26,7 +26,7 @@ namespace DAL.UOW
 
 
         private FolderRepository _folderRepository;
-        public ISingularRepository<Folder, Guid> Folders
+        public ISingularKeyRepository<Folder, Guid> Folders
         {
             get
             {
@@ -38,7 +38,7 @@ namespace DAL.UOW
 
 
         private UserRepository _userRepository;
-        public ISingularRepository<User, int> Users
+        public ISingularKeyRepository<User, int> Users
         {
             get
             {
@@ -50,7 +50,7 @@ namespace DAL.UOW
 
 
         private FileShareRepository _fileShareRepository;
-        public ICompositeRepository<FileShare> FileShares
+        public ICompositeKeyRepository<FileShare> FileShares
         {
             get
             {
@@ -61,7 +61,7 @@ namespace DAL.UOW
         }
 
         private FolderShareRepository _folderShareRepository;
-        public ICompositeRepository<FolderShare> FolderShares
+        public ICompositeKeyRepository<FolderShare> FolderShares
         {
             get
             {

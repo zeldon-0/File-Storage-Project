@@ -4,10 +4,11 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
+using DAL.Interfaces;
 
 namespace DAL.Entities
 {
-    public class User : IdentityUser<int>
+    public class User : IdentityUser<int> , IEntity<int>
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

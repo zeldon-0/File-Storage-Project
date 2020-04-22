@@ -5,40 +5,20 @@ using DAL.Context;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using DAL.Entities;
+using System.Linq;
 namespace DAL.Repositories
 {
-    public class FileRepository: ISingularRepository<File, Guid>
+    public class FileRepository: SingleKeyRepository<File, Guid>, IFileRepository
     {
         private FileStorageContext _context;
         public FileRepository(FileStorageContext context)
+                : base(context)
         {
-            _context = context;
-        }
-
-        public async Task<File> Create(File f)
-        {
-            if (f != null)
-                await  _context.Files.AddAsync(f);
-            await Save();
-            return f;
-        }
-
-        public async Task Delete(Guid id)
-        {
-            File f= await _context.Files.FindAsync(id);
-
-            if (f != null)
-                _context.Files.Remove(f);
-            await Save();
 
         }
 
-        public async Task<IEnumerable<File>> GetAll()
-        {
-            return await _context.Files.ToListAsync();
-        }
 
-        public async Task<File> GetByID(Guid id)
+        public async Task<File> GetFileById(Guid id)
         {
 
             return await _context.Files
@@ -47,24 +27,26 @@ namespace DAL.Repositories
                    .FirstOrDefaultAsync(f => f.Id == id);
         }
 
-        public async Task Save()
+        public async Task<IEnumerable<File>> GetFolderFiles(Guid folderID)
         {
-            await _context.SaveChangesAsync();
+            Folder folder = await _context.Folders
+                   .FindAsync(folderID);
+            return folder.Files;
         }
 
-        public async Task Update(File f)
+        public async Task<IEnumerable<File>> GetUserFiles(int userId)
         {
-            if (f == null)
-                return;
-
-            File file = await GetByID(f.Id);
-            if (file != null)
-            {
-                _context.Entry(file).CurrentValues.SetValues(f);
-                _context.Entry(file).State = EntityState.Modified;
-            }
-            await Save();
-
+            User user = await _context.Users.FindAsync(userId);
+            return user.Files;
+        }
+        public async Task<IEnumerable<File>> GetSharedFiles(int userId)
+        {
+            List<FileShare> fileShares =
+                await _context.FileShares
+                      .Include(fs => fs.File)
+                      .Where(fs => fs.UserId == userId)
+                      .ToListAsync();
+            return fileShares.Select(fs => fs.File);
         }
     }
 }

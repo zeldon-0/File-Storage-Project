@@ -7,11 +7,11 @@ namespace DAL.Interfaces
 {
     interface IUnitOfWork : IDisposable
     {
-        ISingularRepository<File, Guid> Files { get; }
-        ISingularRepository<Folder, Guid> Folders { get; }
-        ISingularRepository<User, int> Users { get; }
-        ICompositeRepository<FileShare> FileShares { get; }
-        ICompositeRepository<FolderShare> FolderShares { get; }
+        ISingularKeyRepository<File, Guid> Files { get; }
+        ISingularKeyRepository<Folder, Guid> Folders { get; }
+        ISingularKeyRepository<User, int> Users { get; }
+        ICompositeKeyRepository<FileShare> FileShares { get; }
+        ICompositeKeyRepository<FolderShare> FolderShares { get; }
 
 
 

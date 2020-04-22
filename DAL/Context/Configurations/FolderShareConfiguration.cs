@@ -15,6 +15,7 @@ namespace DAL.Context.Configurations
                                 fs.FolderId,
                                 fs.UserId
                             });
+            builder.Ignore(fs => fs.ResourceId);
         }
     }
 }
