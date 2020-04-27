@@ -12,9 +12,9 @@ namespace DAL.Entities
         public string Description { get; set; }
         public string URL { get; set; }
         public int OwnerId { get; set; }
-        public virtual User Owner { get; set; }
+        public  User Owner { get; set; }
         public Guid? FolderId { get; set; }
-        public virtual Folder Folder { get; set; }
-        public virtual IEnumerable<FileShare> FileShares { get; set; }
+        public  Folder Folder { get; set; }
+        public  IEnumerable<FileShare> FileShares { get; set; }
     }
 }

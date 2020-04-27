@@ -19,31 +19,39 @@ namespace DAL.Repositories
 
         public async Task<Folder> GetFileFolder(Guid fileId)
         {
-            File file =  await _context.Files.FindAsync(fileId);
+            File file =  await _context.Files
+                .Where(fi => fi.Id == fileId)
+                .Include(fi => fi.Folder)
+                .FirstOrDefaultAsync();
             return file.Folder;
         }
 
         public async Task<Folder> GetFolderById(Guid id)
         {
             return await _context.Folders
+                   .Where(fo => fo.Id == id)
                    .Include(f => f.Owner)
                    .Include(f => f.Parent)
                    .Include(f => f.FolderShares)
-                   .FirstOrDefaultAsync(f => f.Id == id);
+                   .FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Folder>> GetSharedFolders(int userId)
         {
             List<FolderShare> folderShares =
                await _context.FolderShares
-               .Where(fs => fs.UserId == userId).ToListAsync();
+               .Where(fs => fs.UserId == userId)
+               .Include(fs => fs.Folder)
+               .ToListAsync();
             return folderShares.Select(fs => fs.Folder);
         }
 
         public async Task<IEnumerable<Folder>> GetUserFolders(int userId)
         {
             User user = await _context.Users
-                .FindAsync(userId);
+                .Where(u => u.Id == userId)
+                .Include(u => u.Folders)
+                .FirstOrDefaultAsync();
             return user.Folders;
         }
     }

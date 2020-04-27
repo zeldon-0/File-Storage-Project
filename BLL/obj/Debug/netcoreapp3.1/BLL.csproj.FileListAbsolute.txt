@@ -3,3 +3,6 @@ C:\Misc\EPAM Training\FileStorage\BLL\bin\Debug\netcoreapp3.1\BLL.dll
 C:\Misc\EPAM Training\FileStorage\BLL\obj\Debug\netcoreapp3.1\BLL.csprojAssemblyReference.cache
 C:\Misc\EPAM Training\FileStorage\BLL\obj\Debug\netcoreapp3.1\BLL.AssemblyInfoInputs.cache
 C:\Misc\EPAM Training\FileStorage\BLL\obj\Debug\netcoreapp3.1\BLL.AssemblyInfo.cs
+C:\Misc\EPAM Training\FileStorage\BLL\bin\Debug\netcoreapp3.1\BLL.pdb
+C:\Misc\EPAM Training\FileStorage\BLL\obj\Debug\netcoreapp3.1\BLL.dll
+C:\Misc\EPAM Training\FileStorage\BLL\obj\Debug\netcoreapp3.1\BLL.pdb

@@ -7,10 +7,14 @@
   "targets": {
     ".NETCoreApp,Version=v3.1": {
       "BLL/1.0.0": {
+        "dependencies": {
+          "Microsoft.Net.Compilers.Toolset": "3.5.0"
+        },
         "runtime": {
           "BLL.dll": {}
         }
-      }
+      },
+      "Microsoft.Net.Compilers.Toolset/3.5.0": {}
     }
   },
   "libraries": {
@@ -18,6 +22,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Microsoft.Net.Compilers.Toolset/3.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-mJqKIAp4ISQwt/XqQrlhxZiltRuYP4U0Xr2apjllV7YfYQgFdI9Nn5xRiXVDik6LUDROHvME5FHovHOC2nrrZQ==",
+      "path": "microsoft.net.compilers.toolset/3.5.0",
+      "hashPath": "microsoft.net.compilers.toolset.3.5.0.nupkg.sha512"
     }
   }
 }

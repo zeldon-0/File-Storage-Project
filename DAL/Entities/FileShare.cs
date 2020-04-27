@@ -8,9 +8,9 @@ namespace DAL.Entities
     public class FileShare : ICompositeEntity 
     {
         public int UserId { get; set; }
-        public virtual User User { get; set; }
+        public User User { get; set; }
         public Guid FileId { get; set; }
-        public virtual File File { get; set; }
+        public File File { get; set; }
 
         public Guid ResourceId { 
             get

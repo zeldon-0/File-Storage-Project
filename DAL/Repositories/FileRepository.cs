@@ -22,8 +22,6 @@ namespace DAL.Repositories
         {
 
             return await _context.Files
-                   .Include(f => f.Owner)
-                   .Include(f => f.Folder)
                    .Include(f => f.FileShares)
                    .FirstOrDefaultAsync(f => f.Id == id);
         }
@@ -31,21 +29,26 @@ namespace DAL.Repositories
         public async Task<IEnumerable<File>> GetFolderFiles(Guid folderID)
         {
             Folder folder = await _context.Folders
-                   .FindAsync(folderID);
+                    .Where(fo => fo.Id == folderID)
+                    .Include(fo => fo.Files)
+                    .FirstOrDefaultAsync();
             return folder.Files;
         }
 
         public async Task<IEnumerable<File>> GetUserFiles(int userId)
         {
-            User user = await _context.Users.FindAsync(userId);
+            User user = await _context.Users
+                    .Where(u => u.Id == userId)
+                    .Include( u => u.Files)
+                    .FirstOrDefaultAsync();
             return user.Files;
         }
         public async Task<IEnumerable<File>> GetSharedFiles(int userId)
         {
             List<FileShare> fileShares =
                 await _context.FileShares
-                      .Include(fs => fs.File)
                       .Where(fs => fs.UserId == userId)
+                      .Include(fs => fs.File)
                       .ToListAsync();
             return fileShares.Select(fs => fs.File);
         }

@@ -10,11 +10,10 @@ namespace DAL.Entities
 {
     public class User : IdentityUser<int> , IEntity<int>
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public virtual IEnumerable<File> Files { get; set; }
-        public virtual IEnumerable<Folder> Folders { get; set; }
-        public virtual IEnumerable<FileShare> FileShares { get; set; }
-        public virtual IEnumerable<FolderShare> FolderShares { get; set; }
+
+        public IEnumerable<File> Files { get; set; }
+        public IEnumerable<Folder> Folders { get; set; }
+        public IEnumerable<FileShare> FileShares { get; set; }
+        public IEnumerable<FolderShare> FolderShares { get; set; }
     }
 }

@@ -7,9 +7,9 @@ namespace DAL.Entities
     public class FolderShare : ICompositeEntity
     {
         public int UserId { get; set; }
-        public virtual User User { get; set; }
+        public User User { get; set; }
         public Guid FolderId { get; set; }
-        public virtual Folder Folder { get; set; }
+        public Folder Folder { get; set; }
 
         public Guid ResourceId
         {

@@ -50,7 +50,7 @@ namespace DAL.UOW
 
 
         private FileShareRepository _fileShareRepository;
-        public ICompositeKeyRepository<FileShare> FileShares
+        public IFileShareRepository FileShares
         {
             get
             {
@@ -61,7 +61,7 @@ namespace DAL.UOW
         }
 
         private FolderShareRepository _folderShareRepository;
-        public ICompositeKeyRepository<FolderShare> FolderShares
+        public IFolderShareRepository FolderShares
         {
             get
             {

@@ -26,7 +26,10 @@ namespace DAL.Repositories
         public async Task<IEnumerable<User>> GetUsersByFileShare(Guid fileId)
         {
             IEnumerable<FileShare> fileShares =
-                await _context.FileShares.Where(fs => fs.FileId == fileId).ToListAsync();
+                await _context.FileShares
+                .Where(fs => fs.FileId == fileId)
+                .Include(fs => fs.User)
+                .ToListAsync();
             return fileShares.Select(fs => fs.User);
 
         }
@@ -34,7 +37,10 @@ namespace DAL.Repositories
         public async Task<IEnumerable<User>> GetUsersByFolderShare(Guid folderId)
         {
             IEnumerable<FolderShare> folderShares =
-                await _context.FolderShares.Where(fs => fs.FolderId == folderId).ToListAsync();
+                await _context.FolderShares
+                .Where(fs => fs.FolderId == folderId)
+                .Include(fs => fs.User)
+                .ToListAsync();
             return folderShares.Select(fs => fs.User);
         }
 
