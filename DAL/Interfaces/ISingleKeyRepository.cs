@@ -8,8 +8,7 @@ namespace DAL.Interfaces
                 where T: IEntity<Identificator> 
                 where Identificator:IComparable
     {
-        //Task<T> GetByID(Identificator id);
-        //Task<IEnumerable<T>> GetAll();
+
         Task<T> Create(T t);
         Task Delete(Identificator id);
         Task Update(T t);

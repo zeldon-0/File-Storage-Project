@@ -25,7 +25,11 @@ namespace DAL.Repositories
 
         public async Task<Folder> GetFolderById(Guid id)
         {
-            return await _context.Folders.FindAsync(id);
+            return await _context.Folders
+                   .Include(f => f.Owner)
+                   .Include(f => f.Parent)
+                   .Include(f => f.FolderShares)
+                   .FirstOrDefaultAsync(f => f.Id == id);
         }
 
         public async Task<IEnumerable<Folder>> GetSharedFolders(int userId)

@@ -24,6 +24,7 @@ namespace DAL.Repositories
             return await _context.Files
                    .Include(f => f.Owner)
                    .Include(f => f.Folder)
+                   .Include(f => f.FileShares)
                    .FirstOrDefaultAsync(f => f.Id == id);
         }
 

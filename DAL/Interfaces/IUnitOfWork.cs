@@ -5,13 +5,13 @@ using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 namespace DAL.Interfaces
 {
-    interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork : IDisposable
     {
-        ISingularKeyRepository<File, Guid> Files { get; }
-        ISingularKeyRepository<Folder, Guid> Folders { get; }
-        ISingularKeyRepository<User, int> Users { get; }
-        ICompositeKeyRepository<FileShare> FileShares { get; }
-        ICompositeKeyRepository<FolderShare> FolderShares { get; }
+        IFileRepository Files { get; }
+        IFolderRepository Folders { get; }
+        IUserRepository Users { get; }
+        IFileShareRepository FileShares { get; }
+        IFolderShareRepository FolderShares { get; }
 
 
 

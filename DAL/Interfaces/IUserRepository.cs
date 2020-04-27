@@ -5,7 +5,7 @@ using DAL.Entities;
 using System.Threading.Tasks;
 namespace DAL.Interfaces
 {
-    interface IUserRepository : ISingleKeyRepository<User, int> 
+    public interface IUserRepository : ISingleKeyRepository<User, int> 
     {
         Task<User> GetUserById(int id);
         Task<IEnumerable<User>> GetUsersByFileShare(Guid fileId);

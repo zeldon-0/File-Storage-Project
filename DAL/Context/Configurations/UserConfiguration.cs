@@ -14,9 +14,11 @@ namespace DAL.Context.Configurations
             builder.HasKey(u => u.Id);
 
             builder.HasMany(u => u.Files)
-                    .WithOne(fi => fi.Owner);
+                    .WithOne(fi => fi.Owner)
+                    .HasForeignKey(fi => fi.OwnerId);
             builder.HasMany(u => u.Folders)
-                    .WithOne(fo => fo.Owner);
+                    .WithOne(fo => fo.Owner)
+                    .HasForeignKey(fo => fo.OwnerId);
 
             builder.HasMany(u => u.FileShares)
                     .WithOne(fs => fs.User)

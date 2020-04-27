@@ -14,11 +14,13 @@ namespace DAL.Context.Configurations
             builder.HasKey(u => u.Id);
 
             builder.HasMany(fo => fo.Subfolders)
-                    .WithOne(p => p.Parent)
+                    .WithOne(fo => fo.Parent)
+                    .HasForeignKey(fo => fo.ParentId)
                     .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(fo => fo.Files)
                     .WithOne(fi => fi.Folder)
+                    .HasForeignKey(fi => fi.FolderId)
                     .OnDelete(DeleteBehavior.Cascade);
             
             builder.HasMany(fo => fo.FolderShares)

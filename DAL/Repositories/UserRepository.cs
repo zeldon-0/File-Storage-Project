@@ -5,64 +5,39 @@ using DAL.Context;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using DAL.Entities;
+using System.Linq;
 namespace DAL.Repositories
 {
-    public class UserRepository : ISingularRepository<User, int>
+    public class UserRepository : SingleKeyRepository<User, int>, IUserRepository
     {
         private FileStorageContext _context;
         public UserRepository(FileStorageContext context)
+            :base(context)
         {
-            _context = context;
-        }
-
-        public async Task<User> Create(User u)
-        {
-            if (u != null)
-                await _context.Users.AddAsync(u);
-            await Save();
-            return u;
-        }
-
-        public async Task Delete(int id)
-        {
-            User u = await _context.Users.FindAsync(id);
-
-            if (u != null)
-                _context.Users.Remove(u);
-            await Save();
 
         }
 
-        public async Task<IEnumerable<User>> GetAll()
+
+        public async Task<User> GetUserById(int id)
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users.FindAsync(id);                        
         }
 
-        public async Task<User> GetByID(int id)
+        public async Task<IEnumerable<User>> GetUsersByFileShare(Guid fileId)
         {
+            IEnumerable<FileShare> fileShares =
+                await _context.FileShares.Where(fs => fs.FileId == fileId).ToListAsync();
+            return fileShares.Select(fs => fs.User);
 
-            return await _context.Users
-                   .FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public async Task Save()
+        public async Task<IEnumerable<User>> GetUsersByFolderShare(Guid folderId)
         {
-            await _context.SaveChangesAsync();
+            IEnumerable<FolderShare> folderShares =
+                await _context.FolderShares.Where(fs => fs.FolderId == folderId).ToListAsync();
+            return folderShares.Select(fs => fs.User);
         }
 
-        public async Task Update(User u)
-        {
-            if (u == null)
-                return;
-
-            User user = await GetByID(u.Id);
-            if (user != null)
-            {
-                _context.Entry(user).CurrentValues.SetValues(u);
-                _context.Entry(user).State = EntityState.Modified;
-            }
-            await Save();
-
-        }
+        
     }
 }

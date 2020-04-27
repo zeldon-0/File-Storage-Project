@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using DAL.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
-namespace DAL.Entities
+namespace BLL.Models
 {
-    public class File : IEntity<Guid>
+    class FileDTO
     {
         public Guid Id { get; set; }
+        [Required]
         public string Name { get; set; }
         public string Description { get; set; }
+        [Required]
         public string URL { get; set; }
+        [Required]
         public int OwnerId { get; set; }
-        public virtual User Owner { get; set; }
+        public UserDTO Owner { get; set; }
         public Guid? FolderId { get; set; }
-        public virtual Folder Folder { get; set; }
-        public virtual IEnumerable<FileShare> FileShares { get; set; }
+        public FolderDTO Folder { get; set; }
+        public IEnumerable<UserDTO> UsersWithAccess { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using DAL.Entities;
 namespace DAL.Interfaces
 {
-    interface IFolderRepository : ISingleKeyRepository<Folder, Guid>
+    public interface IFolderRepository : ISingleKeyRepository<Folder, Guid>
     {
         Task<Folder> GetFolderById(Guid id);
         Task<IEnumerable<Folder>> GetUserFolders(int userId);
