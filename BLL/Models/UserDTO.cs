@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BLL.Models
 {
-    class UserDTO
+    public class UserDTO
     {
         public int Id { get; set; }
         public string UserName { get; set; }

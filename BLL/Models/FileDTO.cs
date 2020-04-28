@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BLL.Models
 {
-    class FileDTO
+    public class FileDTO
     {
         public Guid Id { get; set; }
         [Required]
@@ -13,6 +13,7 @@ namespace BLL.Models
         public string Description { get; set; }
         [Required]
         public string URL { get; set; }
+        public ShareStatusDTO ShareStatus { get; set; }
         [Required]
         public int OwnerId { get; set; }
         public UserDTO Owner { get; set; }

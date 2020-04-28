@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BLL.Interfaces
 {
-    interface IAuthenticationService
+    public interface IAuthenticationService
     {
     }
 }

@@ -4,12 +4,13 @@ using System.Text;
 using System.ComponentModel.DataAnnotations;
 namespace BLL.Models
 {
-    class FolderDTO
+    public class FolderDTO
     {
         public Guid Id { get; set; }
         [Required]
         public string Name { get; set; }
         public string Description { get; set; }
+        public ShareStatusDTO ShareStatus { get; set; }
         [Required]
         public int OwnerId { get; set; }
         public  UserDTO Owner { get; set; }
