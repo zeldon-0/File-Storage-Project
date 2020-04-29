@@ -7,9 +7,9 @@ namespace BLL.Interfaces
 {
     interface IShareStatusService : IDisposable
     {
-        Task MakeFileShareable(Guid fileId);
-        Task MakeFolderShareable(Guid folderId);
-        Task MakeFileUnshareable(Guid fileId);
-        Task MakeFolderUnshareable(Guid folderId);
+        Task MakeFileShareable(FileDTO file);
+        Task MakeFolderShareable(FolderDTO folder);
+        Task MakeFileUnshareable(FileDTO file);
+        Task MakeFolderUnshareable(FolderDTO folder);
     }
 }

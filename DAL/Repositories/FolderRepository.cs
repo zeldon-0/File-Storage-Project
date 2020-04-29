@@ -29,6 +29,7 @@ namespace DAL.Repositories
         public async Task<Folder> GetFolderById(Guid id)
         {
             return await _context.Folders
+                   .AsNoTracking()
                    .Where(fo => fo.Id == id)
                    .Include(f => f.Owner)
                    .Include(f => f.Parent)
@@ -51,6 +52,7 @@ namespace DAL.Repositories
             User user = await _context.Users
                 .Where(u => u.Id == userId)
                 .Include(u => u.Folders)
+                .ThenInclude(f => f.Parent)
                 .FirstOrDefaultAsync();
             return user.Folders;
         }

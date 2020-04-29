@@ -44,6 +44,11 @@ namespace DAL.Repositories
             return folderShares.Select(fs => fs.User);
         }
 
+        public async Task<IEnumerable<User>> GetAll()
+        {
+            return await _context.Users.ToListAsync();
+        }
+
         
     }
 }

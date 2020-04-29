@@ -10,5 +10,6 @@ namespace DAL.Interfaces
         Task<User> GetUserById(int id);
         Task<IEnumerable<User>> GetUsersByFileShare(Guid fileId);
         Task<IEnumerable<User>> GetUsersByFolderShare(Guid folderId);
+        Task<IEnumerable<User>> GetAll();
     }
 }

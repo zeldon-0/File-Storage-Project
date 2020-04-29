@@ -22,7 +22,9 @@ namespace DAL.Repositories
         {
 
             return await _context.Files
+                   .AsNoTracking()
                    .Include(f => f.FileShares)
+                   .Include(f => f.Owner)
                    .FirstOrDefaultAsync(f => f.Id == id);
         }
 
@@ -40,6 +42,7 @@ namespace DAL.Repositories
             User user = await _context.Users
                     .Where(u => u.Id == userId)
                     .Include( u => u.Files)
+                    .ThenInclude(f => f.Folder)
                     .FirstOrDefaultAsync();
             return user.Files;
         }

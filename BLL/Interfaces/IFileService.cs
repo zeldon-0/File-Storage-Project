@@ -13,6 +13,7 @@ namespace BLL.Interfaces
         Task<IEnumerable<FileDTO>> GetUserFiles(int userId);
         Task<IEnumerable<FileDTO>> GetFolderFiles(Guid folderId);
         Task<FileDTO> CreateAtFolder(FileDTO file, Guid folderId);
-        Task<FileDTO> CopyToFolder(Guid fileId, Guid folderId);
+        Task MoveToFolder(Guid fileId, Guid folderId);
+        Task<FileDTO> CopyFile(Guid fileId);
     }
 }

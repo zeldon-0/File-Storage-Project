@@ -7,12 +7,13 @@ namespace BLL.Interfaces
 {
     public interface IFolderService : IDisposable
     {
-        Task<FileDTO> CreateAtRoot(FolderDTO folder);
-        Task Delete(Guid id);
+        Task<FolderDTO> CreateAtRoot(FolderDTO folder);
+        Task Delete(Guid folderId);
         Task Update(FolderDTO folder);
         Task<IEnumerable<FolderDTO>> GetUserFolders(int userId);
         Task<IEnumerable<FolderDTO>> GetFolderSubfolders(Guid folderId);
-        Task<FileDTO> CreateAtFolder(FolderDTO folder, Guid folderId);
-        Task<FileDTO> CopyToFolder(Guid subfolderId, Guid folderId);
+        Task<FolderDTO> CreateAtFolder(FolderDTO folder, Guid folderId);
+        Task MoveToFolder(Guid subfolderId, Guid parentFolderId);
+        Task<FolderDTO> CopyFolder(Guid folderId);
     }
 }
