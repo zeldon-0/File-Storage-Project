@@ -62,6 +62,24 @@ namespace BLL.Services
             return _mapper.Map<UserDTO>(folder.Owner);
         }
 
+        public async Task<IEnumerable<UserDTO>> GetFileShareUsers(Guid fileId)
+        {
+            File file = await _uow.Files.GetFileById(fileId);
+            if (file == null)
+                throw new ArgumentException("The requested file does not exist");
+            IEnumerable<User> users = await _uow.Users.GetUsersByFileShare(fileId);
+            return users.Select(u => _mapper.Map<UserDTO>(u));
+        }
+
+        public async Task<IEnumerable<UserDTO>> GetFolderShareUsers(Guid folderId)
+        {
+            Folder folder = await _uow.Folders.GetFolderById(folderId);
+            if (folder == null)
+                throw new ArgumentException("The requested folder does not exist");
+            IEnumerable<User> users = await _uow.Users.GetUsersByFolderShare(folderId);
+            return users.Select(u => _mapper.Map<UserDTO>(u));
+        }
+
         private bool disposed = false;
 
         protected virtual void Dispose(bool disposing)
@@ -83,6 +101,9 @@ namespace BLL.Services
             GC.SuppressFinalize(this);
 
         }
+
+
+
         ~UserService()
         {
             Dispose(false);

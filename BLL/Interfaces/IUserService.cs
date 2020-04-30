@@ -14,5 +14,8 @@ namespace BLL.Interfaces
         Task<UserDTO> GetFileOwner(Guid fileId);
         Task<UserDTO> GetFolderOwner(Guid folderId);
 
+        Task<IEnumerable<UserDTO>> GetFileShareUsers(Guid fileId);
+        Task<IEnumerable<UserDTO>> GetFolderShareUsers(Guid folderId);
+
     }
 }

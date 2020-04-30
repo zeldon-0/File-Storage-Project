@@ -13,7 +13,7 @@ namespace BLL.Mapping
         {
             CreateMap<User, UserDTO>()
                 .ReverseMap();
-            CreateMap<User, AuthUserDTO>()
+            CreateMap<User, SignInDTO>()
                 .ReverseMap();
 
             CreateMap<FileDTO, File>()

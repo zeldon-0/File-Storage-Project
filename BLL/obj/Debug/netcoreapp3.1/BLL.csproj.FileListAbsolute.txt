@@ -6,3 +6,7 @@ C:\Misc\EPAM Training\FileStorage\BLL\obj\Debug\netcoreapp3.1\BLL.AssemblyInfo.c
 C:\Misc\EPAM Training\FileStorage\BLL\bin\Debug\netcoreapp3.1\BLL.pdb
 C:\Misc\EPAM Training\FileStorage\BLL\obj\Debug\netcoreapp3.1\BLL.dll
 C:\Misc\EPAM Training\FileStorage\BLL\obj\Debug\netcoreapp3.1\BLL.pdb
+C:\Misc\EPAM Training\FileStorage\BLL\bin\Debug\netcoreapp3.1\DAL.dll
+C:\Misc\EPAM Training\FileStorage\BLL\obj\Debug\netcoreapp3.1\BLL.csproj.CoreCompileInputs.cache
+C:\Misc\EPAM Training\FileStorage\BLL\bin\Debug\netcoreapp3.1\DAL.pdb
+C:\Misc\EPAM Training\FileStorage\BLL\obj\Debug\netcoreapp3.1\BLL.csproj.CopyComplete
