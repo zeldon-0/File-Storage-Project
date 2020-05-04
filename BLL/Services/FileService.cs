@@ -36,6 +36,10 @@ namespace BLL.Services
 
         public async Task<FileDTO> CreateAtFolder(FileDTO file, Guid folderId)
         {
+            if (!Uri.IsWellFormedUriString(file.URL, UriKind.Absolute)) 
+            {
+                throw new ArgumentException("The link is not provided in the correct format.");
+            }
             file.FolderId = folderId;
             File createdFile = await _uow.Files.Create(_mapper.Map<File>(file));
             return _mapper.Map<FileDTO>(createdFile);
@@ -43,6 +47,10 @@ namespace BLL.Services
 
         public async Task<FileDTO> CreateAtRoot(FileDTO file)
         {
+            if (!Uri.IsWellFormedUriString(file.URL, UriKind.Absolute))
+            {
+                throw new ArgumentException("The link is not provided in the correct format.");
+            }
             File createdFile = await _uow.Files.Create(_mapper.Map<File>(file));
             return _mapper.Map<FileDTO>(createdFile);
         }
@@ -74,6 +82,10 @@ namespace BLL.Services
         {
             if (file == null)
                 throw new ArgumentNullException("Provided file is null.");
+            if (!Uri.IsWellFormedUriString(file.URL, UriKind.Absolute))
+            {
+                throw new ArgumentException("The link is not provided in the correct format.");
+            }
             await _uow.Files.Update(_mapper.Map<File>(file));
         }
 

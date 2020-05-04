@@ -13,7 +13,7 @@ namespace DAL.Repositories
         public FolderShareRepository(FileStorageContext context)
             : base(context)
         {
-
+            _context = context;
         }
 
         public async Task<bool> FolderShareExists(Guid fileId, int userId)

@@ -14,7 +14,7 @@ namespace DAL.Repositories
         public FolderRepository(FileStorageContext context)
             :base(context)
         {
-
+            _context = context;
         }
 
         public async Task<Folder> GetFileFolder(Guid fileId)

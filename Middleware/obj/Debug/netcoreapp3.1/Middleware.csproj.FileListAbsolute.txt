@@ -1,0 +1,14 @@
+C:\Misc\EPAM Training\FileStorage\Middleware\bin\Debug\netcoreapp3.1\Middleware.deps.json
+C:\Misc\EPAM Training\FileStorage\Middleware\bin\Debug\netcoreapp3.1\Middleware.dll
+C:\Misc\EPAM Training\FileStorage\Middleware\obj\Debug\netcoreapp3.1\Middleware.csprojAssemblyReference.cache
+C:\Misc\EPAM Training\FileStorage\Middleware\obj\Debug\netcoreapp3.1\Middleware.AssemblyInfoInputs.cache
+C:\Misc\EPAM Training\FileStorage\Middleware\obj\Debug\netcoreapp3.1\Middleware.AssemblyInfo.cs
+C:\Misc\EPAM Training\FileStorage\Middleware\bin\Debug\netcoreapp3.1\BLL.dll
+C:\Misc\EPAM Training\FileStorage\Middleware\bin\Debug\netcoreapp3.1\DAL.dll
+C:\Misc\EPAM Training\FileStorage\Middleware\bin\Debug\netcoreapp3.1\DAL.pdb
+C:\Misc\EPAM Training\FileStorage\Middleware\bin\Debug\netcoreapp3.1\Middleware.pdb
+C:\Misc\EPAM Training\FileStorage\Middleware\bin\Debug\netcoreapp3.1\BLL.pdb
+C:\Misc\EPAM Training\FileStorage\Middleware\obj\Debug\netcoreapp3.1\Middleware.csproj.CoreCompileInputs.cache
+C:\Misc\EPAM Training\FileStorage\Middleware\obj\Debug\netcoreapp3.1\Middleware.csproj.CopyComplete
+C:\Misc\EPAM Training\FileStorage\Middleware\obj\Debug\netcoreapp3.1\Middleware.dll
+C:\Misc\EPAM Training\FileStorage\Middleware\obj\Debug\netcoreapp3.1\Middleware.pdb

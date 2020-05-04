@@ -15,10 +15,12 @@ namespace DAL.Context.Configurations
 
             builder.HasMany(u => u.Files)
                     .WithOne(fi => fi.Owner)
-                    .HasForeignKey(fi => fi.OwnerId);
+                    .HasForeignKey(fi => fi.OwnerId)
+                    .OnDelete(DeleteBehavior.Restrict);
             builder.HasMany(u => u.Folders)
                     .WithOne(fo => fo.Owner)
-                    .HasForeignKey(fo => fo.OwnerId);
+                    .HasForeignKey(fo => fo.OwnerId)
+                    .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(u => u.FileShares)
                     .WithOne(fs => fs.User)

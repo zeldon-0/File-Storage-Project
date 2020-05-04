@@ -16,21 +16,19 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace BLL.Services
 {
-    class AccountService : IAccountService
+    public class AccountService : IAccountService
     {
         private IUnitOfWork _uow;
         private IMapper _mapper;
         private UserManager<User> _userManager;
-        private SignInManager<User> _signInManager;
-        private RoleManager<IdentityRole> _roleManager;
+        private RoleManager<IdentityRole<int>> _roleManager;
 
         public AccountService(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, 
-            SignInManager<User> signInManager, RoleManager<IdentityRole> roleManager)
+             RoleManager<IdentityRole<int>> roleManager)
         {
             _uow = uow;
             _mapper = mapper;
             _userManager = userManager;
-            _signInManager = signInManager;
             _roleManager = roleManager;
         }
         public async Task AddAccountToRole(int userId, string role)
@@ -38,7 +36,7 @@ namespace BLL.Services
             if (! await _roleManager.RoleExistsAsync(role))
             {
                await _roleManager.CreateAsync(
-                    new IdentityRole() 
+                    new IdentityRole<int>() 
                     { Name = role,
                       NormalizedName = role.ToUpper()});
             }
@@ -66,10 +64,7 @@ namespace BLL.Services
             }
 
             SymmetricSecurityKey secretKey =
-               new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                    "JUGEMUjugemuGOKONOsurikireKAIJYARIsugyonoSUGYOmatsuUNRAIMATSUfuuraimatsuKUNERUtokoronisumutokoro" +
-                    "YABURAKOJINOBURAKOJIpaipopaiponoSHURINGANshuringannoGURINDAIgurindaiNOPONPOKOPINOponpokonanoCHOKYUUMEInoCHOUSUKE" +
-                    "15357683746934769371087340623477024298000dsdvdbdjbbdsvlsdvlvsvlj"));
+               new SymmetricSecurityKey(Encoding.UTF8.GetBytes("JUGEMUjugemu123456789"));
 
             SigningCredentials signingCredentials =
                 new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
@@ -77,7 +72,7 @@ namespace BLL.Services
             List<Claim> claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Email, user.Email)
             };
 
             IEnumerable<string> userRoles =
@@ -152,15 +147,7 @@ namespace BLL.Services
             }
 
             User createdUser = await _userManager.FindByEmailAsync(user.Email);
-            IdentityResult roleResult = await _userManager.AddToRoleAsync(createdUser, "User");
-
-            if (!roleResult.Succeeded)
-            {
-                StringBuilder errMessage = new StringBuilder();
-                foreach (IdentityError err in result.Errors)
-                    errMessage.Append($"{err.Code}  {err.Description}/n");
-                throw new Exception(errMessage.ToString());
-            }
+            await AddAccountToRole(createdUser.Id, "User");
 
             return _mapper.Map<UserDTO>(createdUser);
 

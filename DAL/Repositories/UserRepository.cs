@@ -14,7 +14,7 @@ namespace DAL.Repositories
         public UserRepository(FileStorageContext context)
             :base(context)
         {
-
+            _context = context;
         }
 
 

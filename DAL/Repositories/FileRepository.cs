@@ -14,7 +14,7 @@ namespace DAL.Repositories
         public FileRepository(FileStorageContext context)
                 : base(context)
         {
-
+            _context = context;
         }
 
 

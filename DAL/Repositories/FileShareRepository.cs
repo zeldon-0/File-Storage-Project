@@ -13,7 +13,7 @@ namespace DAL.Repositories
         public FileShareRepository(FileStorageContext context)
             :base(context)
         {
-
+            _context = context;
         }
 
         public async Task<bool> FileShareExists(Guid fileId, int userId)

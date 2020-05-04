@@ -7,7 +7,7 @@ using BLL.Models;
 using System.Linq;
 namespace BLL.Mapping
 {
-    class MappingProfile : Profile
+    public class MappingProfile : Profile
     {
         public MappingProfile()
         {

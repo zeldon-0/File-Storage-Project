@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using BLL.Models;
 namespace BLL.Interfaces
 {
-    interface IShareStatusService : IDisposable
+    public interface IShareStatusService : IDisposable
     {
         Task MakeFileShareable(FileDTO file);
         Task MakeFolderShareable(FolderDTO folder);

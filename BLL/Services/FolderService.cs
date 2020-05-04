@@ -53,6 +53,16 @@ namespace BLL.Services
             Folder folder = await _uow.Folders.GetFolderById(folderId);
             if (folder == null)
                 throw new ArgumentNullException("The provided folder does not exist");
+
+            foreach (var file in folder.Files)
+            {
+                await _uow.Files.Delete(file.Id);
+            }
+
+            foreach ( var subfolder in folder.Subfolders)
+            {
+                await Delete(subfolder.Id);
+            }
             await _uow.Folders.Delete(folderId);
         }
 
