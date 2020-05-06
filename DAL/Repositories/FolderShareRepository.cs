@@ -19,7 +19,7 @@ namespace DAL.Repositories
         public async Task<bool> FolderShareExists(Guid fileId, int userId)
         {
             FolderShare folderShare = await
-                _context.FolderShares.FindAsync(new { fileId, userId });
+                _context.FolderShares.FindAsync(fileId, userId );
             return (folderShare != null) ? true : false;
         }
     }

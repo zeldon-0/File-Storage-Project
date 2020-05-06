@@ -95,11 +95,17 @@ namespace BLL.Services
 
         }
 
-        public async Task Delete(int userId)
+        public async Task Delete(SignInDTO credentials)
         {
-            User user = await _userManager.FindByIdAsync(Convert.ToString(userId));
+            User user = await _userManager.FindByEmailAsync(credentials.Login)
+                ?? await _userManager.FindByNameAsync(credentials.Login);
             if (user == null)
-                throw new ArgumentException("The specified role does not exist");
+                throw new ArgumentException("The user with the provided login does not exist");
+
+            if(!await _userManager.CheckPasswordAsync(user, credentials.Password))
+            {
+                throw new ArgumentException("Failed to auhenticate with the provided credentials.");
+            }
 
             IdentityResult result = await _userManager.DeleteAsync(user);
             if (!result.Succeeded)
@@ -113,9 +119,38 @@ namespace BLL.Services
 
 
 
-        public async Task Edit(UserDTO user)
+        public async Task Edit(UserDTO user, string email)
         {
-            IdentityResult result = await _userManager.UpdateAsync(_mapper.Map<User>(user));
+            User currentModel = await _userManager.FindByEmailAsync(email);
+            if (currentModel == null)
+                throw new ArgumentException("The user with the provided email does not exist");
+
+            currentModel.Email = user.Email;
+            currentModel.UserName = user.UserName;
+            IdentityResult result = await _userManager.UpdateAsync(currentModel);
+            if (!result.Succeeded)
+            {
+                StringBuilder errMessage = new StringBuilder();
+                foreach (IdentityError err in result.Errors)
+                    errMessage.Append($"{err.Code}  {err.Description}/n");
+                throw new Exception(errMessage.ToString());
+            }
+        }
+
+        public async Task ChangePassword(SignInDTO credentials, string newPassword)
+        {
+            User user = await _userManager.FindByEmailAsync(credentials.Login);
+            if (user == null)
+                throw new ArgumentException("A user with the provided login does not exist.");
+
+            if (!await _userManager.CheckPasswordAsync(user, credentials.Password))
+            {
+                throw new ArgumentException("Failed to auhenticate with the provided credentials.");
+            }
+
+            IdentityResult result = await _userManager.ChangePasswordAsync(user,
+                credentials.Password, newPassword);
+
             if (!result.Succeeded)
             {
                 StringBuilder errMessage = new StringBuilder();

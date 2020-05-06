@@ -8,6 +8,7 @@ using DAL.Entities;
 using AutoMapper;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.AspNetCore.Identity;
 
 namespace BLL.Services
 {
@@ -15,11 +16,14 @@ namespace BLL.Services
     {
         private IUnitOfWork _uow;
         private IMapper _mapper;
+        private UserManager<User> _userManager;
 
-        public FolderService( IUnitOfWork uow, IMapper mapper)
+        public FolderService( IUnitOfWork uow, IMapper mapper,
+                UserManager<User> userManager)
         {
             _uow = uow;
             _mapper = mapper;
+            _userManager = userManager;
 
         }
         public async Task<FolderDTO> CopyFolder(Guid folderId)
@@ -35,15 +39,28 @@ namespace BLL.Services
 
         }
 
-        public async Task<FolderDTO> CreateAtFolder(FolderDTO folder, Guid folderId)
+        public async Task<FolderDTO> CreateAtFolder(FolderDTO folder, Guid folderId, string email)
         {
+            User user = await _userManager.FindByEmailAsync(email);
+            Folder parent = await _uow.Folders.GetFolderById(folderId);
+            bool fsExists = await _uow.FolderShares.FolderShareExists(folderId, user.Id );
+
+            if (parent == null)
+                throw new ArgumentException("The parent folder does not exist");
+             
+            if (parent.OwnerId != user.Id && !fsExists)
+                throw new ArgumentException("You do not have access to the folder");
+
             folder.ParentId= folderId;
+            folder.OwnerId = user.Id;
             Folder createdFolder = await _uow.Folders.Create(_mapper.Map<Folder>(folder));
             return _mapper.Map<FolderDTO>(createdFolder);
         }
 
-        public async Task<FolderDTO> CreateAtRoot(FolderDTO folder)
-        { 
+        public async Task<FolderDTO> CreateAtRoot(FolderDTO folder, string email)
+        {
+            User user = await _userManager.FindByEmailAsync(email);
+            folder.OwnerId = user.Id;
             Folder createdFolder = await _uow.Folders.Create(_mapper.Map<Folder>(folder));
             return _mapper.Map<FolderDTO>(createdFolder);
         }

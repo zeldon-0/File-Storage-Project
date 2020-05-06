@@ -25,7 +25,7 @@ namespace WebAPI.Controllers
             _accountService = accountService;
         }
 
-        [HttpPost("signup")]
+        [HttpPost("signUp")]
         [AllowAnonymous]
         public async Task<IActionResult> SignUp([FromBody] SignUpDTO signUpModel)
         {
@@ -37,7 +37,7 @@ namespace WebAPI.Controllers
             return CreatedAtAction(nameof(SignUp), user);
             
         }
-        [HttpPost("signin")]
+        [HttpPost("signIn")]
         [AllowAnonymous]
         public async Task<ActionResult<string>> SignIn([FromBody] SignInDTO signInModel)
         {
@@ -57,10 +57,10 @@ namespace WebAPI.Controllers
                 currentUser.Claims.FirstOrDefault
                 (c => c.Type ==ClaimTypes.Email).Value, "Corporate");
 
-            return Ok();
+            return NoContent();
         }
 
-        [HttpPut("revert_upgrade")]
+        [HttpPut("revertUpgrade")]
         [Authorize(Roles ="Corporate")]
         public async Task<IActionResult> RevertAccountUpgrade()
         {
@@ -69,9 +69,40 @@ namespace WebAPI.Controllers
                 currentUser.Claims.FirstOrDefault
                 (c => c.Type == ClaimTypes.Email).Value, "Corporate");
 
-            return Ok();
+            return NoContent();
         }
 
 
+        [HttpPut("edit")]
+        public async Task<IActionResult> EditAccount([FromBody] UserDTO userInfo)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest("You did not fill all the required fields");
+            await _accountService.Edit(userInfo,
+                User.Claims.FirstOrDefault
+                (c => c.Type == ClaimTypes.Email).Value);
+            return NoContent();
+        }
+
+        [HttpPut("updatePassword")]
+        public async Task<IActionResult> ChangePassword([FromQuery] string oldPassword, string newPassword)
+        {
+            SignInDTO credentials = new SignInDTO()
+            {
+                Login = User.Claims.FirstOrDefault
+                    (c => c.Type == ClaimTypes.Email).Value,
+                Password = oldPassword
+            };
+
+            await _accountService.ChangePassword(credentials, newPassword);
+            return NoContent();
+        }
+
+        [HttpDelete("delete")]
+        public async Task<IActionResult> DeleteAccount([FromBody] SignInDTO credentials)
+        {
+            await _accountService.Delete(credentials);
+            return NoContent();
+        }
     }
 }

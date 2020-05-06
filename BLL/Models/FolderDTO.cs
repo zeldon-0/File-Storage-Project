@@ -11,11 +11,9 @@ namespace BLL.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public ShareStatusDTO ShareStatus { get; set; }
-        [Required]
         public int OwnerId { get; set; }
         public  UserDTO Owner { get; set; }
         public Guid? ParentId { get; set; }
-        public  FolderDTO Parent { get; set; }
         public IEnumerable<FolderDTO> Subfolders { get; set; }
         public IEnumerable<FileDTO> Files { get; set; }
         public IEnumerable<UserDTO> UsersWithAccess { get; set; }

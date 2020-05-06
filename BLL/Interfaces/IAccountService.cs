@@ -11,8 +11,9 @@ namespace BLL.Interfaces
     {
         Task<string> Authenticate(SignInDTO credentials);
         Task<UserDTO> Register(SignUpDTO user);
-        Task Edit(UserDTO user);
-        Task Delete(int userId);
+        Task Edit(UserDTO user, string email);
+        Task ChangePassword(SignInDTO credentials, string newPassword);
+        Task Delete(SignInDTO credentials);
         Task AddAccountToRole(string email, string role);
         Task RemoveFromRole(string email, string role);
 

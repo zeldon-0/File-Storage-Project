@@ -14,7 +14,6 @@ namespace BLL.Models
         [Required]
         public string URL { get; set; }
         public ShareStatusDTO ShareStatus { get; set; }
-        [Required]
         public int OwnerId { get; set; }
         public UserDTO Owner { get; set; }
         public Guid? FolderId { get; set; }
