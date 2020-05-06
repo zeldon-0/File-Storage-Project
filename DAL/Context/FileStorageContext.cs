@@ -15,6 +15,7 @@ namespace DAL.Context
         public DbSet<FileShare> FileShares { get; set; }
         public DbSet<FolderShare> FolderShares { get; set; }
 
+
         public FileStorageContext(DbContextOptions<FileStorageContext> options) 
             : base(options)
         {
@@ -23,17 +24,16 @@ namespace DAL.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);    
+            base.OnModelCreating(modelBuilder);
 
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.ApplyConfiguration(new UserRoleConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new FileConfiguration());
             modelBuilder.ApplyConfiguration(new FolderConfiguration());
             modelBuilder.ApplyConfiguration(new FolderShareConfiguration());
             modelBuilder.ApplyConfiguration(new FileShareConfiguration());
 
-
         }
-
-
     }
 }

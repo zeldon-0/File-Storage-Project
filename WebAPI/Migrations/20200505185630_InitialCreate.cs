@@ -259,6 +259,41 @@ namespace WebAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { 1, "180cb5b3-084a-4657-9ff4-5ec125f88603", "User", "USER" },
+                    { 2, "27fd1ca5-290d-43fe-b1f2-2d8dc2976e39", "Corporate", "CORPORATE" },
+                    { 3, "9275304c-6f3e-4751-950a-9950dae55fd1", "Admin", "ADMIN" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { 1, 0, "95508c0a-eaa5-427e-b32a-94b4a8031bfc", "testUser@gmail.com", false, false, null, "TESTUSER@GMAIL.COM", "TESTUSER", "AQAAAAEAACcQAAAAEE/Vu3Uj7dT8RCp4odCkPNcgeFkNmtMmbKVbBEEXRNkvajp9RIDx1m5ip6QTCPEicA==", null, false, "3179cac1-fa4b-48bd-a139-f93287baa317", false, "TestUser" },
+                    { 2, 0, "2de2fdeb-a935-42ad-b038-d3121042db14", "corporate@gmail.com", false, false, null, "CORPORATE@GMAIL.COM", "TESTCORPORATE", "AQAAAAEAACcQAAAAEHi0JIlmF39JHNXHvf5x3OS467JlX/Y7kOr5A3f9H+U9ZI76QnTtp08WHJo+Eq/8vA==", null, false, "db3776c8-f23d-4cb6-bfa9-261b62937007", false, "TestCorporate" },
+                    { 3, 0, "7817322f-085b-4847-b129-254e867f3164", "testAdmin@gmail.com", false, false, null, "TESTADMIN@GMAIL.COM", "TESTADMIN", "AQAAAAEAACcQAAAAEAJInVp+FtZDIT3oL8Klwh+ZfkPpjKMtbOd5QVYnwSqkU9VxVHd9OpY3pqPNH+Fkfg==", null, false, "54089f61-c2b9-4f5e-8102-ceaf451cab3a", false, "TestAdmin" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "UserId", "RoleId" },
+                values: new object[] { 1, 1 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "UserId", "RoleId" },
+                values: new object[] { 2, 2 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "UserId", "RoleId" },
+                values: new object[] { 3, 3 });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",

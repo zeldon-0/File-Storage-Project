@@ -13,8 +13,8 @@ namespace BLL.Interfaces
         Task<UserDTO> Register(SignUpDTO user);
         Task Edit(UserDTO user);
         Task Delete(int userId);
-        Task AddAccountToRole(int userId, string role);
-        Task RemoveFromRole(int userId, string role);
+        Task AddAccountToRole(string email, string role);
+        Task RemoveFromRole(string email, string role);
 
 
     }

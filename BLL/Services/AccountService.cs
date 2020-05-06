@@ -31,7 +31,7 @@ namespace BLL.Services
             _userManager = userManager;
             _roleManager = roleManager;
         }
-        public async Task AddAccountToRole(int userId, string role)
+        public async Task AddAccountToRole(string email, string role)
         {
             if (! await _roleManager.RoleExistsAsync(role))
             {
@@ -40,7 +40,7 @@ namespace BLL.Services
                     { Name = role,
                       NormalizedName = role.ToUpper()});
             }
-            User user = await _userManager.FindByIdAsync(Convert.ToString(userId));
+            User user = await _userManager.FindByEmailAsync(email);
             IdentityResult result = await _userManager.AddToRoleAsync(user, role);
             if (!result.Succeeded)
             {
@@ -146,20 +146,20 @@ namespace BLL.Services
                 throw new Exception(errMessage.ToString());
             }
 
+            await AddAccountToRole(user.Email, "User");
             User createdUser = await _userManager.FindByEmailAsync(user.Email);
-            await AddAccountToRole(createdUser.Id, "User");
 
             return _mapper.Map<UserDTO>(createdUser);
 
         }
 
-        public async Task RemoveFromRole(int userId, string role)
+        public async Task RemoveFromRole(string email, string role)
         {
             if (!await _roleManager.RoleExistsAsync(role))
             {
                 throw new ArgumentException("The specified role does not exist");
             }
-            User user = await _userManager.FindByIdAsync(Convert.ToString(userId));
+            User user = await _userManager.FindByEmailAsync(email);
             IdentityResult result = await _userManager.RemoveFromRoleAsync(user, role);
 
             if (!result.Succeeded)

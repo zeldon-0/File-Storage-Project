@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,11 +9,13 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using BLL.Interfaces;
 using BLL.Models;
+using System.Security.Claims;
+
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
+    [Authorize]
     public class AccountController : ControllerBase
     {
         private IAccountService _accountService;
@@ -24,6 +26,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("signup")]
+        [AllowAnonymous]
         public async Task<IActionResult> SignUp([FromBody] SignUpDTO signUpModel)
         {
             if (!ModelState.IsValid)
@@ -35,6 +38,7 @@ namespace WebAPI.Controllers
             
         }
         [HttpPost("signin")]
+        [AllowAnonymous]
         public async Task<ActionResult<string>> SignIn([FromBody] SignInDTO signInModel)
         {
             if (!ModelState.IsValid)
@@ -44,5 +48,30 @@ namespace WebAPI.Controllers
 
         }
         
+        [HttpPut("upgrade")]
+        [Authorize(Roles ="User, Admin")]
+        public async Task<IActionResult> UpgradeAccount()
+        {
+            var currentUser = this.User;
+            await _accountService.AddAccountToRole(
+                currentUser.Claims.FirstOrDefault
+                (c => c.Type ==ClaimTypes.Email).Value, "Corporate");
+
+            return Ok();
+        }
+
+        [HttpPut("revert_upgrade")]
+        [Authorize(Roles ="Corporate")]
+        public async Task<IActionResult> RevertAccountUpgrade()
+        {
+            var currentUser = this.User;
+            await _accountService.RemoveFromRole(
+                currentUser.Claims.FirstOrDefault
+                (c => c.Type == ClaimTypes.Email).Value, "Corporate");
+
+            return Ok();
+        }
+
+
     }
 }
