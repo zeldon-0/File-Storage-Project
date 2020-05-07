@@ -31,13 +31,13 @@ namespace BLL.Services
             FolderDTO subfolder= await GetFolderById(subfolderId);
             subfolder.Id = new Guid();
             subfolder.Owner = null;
-            //FolderDTO newFolder = await CreateAtFolder(subfolder, parentId, subfolder.OwnerId);
+
             Folder newFolder = new Folder()
             {
                 Name = subfolder.Name,
                 Description = subfolder.Description,
                 OwnerId = subfolder.OwnerId,
-                ParentId = subfolder.ParentId
+                ParentId = parentId
             };
             newFolder = await _uow.Folders.Create(newFolder);
 
@@ -72,8 +72,7 @@ namespace BLL.Services
             Folder folderCopy = await _uow.Folders.GetFolderById(folderId);
             if (folderCopy == null)
                 throw new ArgumentException("The requested subfolder does not exist");
-            folderCopy.Name = "Copy of " + folderCopy.Name;
-            folderCopy.Owner = null;
+
             var newFolder = new Folder()
             {
                 Name = "Copy of " + folderCopy.Name,
@@ -86,7 +85,7 @@ namespace BLL.Services
             foreach (var subfolder in folderCopy.Subfolders)
                 await CloneSubfolders(subfolder.Id, newFolder.Id);
 
-            return _mapper.Map<FolderDTO>(folderCopy);
+            return _mapper.Map<FolderDTO>(newFolder);
 
         }
 
@@ -129,6 +128,7 @@ namespace BLL.Services
                     await _uow.Files.Delete(file.Id);
                 }
             }
+            
 
             if (folder.Subfolders != null && folder.Subfolders.Any())
             {
@@ -145,7 +145,7 @@ namespace BLL.Services
             Folder folder = await _uow.Folders.GetFolderById(folderId);
             if (folder == null)
                 throw new ArgumentNullException("The requested folder does not exist");
-            folder.Subfolders = null;
+
             return folder.Subfolders.Select(sf => _mapper.Map<FolderDTO>(sf));
         }
 

@@ -128,6 +128,20 @@ namespace WebAPI.Controllers
             return NoContent();
 
         }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            FolderDTO folder = await _folderService.GetFolderById(id);
+            
 
+            if (!(await _authorizationService.AuthorizeAsync(
+                    User, folder, Operations.Delete)).Succeeded)
+            {
+                return Challenge();
+            }
+            await _folderService.Delete(id);
+            return NoContent();
+
+        }
     }
 }
