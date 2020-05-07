@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.Generic;
 using DAL.Interfaces;
 using DAL.Context;
@@ -32,7 +33,8 @@ namespace DAL.Repositories
                    .AsNoTracking()
                    .Where(fo => fo.Id == id)
                    .Include(f => f.Owner)
-                   .Include(f => f.Parent)
+                   .Include(f => f.Files)
+                   .Include(f => f.Subfolders)
                    .Include(f => f.FolderShares)
                    .FirstOrDefaultAsync();
         }

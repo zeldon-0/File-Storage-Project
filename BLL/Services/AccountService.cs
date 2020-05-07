@@ -72,7 +72,8 @@ namespace BLL.Services
             List<Claim> claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Email, user.Email)
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             };
 
             IEnumerable<string> userRoles =

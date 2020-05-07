@@ -4,10 +4,11 @@ using BLL.Interfaces;
 using DAL.Entities;
 using BLL.Services;
 using BLL.Mapping;
+using BLL.AuthorizationHandlers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
 using AutoMapper;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace Middleware.Configuration_Extension
 {
@@ -22,6 +23,8 @@ namespace Middleware.Configuration_Extension
             services.AddScoped<IShareStatusService, ShareStatusService>();
             services.AddScoped<ISharingService, SharingService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped<IAuthorizationHandler, FolderAuthorizationHandler>();
 
             MapperConfiguration mappingConfig = new MapperConfiguration(mc=>
                     mc.AddProfile(new MappingProfile())
