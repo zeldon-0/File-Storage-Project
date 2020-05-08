@@ -16,8 +16,8 @@ namespace BLL.Services
 {
     public class FolderService : IFolderService
     {
-        private IUnitOfWork _uow;
-        private IMapper _mapper;
+        private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
 
         public FolderService( IUnitOfWork uow,  IMapper mapper)
@@ -112,6 +112,8 @@ namespace BLL.Services
         public async Task<FolderDTO> GetFolderById(Guid folderId)
         {
             Folder folder =  await _uow.Folders.GetFolderById(folderId);
+            if (folder == null)
+                throw new ArgumentException("The requested folder does not exist");
             return _mapper.Map<FolderDTO>(folder);
         }
 

@@ -15,6 +15,8 @@ namespace BLL.Mapping
                 .ReverseMap();
             CreateMap<User, SignInDTO>()
                 .ReverseMap();
+            CreateMap<ShareStatus, ShareStatusDTO>()
+                .ReverseMap();
 
             CreateMap<FileDTO, File>()
                 .ForMember(dest => dest.FileShares,

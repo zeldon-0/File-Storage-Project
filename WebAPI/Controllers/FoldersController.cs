@@ -20,9 +20,9 @@ namespace WebAPI.Controllers
     [Authorize]
     public class FoldersController : ControllerBase
     {
-        private IFolderService _folderService;
-        private IAuthorizationService _authorizationService;
-        private ISharingService _sharingService;
+        private readonly IFolderService _folderService;
+        private readonly IAuthorizationService _authorizationService;
+        private readonly ISharingService _sharingService;
 
         public FoldersController(IFolderService folderService,
                     IAuthorizationService authorizationService,

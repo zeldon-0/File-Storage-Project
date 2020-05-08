@@ -12,16 +12,17 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using BLL.Exceptions;
 
 
 namespace BLL.Services
 {
     public class AccountService : IAccountService
     {
-        private IUnitOfWork _uow;
-        private IMapper _mapper;
-        private UserManager<User> _userManager;
-        private RoleManager<IdentityRole<int>> _roleManager;
+        private readonly  IUnitOfWork _uow;
+        private readonly IMapper _mapper;
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole<int>> _roleManager;
 
         public AccountService(IUnitOfWork uow, IMapper mapper, UserManager<User> userManager, 
              RoleManager<IdentityRole<int>> roleManager)
@@ -41,13 +42,15 @@ namespace BLL.Services
                       NormalizedName = role.ToUpper()});
             }
             User user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                throw new NotFoundException("The requested user is not registered.");
             IdentityResult result = await _userManager.AddToRoleAsync(user, role);
             if (!result.Succeeded)
             {
                 StringBuilder errMessage = new StringBuilder();
                 foreach (IdentityError err in result.Errors)
                     errMessage.Append($"{err.Code}  {err.Description}/n");
-                throw new Exception(errMessage.ToString());
+                throw new ServerErrorException(errMessage.ToString());
             }
         }
 
@@ -56,11 +59,11 @@ namespace BLL.Services
             User user = await _userManager.FindByEmailAsync(credentials.Login)
                 ?? await _userManager.FindByNameAsync(credentials.Login);
             if (user == null)
-                throw new ArgumentException("A user with the provided login does not exist.");
+                throw new NotFoundException("A user with the provided login does not exist.");
 
             if (!await _userManager.CheckPasswordAsync(user, credentials.Password))
             {
-                throw new ArgumentException("Failed to sign in with the provided login/password combination. Try again.");
+                throw new UnauthorizedException("Failed to sign in with the provided login/password combination. Try again.");
             }
 
             SymmetricSecurityKey secretKey =
@@ -101,11 +104,11 @@ namespace BLL.Services
             User user = await _userManager.FindByEmailAsync(credentials.Login)
                 ?? await _userManager.FindByNameAsync(credentials.Login);
             if (user == null)
-                throw new ArgumentException("The user with the provided login does not exist");
+                throw new NotFoundException("The user with the provided login does not exist");
 
             if(!await _userManager.CheckPasswordAsync(user, credentials.Password))
             {
-                throw new ArgumentException("Failed to auhenticate with the provided credentials.");
+                throw new UnauthorizedException("Failed to auhenticate with the provided credentials.");
             }
 
             IdentityResult result = await _userManager.DeleteAsync(user);
@@ -114,17 +117,16 @@ namespace BLL.Services
                 StringBuilder errMessage = new StringBuilder();
                 foreach (IdentityError err in result.Errors)
                     errMessage.Append($"{err.Code}  {err.Description}/n");
-                throw new Exception(errMessage.ToString());
+                throw new ServerErrorException(errMessage.ToString());
             }
         }
-
 
 
         public async Task Edit(UserDTO user, string email)
         {
             User currentModel = await _userManager.FindByEmailAsync(email);
             if (currentModel == null)
-                throw new ArgumentException("The user with the provided email does not exist");
+                throw new NotFoundException("The user with the provided email does not exist");
 
             currentModel.Email = user.Email;
             currentModel.UserName = user.UserName;
@@ -134,7 +136,7 @@ namespace BLL.Services
                 StringBuilder errMessage = new StringBuilder();
                 foreach (IdentityError err in result.Errors)
                     errMessage.Append($"{err.Code}  {err.Description}/n");
-                throw new Exception(errMessage.ToString());
+                throw new ServerErrorException(errMessage.ToString());
             }
         }
 
@@ -142,11 +144,11 @@ namespace BLL.Services
         {
             User user = await _userManager.FindByEmailAsync(credentials.Login);
             if (user == null)
-                throw new ArgumentException("A user with the provided login does not exist.");
+                throw new NotFoundException("A user with the provided login does not exist.");
 
             if (!await _userManager.CheckPasswordAsync(user, credentials.Password))
             {
-                throw new ArgumentException("Failed to auhenticate with the provided credentials.");
+                throw new UnauthorizedException("Failed to auhenticate with the provided credentials.");
             }
 
             IdentityResult result = await _userManager.ChangePasswordAsync(user,
@@ -157,7 +159,7 @@ namespace BLL.Services
                 StringBuilder errMessage = new StringBuilder();
                 foreach (IdentityError err in result.Errors)
                     errMessage.Append($"{err.Code}  {err.Description}/n");
-                throw new Exception(errMessage.ToString());
+                throw new ServerErrorException(errMessage.ToString());
             }
         }
 
@@ -165,7 +167,7 @@ namespace BLL.Services
         {
             if (await _userManager.FindByEmailAsync(user.Email) != null ||
                 await _userManager.FindByNameAsync(user.UserName) != null)
-                throw new ArgumentException("The user with these credentials already exists.");
+                throw new NotFoundException("The user with these credentials already exists.");
             IdentityResult result = await _userManager.CreateAsync(new User()
                                         {
                                             UserName = user.UserName,
@@ -179,7 +181,7 @@ namespace BLL.Services
                 StringBuilder errMessage = new StringBuilder();
                 foreach (IdentityError err in result.Errors)
                     errMessage.Append($"{err.Code}  {err.Description}/n");
-                throw new Exception(errMessage.ToString());
+                throw new ServerErrorException(errMessage.ToString());
             }
 
             await AddAccountToRole(user.Email, "User");
@@ -193,7 +195,7 @@ namespace BLL.Services
         {
             if (!await _roleManager.RoleExistsAsync(role))
             {
-                throw new ArgumentException("The specified role does not exist");
+                throw new NotFoundException("The specified role does not exist");
             }
             User user = await _userManager.FindByEmailAsync(email);
             IdentityResult result = await _userManager.RemoveFromRoleAsync(user, role);
@@ -203,7 +205,7 @@ namespace BLL.Services
                 StringBuilder errMessage = new StringBuilder();
                 foreach (IdentityError err in result.Errors)
                     errMessage.Append($"{err.Code}  {err.Description}/n");
-                throw new Exception(errMessage.ToString());
+                throw new ServerErrorException(errMessage.ToString());
             }
         }
 

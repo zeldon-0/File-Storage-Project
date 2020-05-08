@@ -16,7 +16,7 @@ namespace BLL.AuthorizationHandlers
     public class FolderAuthorizationHandler
         : AuthorizationHandler<OperationAuthorizationRequirement, FolderDTO>
     {
-        private IUnitOfWork _uow;
+        private readonly IUnitOfWork _uow;
         public FolderAuthorizationHandler(IUnitOfWork uow)
         {
             _uow = uow;

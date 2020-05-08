@@ -6,7 +6,6 @@ using BLL.Services;
 using BLL.Mapping;
 using BLL.AuthorizationHandlers;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Identity;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 

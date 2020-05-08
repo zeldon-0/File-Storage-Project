@@ -12,8 +12,8 @@ namespace BLL.Services
 {
     public class ShareStatusService : IShareStatusService
     {
-        private IUnitOfWork _uow;
-        private IMapper _mapper;
+        private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
         public ShareStatusService(IUnitOfWork uow, IMapper mapper)
         {

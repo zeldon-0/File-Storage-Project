@@ -8,7 +8,7 @@ using DAL.Entities;
 using AutoMapper;
 using System.Threading.Tasks;
 using System.Linq;
-
+using BLL.Exceptions;
 namespace BLL.Services
 {
     public class FileService : IFileService
@@ -25,10 +25,10 @@ namespace BLL.Services
         {
             File fileToMove = await _uow.Files.GetFileById(fileId);
             if (fileToMove == null)
-                throw new ArgumentException("The requested file does not exist");
+                throw new NotFoundException("The requested file does not exist");
             Folder targetFolder = await _uow.Folders.GetFolderById(folderId);
             if (targetFolder == null)
-                throw new ArgumentException("The requested folder does not exist");
+                throw new NotFoundException("The requested folder does not exist");
             fileToMove.FolderId = folderId;
             await _uow.Files.Update(fileToMove);
 
@@ -36,9 +36,12 @@ namespace BLL.Services
 
         public async Task<FileDTO> CreateAtFolder(FileDTO file, Guid folderId)
         {
+            Folder folder = await _uow.Folders.GetFolderById(folderId);
+            if (folder == null)
+                throw new NotFoundException("The requested folder does not exist.");
             if (!Uri.IsWellFormedUriString(file.URL, UriKind.Absolute)) 
             {
-                throw new ArgumentException("The link is not provided in the correct format.");
+                throw new BadRequestException("The link is not provided in the correct format.");
             }
             file.FolderId = folderId;
             File createdFile = await _uow.Files.Create(_mapper.Map<File>(file));
@@ -49,7 +52,7 @@ namespace BLL.Services
         {
             if (!Uri.IsWellFormedUriString(file.URL, UriKind.Absolute))
             {
-                throw new ArgumentException("The link is not provided in the correct format.");
+                throw new BadRequestException("The link is not provided in the correct format.");
             }
             File createdFile = await _uow.Files.Create(_mapper.Map<File>(file));
             return _mapper.Map<FileDTO>(createdFile);
@@ -59,7 +62,7 @@ namespace BLL.Services
         {
             File file = await _uow.Files.GetFileById(fileId);
             if (file == null)
-                throw new ArgumentException("The requested file does not exist");
+                throw new NotFoundException("The requested file does not exist");
             await _uow.Files.Delete(fileId);
 
         }
@@ -68,11 +71,18 @@ namespace BLL.Services
         public async Task<IEnumerable<FileDTO>> GetFolderFiles(Guid folderId)
         {
             Folder folder = await _uow.Folders.GetFolderById(folderId);
+            if (folder == null)
+                throw new NotFoundException("The requested folder does not exist.");
+
             return folder.Files.Select(f => _mapper.Map<FileDTO>(f));
         }
 
         public async Task<IEnumerable<FileDTO>> GetUserFiles(int userId)
         {
+            User user = await _uow.Users.GetUserById(userId);
+            if (user == null)
+                throw new NotFoundException("The requested user is not registered.");
+
             IEnumerable<File> files = await _uow.Files.GetUserFiles(userId);
             return files.Where(f => f.Folder == null)
                 .Select(f => _mapper.Map<FileDTO>(f));
@@ -81,10 +91,10 @@ namespace BLL.Services
         public async Task Update(FileDTO file)
         {
             if (file == null)
-                throw new ArgumentNullException("Provided file is null.");
+                throw new BadRequestException("Provided file is null.");
             if (!Uri.IsWellFormedUriString(file.URL, UriKind.Absolute))
             {
-                throw new ArgumentException("The link is not provided in the correct format.");
+                throw new BadRequestException("The link is not provided in the correct format.");
             }
             await _uow.Files.Update(_mapper.Map<File>(file));
         }
@@ -93,7 +103,7 @@ namespace BLL.Services
         {
             File fileCopy = await _uow.Files.GetFileById(fileId);
             if (fileCopy == null)
-                throw new ArgumentException("The requested file does not exist");
+                throw new NotFoundException("The requested file does not exist");
             fileCopy.Name = "Copy of " + fileCopy.Name;
 
             fileCopy = await _uow.Files.Create(fileCopy);

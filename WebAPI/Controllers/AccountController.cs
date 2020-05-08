@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Authorization;
 using BLL.Interfaces;
 using BLL.Models;
 using System.Security.Claims;
+using System.Diagnostics;
+using System;
+using Microsoft.Extensions.Logging;
 
 namespace WebAPI.Controllers
 {
@@ -18,8 +21,8 @@ namespace WebAPI.Controllers
     [Authorize]
     public class AccountController : ControllerBase
     {
-        private IAccountService _accountService;
-        
+        private readonly IAccountService _accountService;
+
         public  AccountController(IAccountService accountService)
         {
             _accountService = accountService;
