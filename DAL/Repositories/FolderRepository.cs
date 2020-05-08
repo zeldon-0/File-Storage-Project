@@ -36,6 +36,7 @@ namespace DAL.Repositories
                    .Include(f => f.Files)
                    .Include(f => f.Subfolders)
                    .Include(f => f.FolderShares)
+                   .ThenInclude(fs => fs.User)
                    .FirstOrDefaultAsync();
         }
 

@@ -34,7 +34,15 @@ namespace BLL.Services
 
         }
 
-        public async Task<FileDTO> CreateAtFolder(FileDTO file, Guid folderId)
+        public async Task<FileDTO> GetFileById(Guid fileId)
+        {
+            File file= await _uow.Files.GetFileById(fileId);
+            if (file == null)
+                throw new ArgumentException("The requested folder does not exist");
+            return _mapper.Map<FileDTO>(file);
+        }
+
+        public async Task<FileDTO> CreateAtFolder(FileDTO file, Guid folderId, int userId)
         {
             Folder folder = await _uow.Folders.GetFolderById(folderId);
             if (folder == null)
@@ -44,16 +52,18 @@ namespace BLL.Services
                 throw new BadRequestException("The link is not provided in the correct format.");
             }
             file.FolderId = folderId;
+            file.OwnerId = userId;
             File createdFile = await _uow.Files.Create(_mapper.Map<File>(file));
             return _mapper.Map<FileDTO>(createdFile);
         }
 
-        public async Task<FileDTO> CreateAtRoot(FileDTO file)
+        public async Task<FileDTO> CreateAtRoot(FileDTO file, int userId)
         {
             if (!Uri.IsWellFormedUriString(file.URL, UriKind.Absolute))
             {
                 throw new BadRequestException("The link is not provided in the correct format.");
             }
+            file.OwnerId = userId;
             File createdFile = await _uow.Files.Create(_mapper.Map<File>(file));
             return _mapper.Map<FileDTO>(createdFile);
         }
@@ -101,10 +111,18 @@ namespace BLL.Services
 
         public async Task<FileDTO> CopyFile(Guid fileId)
         {
-            File fileCopy = await _uow.Files.GetFileById(fileId);
-            if (fileCopy == null)
+            File file = await _uow.Files.GetFileById(fileId);
+            if (file == null)
                 throw new NotFoundException("The requested file does not exist");
-            fileCopy.Name = "Copy of " + fileCopy.Name;
+
+            File fileCopy = new File
+            {
+                Name = "Copy of " + file.Name,
+                OwnerId = file.OwnerId,
+                Description = file.Description,
+                URL = file.URL,
+                FolderId = file.FolderId
+            };
 
             fileCopy = await _uow.Files.Create(fileCopy);
 
@@ -133,6 +151,8 @@ namespace BLL.Services
             GC.SuppressFinalize(this);
 
         }
+
+
         ~FileService()
         {
             Dispose(false);

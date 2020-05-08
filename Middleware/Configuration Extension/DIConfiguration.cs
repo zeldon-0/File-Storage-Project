@@ -24,6 +24,7 @@ namespace Middleware.Configuration_Extension
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IAuthorizationHandler, FolderAuthorizationHandler>();
+            services.AddScoped<IAuthorizationHandler, FileAuthorizationHandler>();
 
             MapperConfiguration mappingConfig = new MapperConfiguration(mc=>
                     mc.AddProfile(new MappingProfile())

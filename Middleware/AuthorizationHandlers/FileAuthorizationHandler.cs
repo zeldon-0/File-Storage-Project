@@ -13,17 +13,17 @@ using Microsoft.AspNetCore.Authorization.Infrastructure;
 
 namespace BLL.AuthorizationHandlers
 {
-    public class FolderAuthorizationHandler
-        : AuthorizationHandler<OperationAuthorizationRequirement, FolderDTO>
+    public class FileAuthorizationHandler
+        : AuthorizationHandler<OperationAuthorizationRequirement, FileDTO>
     {
         private readonly IUnitOfWork _uow;
-        public FolderAuthorizationHandler(IUnitOfWork uow)
+        public FileAuthorizationHandler(IUnitOfWork uow)
         {
             _uow = uow;
         }
         protected override  Task HandleRequirementAsync(
              AuthorizationHandlerContext context, 
-            OperationAuthorizationRequirement requirement, FolderDTO resource)
+            OperationAuthorizationRequirement requirement, FileDTO resource)
         {
             int userId = Int32.Parse(
                 context.User.Claims.FirstOrDefault
@@ -32,7 +32,7 @@ namespace BLL.AuthorizationHandlers
             {
                 if (userId == resource.OwnerId
                     || resource.ShareStatus == ShareStatusDTO.Shareable
-                    || _uow.FolderShares.FolderShareExists(resource.Id, userId).Result
+                    || _uow.FileShares.FileShareExists(resource.Id, userId).Result
                     || context.User.Claims.Where(c => c.Type == ClaimTypes.Role)
                         .Any(c => c.Value == "Admin"))
                 {
@@ -53,5 +53,4 @@ namespace BLL.AuthorizationHandlers
             return Task.CompletedTask;
         }
     }
-    
 }

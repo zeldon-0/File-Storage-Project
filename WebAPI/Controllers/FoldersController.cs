@@ -13,6 +13,7 @@ using BLL.AuthorizationHandlers;
 using System.Security.Claims;
 using System;
 
+
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -53,12 +54,12 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
                     User, parentFolder, Operations.Create)).Succeeded)
             {
-                return Challenge();
+                return Unauthorized( "You are not authorized to create subfolders for this folder.");
             }
 
             FolderDTO created = await _folderService.CreateAtFolder(subFolder, id,
                 Int32.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value));
-            return CreatedAtAction(nameof(Post), created);
+            return CreatedAtAction(nameof(PostSubFolder), created);
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<FolderDTO>> GetFolder(Guid id)
@@ -73,7 +74,7 @@ namespace WebAPI.Controllers
             {
                 return Ok(folder);
             }
-            return Challenge();
+            return Unauthorized("You are not authorized to access this folder.");
         }
 
         [HttpGet]
@@ -98,7 +99,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
             User, folder, Operations.Create)).Succeeded)
             {
-                return Challenge();
+                return Unauthorized("You are not authorized to create copies of this folder.");
             }
             FolderDTO copy = await _folderService.CopyFolder(id);
             return CreatedAtAction(nameof(CopyFolder), copy);
@@ -113,7 +114,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
                     User, folderToMove, Operations.Update)).Succeeded)
             {
-                return Challenge();
+                return Unauthorized("You are not authorized to move this folder.");
             }
 
             FolderDTO folderToMoveTo = await _folderService.GetFolderById(folderId);
@@ -121,7 +122,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
                     User, folderToMoveTo, Operations.Update)).Succeeded)
             {
-                return Challenge();
+                return Unauthorized("You are not authorized to edit the targer parent folder.");
             }
             await _folderService.MoveToFolder(id, folderId);
 
@@ -137,11 +138,26 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
                     User, folder, Operations.Delete)).Succeeded)
             {
-                return Challenge();
+                return Unauthorized("You are not authorized to delete this folder.");
             }
             await _folderService.Delete(id);
             return NoContent();
 
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] FolderDTO newFolder)
+        {
+            FolderDTO currentFolder = await _folderService.GetFolderById(newFolder.Id);
+
+            if (!(await _authorizationService.AuthorizeAsync(
+                    User, currentFolder, Operations.Update)).Succeeded)
+            {
+                return Unauthorized("You are not authorized to edit this folder.");
+            }
+            await _folderService.Update(newFolder);
+            return NoContent();
+        }
+
     }
 }

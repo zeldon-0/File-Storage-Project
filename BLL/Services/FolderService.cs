@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using BLL.Interfaces;
 using BLL.Models;
+using BLL.Exceptions;
 using DAL.Interfaces;
 using DAL.Entities;
 using AutoMapper;
@@ -71,7 +72,7 @@ namespace BLL.Services
         {
             Folder folderCopy = await _uow.Folders.GetFolderById(folderId);
             if (folderCopy == null)
-                throw new ArgumentException("The requested subfolder does not exist");
+                throw new NotFoundException("The requested subfolder does not exist");
 
             var newFolder = new Folder()
             {
@@ -82,6 +83,24 @@ namespace BLL.Services
                 ShareStatus = folderCopy.ShareStatus
             };
             newFolder = await _uow.Folders.Create(newFolder);
+
+            if (folderCopy.Files != null && folderCopy.Files.Any())
+            {
+                foreach (var file in folderCopy.Files)
+                {
+                    await _uow.Files.Create(
+                        new File()
+                        {
+                            Name = file.Name,
+                            OwnerId = file.OwnerId,
+                            Description = file.Description,
+                            URL = file.URL,
+                            FolderId = newFolder.Id
+                        }
+                    );
+                }
+            }
+
             foreach (var subfolder in folderCopy.Subfolders)
                 await CloneSubfolders(subfolder.Id, newFolder.Id);
 
@@ -94,7 +113,7 @@ namespace BLL.Services
             Folder parent = await _uow.Folders.GetFolderById(folderId);
            
             if (parent == null)
-                throw new ArgumentException("The parent folder does not exist");
+                throw new NotFoundException("The parent folder does not exist");
              
             folder.ParentId= folderId;
             folder.OwnerId = userId;
@@ -113,7 +132,7 @@ namespace BLL.Services
         {
             Folder folder =  await _uow.Folders.GetFolderById(folderId);
             if (folder == null)
-                throw new ArgumentException("The requested folder does not exist");
+                throw new NotFoundException("The requested folder does not exist");
             return _mapper.Map<FolderDTO>(folder);
         }
 
@@ -121,7 +140,7 @@ namespace BLL.Services
         {
             Folder folder = await _uow.Folders.GetFolderById(folderId);
             if (folder == null)
-                throw new ArgumentNullException("The provided folder does not exist");
+                throw new NotFoundException("The provided folder does not exist");
 
             if (folder.Files != null && folder.Files.Any())
             {
@@ -146,13 +165,16 @@ namespace BLL.Services
         {
             Folder folder = await _uow.Folders.GetFolderById(folderId);
             if (folder == null)
-                throw new ArgumentNullException("The requested folder does not exist");
+                throw new NotFoundException("The requested folder does not exist");
 
             return folder.Subfolders.Select(sf => _mapper.Map<FolderDTO>(sf));
         }
 
         public async Task<IEnumerable<FolderDTO>> GetUserFolders(int userId)
         {
+            User user = await _uow.Users.GetUserById(userId);
+            if (user == null)
+                throw new NotFoundException("The requested user is not registered.");
             IEnumerable<Folder> folders = await _uow.Folders.GetUserFolders(userId);
             return folders.Where(f => f.Parent == null)
                 .Select(f => _mapper.Map<FolderDTO>(f));
@@ -162,10 +184,10 @@ namespace BLL.Services
         {
             Folder folderToMove = await _uow.Folders.GetFolderById(subfolderId);
             if (folderToMove == null)
-                throw new ArgumentException("The requested folder does not exist");
+                throw new NotFoundException("The requested folder does not exist");
             Folder targetFolder = await _uow.Folders.GetFolderById(parentFolderId);
             if (targetFolder == null)
-                throw new ArgumentException("The target folder does not exist");
+                throw new NotFoundException("The target folder does not exist");
             folderToMove.ParentId = parentFolderId;
             await _uow.Folders.Update(folderToMove);
 
@@ -174,7 +196,7 @@ namespace BLL.Services
         public async Task Update(FolderDTO folder)
         {
             if (folder == null)
-                throw new ArgumentNullException("Provided folder model is null.");
+                throw new BadRequestException("Provided folder model is null.");
             await _uow.Folders.Update(_mapper.Map<Folder>(folder));
         }
 

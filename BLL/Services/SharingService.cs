@@ -33,6 +33,8 @@ namespace BLL.Services
             if (user == null)
                 throw new NotFoundException("The requested user is not registered.");
             IEnumerable<File> files = await _uow.Files.GetSharedFiles(userId);
+            files = files.Where( (f) => f.FolderId == null
+                || !_uow.FolderShares.FolderShareExists(f.FolderId ?? default, user.Id).Result);
             return files.Select(f => _mapper.Map<FileDTO>(f));
         }
 
@@ -53,6 +55,15 @@ namespace BLL.Services
                 throw new NotFoundException("The requested user is not registered.");
 
             IEnumerable<Folder> folders = await _uow.Folders.GetSharedFolders(userId);
+            IEnumerable<Folder> foldersCopy = new List<Folder>();
+            
+            foreach (var folder in folders)
+                foldersCopy.Append(folder);
+
+            folders = folders.Where((f) => f.ParentId == null
+               || !_uow.FolderShares.FolderShareExists(f.ParentId ?? default, user.Id).Result);
+
+     
             return folders.Select(f => _mapper.Map<FolderDTO>(f));
         }
 
@@ -66,26 +77,20 @@ namespace BLL.Services
             return users.Select(u => _mapper.Map<UserDTO>(u));
         }
 
-        public async Task ShareFile(Guid fileId, int userId)
-        {
-            File file = await _uow.Files.GetFileById(fileId);
-            if (file == null)
-                throw new NotFoundException("The file with the provided Id does not exist");
-            User user = await _uow.Users.GetUserById(userId);
-            if (user == null)
-                throw new NotFoundException("The user with the provided Id does not exist");
-            await _uow.FileShares.Create(
-                new FileShare() { FileId = fileId, UserId = userId});
-        }
 
         public async Task ShareFile(Guid fileId, string email)
         {
             File file = await _uow.Files.GetFileById(fileId);
             if (file == null)
                 throw new NotFoundException("The file with the provided Id does not exist");
+            
             User user = await _userManager.FindByEmailAsync(email);
             if (user == null)
                 throw new NotFoundException("The user with the provided Id does not exist");
+
+            if (await _uow.FileShares.FileShareExists(fileId, user.Id))
+                throw new BadRequestException("The file is already shared with the user");
+
             await _uow.FileShares.Create(
                 new FileShare() { FileId = fileId, UserId = user.Id });
         }
@@ -98,8 +103,7 @@ namespace BLL.Services
             User user = await _uow.Users.GetUserById(userId);
             if (user == null)
                 throw new NotFoundException("The user with the provided Id does not exist");
-            await _uow.FolderShares.Create(
-                new FolderShare() { FolderId = folderId, UserId = userId });
+
             await ShareFolderSubfolders(folderId, userId);
         }
 
@@ -111,21 +115,15 @@ namespace BLL.Services
             User user = await _userManager.FindByEmailAsync(email);
             if (user == null)
                 throw new NotFoundException("The user with the provided Id does not exist");
-            //await _context.FolderShares.Create(
-            //    new FolderShare() { FolderId = folderId, UserId = user.Id });
+            if (await _uow.FolderShares.FolderShareExists(folderId, user.Id))
+                throw new BadRequestException("The folder is already shared with the user");
+
+            await _uow.FolderShares.Create(
+                new FolderShare() { FolderId = folderId, UserId = user.Id });
+
             await ShareFolderSubfolders(folderId, user.Id);
         }
 
-        public async Task UnshareFile(Guid fileId, int userId)
-        {
-            bool fileShareExists = await _uow.FileShares.FileShareExists(fileId, userId);
-            if (!fileShareExists)
-                throw new NotFoundException("The file is not shared with the provided user");
-            else
-            {
-                await _uow.FileShares.Delete(fileId, userId);
-            }
-        }
 
         public async Task UnshareFile(Guid fileId, string email)
         {
@@ -136,8 +134,14 @@ namespace BLL.Services
             User user = await _userManager.FindByEmailAsync(email);
             if (user == null)
                 throw new NotFoundException("The user with the provided email is not yet registered.");
-            
-            await UnshareFile(fileId, user.Id);
+
+            bool fileShareExists = await _uow.FileShares.FileShareExists(fileId, user.Id);
+            if (!fileShareExists)
+                throw new NotFoundException("The file is not shared with the provided user");
+            else
+            {
+                await _uow.FileShares.Delete(fileId, user.Id);
+            }
         }
 
         public async Task UnshareFolder(Guid folderId, int userId)
@@ -160,8 +164,14 @@ namespace BLL.Services
 
             if (folder == null)
                 throw new NotFoundException("The file with the provided Id does not exist");
-
-            await UnshareFolder(folderId, user.Id);
+            
+            bool folderShareExists = await _uow.FolderShares.FolderShareExists(folderId, user.Id);
+            if (!folderShareExists)
+                throw new NotFoundException("The folder is not shared with the provided user");
+            else
+            {
+                await _uow.FolderShares.Delete(folderId, user.Id);
+            }
         }
 
         // Iterate over every child folder and share them 

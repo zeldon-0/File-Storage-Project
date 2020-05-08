@@ -27,7 +27,7 @@ namespace DAL.Repositories
 
         public async Task Delete(Guid resourceId, int userId)
         {
-            T t = await _context.Set<T>().FindAsync(new { resourceId, userId});
+            T t = await _context.Set<T>().FindAsync(resourceId, userId);
 
             if (t != null)
                 _context.Set<T>().Remove(t);
@@ -42,7 +42,7 @@ namespace DAL.Repositories
 
         public async Task Update(T t)
         {
-            T item = await _context.Set<T>().FindAsync(new { t.ResourceId, t.UserId });
+            T item = await _context.Set<T>().FindAsync(t.ResourceId, t.UserId);
             if (item != null)
             {
                 _context.Entry(item).CurrentValues.SetValues(t);
