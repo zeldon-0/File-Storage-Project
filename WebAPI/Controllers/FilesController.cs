@@ -95,6 +95,70 @@ namespace WebAPI.Controllers
             return CreatedAtAction(nameof(CopyFile) , fileCopy);
         }
 
+        [HttpPut("files/{fileId}/move/{folderId}")]
+        public async Task<IActionResult> MoveFile(Guid fileId, Guid folderId)
+        {
+            FileDTO file = await _fileService.GetFileById(fileId);
+            if (!(await _authorizationService.AuthorizeAsync(
+                User, file, Operations.Update)).Succeeded)
+            {
+                return Unauthorized("You are not authorized to access the file.");
+            }
 
+            FolderDTO folder = await _folderService.GetFolderById(folderId);
+            if (!(await _authorizationService.AuthorizeAsync(
+                User, folder, Operations.Update)).Succeeded)
+            {
+                return Unauthorized("You are not authorized to access the folder.");
+            }
+
+            await _fileService.MoveToFolder(fileId, folderId);
+            return NoContent();
+        }
+
+        [HttpGet("files")]
+        public async Task<ActionResult<IEnumerable<FolderDTO>>> GetAvailableFiles()
+        {
+            int userId = Int32.Parse(User.Claims.FirstOrDefault
+                (c => c.Type == ClaimTypes.NameIdentifier).Value);
+            IEnumerable<FileDTO> ownFiles = await _fileService.GetUserFiles(userId);
+            IEnumerable<FileDTO> sharedFiles = await _sharingService.GetSharedFiles(userId);
+            List<FileDTO> allFiles = ownFiles.Concat(sharedFiles).ToList();
+
+            if (!allFiles.Any())
+                return NoContent();
+            return Ok(allFiles);
+        }
+        [HttpPut("files")]
+        public async Task<IActionResult> UpdateFile([FromBody] FileDTO file)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("The folder model is not valid.");
+            }
+            FileDTO currentFile = await _fileService.GetFileById(file.Id);
+            if(!(await _authorizationService.AuthorizeAsync(
+                User, currentFile, Operations.Update)).Succeeded)
+            {
+                return Unauthorized("You are not authorized to edit the file.");
+            }
+
+            await _fileService.Update(file);
+            return NoContent();
+        }
+
+        [HttpDelete("files/{id}")]
+        public async Task<IActionResult> DeleteFile(Guid id)
+        {
+            FileDTO file = await _fileService.GetFileById(id);
+            if (!(await _authorizationService.AuthorizeAsync(
+                User, file, Operations.Delete)).Succeeded)
+            {
+                return Unauthorized("You are not authorized to delete the file.");
+            }
+
+            await _fileService.Delete(id);
+            return NoContent();
+        }
     }
 }

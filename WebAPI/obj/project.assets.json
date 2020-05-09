@@ -2998,10 +2998,7 @@
         },
         "runtime": {
           "bin/placeholder/Middleware.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
+        }
       }
     }
   },

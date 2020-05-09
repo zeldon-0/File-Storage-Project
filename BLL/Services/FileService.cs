@@ -38,7 +38,7 @@ namespace BLL.Services
         {
             File file= await _uow.Files.GetFileById(fileId);
             if (file == null)
-                throw new ArgumentException("The requested folder does not exist");
+                throw new ArgumentException("The requested file does not exist");
             return _mapper.Map<FileDTO>(file);
         }
 

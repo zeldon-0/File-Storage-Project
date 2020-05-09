@@ -110,5 +110,76 @@ namespace WebAPI.Controllers
         }
 
 
+
+        [HttpPut("files/{id}/share")]
+        public async Task<IActionResult> MakeFileShareable(Guid id)
+        {
+            FileDTO file = await _fileService.GetFileById(id);
+            if (!(await _authorizationService.AuthorizeAsync
+                (User, file, Operations.Update)).Succeeded)
+            {
+                return Unauthorized("You are not authorized to edit this file.");
+            }
+            await _shareStatusService.MakeFileShareable(file);
+            return NoContent();
+
+        }
+
+        [HttpPut("files/{id}/unshare")]
+        public async Task<IActionResult> MakeFileUnshareable(Guid id)
+        {
+            FileDTO file = await _fileService.GetFileById(id);
+            if (!(await _authorizationService.AuthorizeAsync
+                (User, file, Operations.Update)).Succeeded)
+            {
+                return Unauthorized("You are not authorized to edit this file.");
+            }
+            await _shareStatusService.MakeFileUnshareable(file);
+            return NoContent();
+        }
+
+        [HttpPut("files/{fileId}/share/{email}")]
+        [Authorize(Roles = "Corporate, Admin")]
+        public async Task<IActionResult> ShareFileWithUser(Guid fileId, string email)
+        {
+            FileDTO file = await _fileService.GetFileById(fileId);
+            if (!(await _authorizationService.AuthorizeAsync
+                (User, file, Operations.Update)).Succeeded)
+            {
+                return Unauthorized("You are not authorized to edit this file.");
+            }
+            await _sharingService.ShareFile(fileId, email);
+            return NoContent();
+        }
+
+        [HttpPut("files/{fileId}/unshare/{email}")]
+        [Authorize(Roles = "Corporate, Admin")]
+        public async Task<IActionResult> UnshareFileWithUser(Guid fileId, string email)
+        {
+            FileDTO file = await _fileService.GetFileById(fileId);
+            if (!(await _authorizationService.AuthorizeAsync
+                (User, file, Operations.Update)).Succeeded)
+            {
+                return Unauthorized("You are not authorized to edit this file.");
+            }
+            await _sharingService.UnshareFile(fileId, email);
+            return NoContent();
+        }
+
+        [HttpGet("filess/{fileId}/sharingInfo")]
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetFileSharedUsers(Guid fileId)
+        {
+            FileDTO file = await _fileService.GetFileById(fileId);
+            if (!(await _authorizationService.AuthorizeAsync
+                (User, file, Operations.Read)).Succeeded)
+            {
+                return Unauthorized("You are not authorized to view this file's information.");
+            }
+
+            IEnumerable<UserDTO> users =
+                await _sharingService.GetSharedFileUserList(fileId);
+            return Ok(users);
+        }
+
     }
 }
