@@ -44,6 +44,11 @@ namespace BLL.Services
             User user = await _userManager.FindByEmailAsync(email);
             if (user == null)
                 throw new NotFoundException("The requested user is not registered.");
+
+            IEnumerable<string> roles = await _userManager.GetRolesAsync(user);
+            if (roles.Any(r => r == role))
+                throw new BadRequestException("The user is already given the role's privileges.");
+
             IdentityResult result = await _userManager.AddToRoleAsync(user, role);
             if (!result.Succeeded)
             {
@@ -99,6 +104,24 @@ namespace BLL.Services
 
         }
 
+
+        public async Task<PrivateUserDTO> GetOwnInfo(string email)
+        {
+            User user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                throw new NotFoundException("The user with the provided email is not registered.");
+
+            PrivateUserDTO info = new PrivateUserDTO()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                UserName = user.UserName,
+                Roles = await _userManager.GetRolesAsync(user)
+            };
+
+            return info;
+        }
+
         public async Task Delete(SignInDTO credentials)
         {
             User user = await _userManager.FindByEmailAsync(credentials.Login)
@@ -122,9 +145,9 @@ namespace BLL.Services
         }
 
 
-        public async Task Edit(UserDTO user, string email)
+        public async Task Edit(UserDTO user)
         {
-            User currentModel = await _userManager.FindByEmailAsync(email);
+            User currentModel = await _userManager.FindByIdAsync(user.Id.ToString());
             if (currentModel == null)
                 throw new NotFoundException("The user with the provided email does not exist");
 
@@ -191,15 +214,23 @@ namespace BLL.Services
 
         }
 
-        public async Task RemoveFromRole(string email, string role)
+        public async Task RemoveAccountFromRole(string email, string role)
         {
             if (!await _roleManager.RoleExistsAsync(role))
             {
                 throw new NotFoundException("The specified role does not exist");
             }
             User user = await _userManager.FindByEmailAsync(email);
-            IdentityResult result = await _userManager.RemoveFromRoleAsync(user, role);
 
+            if (user == null)
+                throw new NotFoundException("The user with the provided email is not registered;");
+
+            IEnumerable<string> roles = await _userManager.GetRolesAsync(user);
+            if (!roles.Any(r => r == role))
+                throw new BadRequestException("The user does not have the role's privileges.");
+
+
+            IdentityResult result = await _userManager.RemoveFromRoleAsync(user, role);
             if (!result.Succeeded)
             {
                 StringBuilder errMessage = new StringBuilder();
@@ -230,6 +261,9 @@ namespace BLL.Services
             GC.SuppressFinalize(this);
 
         }
+
+
+
         ~AccountService()
         {
             Dispose(false);

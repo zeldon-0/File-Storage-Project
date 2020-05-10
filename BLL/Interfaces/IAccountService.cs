@@ -11,12 +11,12 @@ namespace BLL.Interfaces
     {
         Task<string> Authenticate(SignInDTO credentials);
         Task<UserDTO> Register(SignUpDTO user);
-        Task Edit(UserDTO user, string email);
+        Task<PrivateUserDTO> GetOwnInfo(string email);
+        Task Edit(UserDTO user);
         Task ChangePassword(SignInDTO credentials, string newPassword);
         Task Delete(SignInDTO credentials);
         Task AddAccountToRole(string email, string role);
-        Task RemoveFromRole(string email, string role);
-
+        Task RemoveAccountFromRole(string email, string role);
 
     }
 }

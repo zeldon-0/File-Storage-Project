@@ -350,7 +350,7 @@
       ]
     },
     "Microsoft.Bcl.AsyncInterfaces/1.1.0": {
-      "sha512": "QnfOJlIz5evxU3Dn1Cz4V0wfznFaiS6tvroTYTbbw2uk14tAkOVSFyk/hCHy64S8/ck0PeQqLV4GuP9bANByPQ==",
+      "sha512": "1Am6l4Vpn3/K32daEqZI+FFr96OlZkgwK2LcT3pZ2zWubR5zTPW3/FkO1Rat9kb7oQOa4rxgl9LJHc5tspCWfg==",
       "type": "package",
       "path": "microsoft.bcl.asyncinterfaces/1.1.0",
       "files": [
@@ -374,7 +374,7 @@
       ]
     },
     "Microsoft.Bcl.HashCode/1.1.0": {
-      "sha512": "yHq4Qo2VU4UYO9phf/XdXTyuUXyKGiEl5FwY7ugN/iUG/xsZhd2azVxrtMhiNM9JACDpm+73CqtEQFnO9Dd2SQ==",
+      "sha512": "J2G1k+u5unBV+aYcwxo94ip16Rkp65pgWFb0R6zwJipzWNMgvqlWeuI7/+R+e8bob66LnSG+llLJ+z8wI94cHg==",
       "type": "package",
       "path": "microsoft.bcl.hashcode/1.1.0",
       "files": [
@@ -855,7 +855,7 @@
       ]
     },
     "System.Collections.Immutable/1.7.0": {
-      "sha512": "2gKCL/2AHiNpWOm9KPYW6uDbH3+UiyP1CqILwLFju17I4oSu+RJogJUenDfWH+na6arlS+XzSgH+YjfBpcuB0w==",
+      "sha512": "RVSM6wZUo6L2y6P3vN6gjUtyJ2IF2RVtrepF3J7nrDKfFQd5u/SnSUFclchYQis8/k5scHy9E+fVeKVQLnnkzw==",
       "type": "package",
       "path": "system.collections.immutable/1.7.0",
       "files": [
@@ -878,7 +878,7 @@
       ]
     },
     "System.ComponentModel.Annotations/4.7.0": {
-      "sha512": "oG58v7FkIMewZU1tNyqKbnilEobW6I4W0xy0Q/hztjVbTVr83oXNPHwrvS24JJKrDylLingIlI/zmCHCZ5vq1A==",
+      "sha512": "0YFqjhp/mYkDGpU0Ye1GjE53HMp9UVfGN7seGpAMttAC0C40v5gw598jCgpbBLMmCo0E5YRLBv5Z2doypO49ZQ==",
       "type": "package",
       "path": "system.componentmodel.annotations/4.7.0",
       "files": [
@@ -967,7 +967,7 @@
       ]
     },
     "System.Diagnostics.DiagnosticSource/4.7.0": {
-      "sha512": "+zNgjRfuinnNr7o/JUqjmajXn1dd8AQvD1ZZYxUxHGsynKCbE55TKSUtYUNY3vjR9RL6DJuzH5LCxbEHAcqNyg==",
+      "sha512": "oJjw3uFuVDJiJNbCD8HB4a2p3NYLdt1fiT5OGsPLw+WTOuG0KpP4OXelMmmVKpClueMsit6xOlzy4wNKQFiBLg==",
       "type": "package",
       "path": "system.diagnostics.diagnosticsource/4.7.0",
       "files": [
@@ -1001,23 +1001,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Вадим\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\vadim_000\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Misc\\EPAM Training\\FileStorage\\DAL\\DAL.csproj",
+      "projectUniqueName": "F:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj",
       "projectName": "DAL",
-      "projectPath": "C:\\Misc\\EPAM Training\\FileStorage\\DAL\\DAL.csproj",
-      "packagesPath": "C:\\Users\\Вадим\\.nuget\\packages\\",
-      "outputPath": "C:\\Misc\\EPAM Training\\FileStorage\\DAL\\obj\\",
+      "projectPath": "F:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj",
+      "packagesPath": "C:\\Users\\vadim_000\\.nuget\\packages\\",
+      "outputPath": "F:\\Epam\\File-Storage-Project\\DAL\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Вадим\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\vadim_000\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

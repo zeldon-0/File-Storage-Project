@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Misc\\EPAM Training\\FileStorage\\Middleware\\Middleware.csproj": {}
+    "F:\\Epam\\File-Storage-Project\\Middleware\\Middleware.csproj": {}
   },
   "projects": {
-    "C:\\Misc\\EPAM Training\\FileStorage\\BLL\\BLL.csproj": {
+    "F:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Misc\\EPAM Training\\FileStorage\\BLL\\BLL.csproj",
+        "projectUniqueName": "F:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj",
         "projectName": "BLL",
-        "projectPath": "C:\\Misc\\EPAM Training\\FileStorage\\BLL\\BLL.csproj",
-        "packagesPath": "C:\\Users\\Вадим\\.nuget\\packages\\",
-        "outputPath": "C:\\Misc\\EPAM Training\\FileStorage\\BLL\\obj\\",
+        "projectPath": "F:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj",
+        "packagesPath": "C:\\Users\\vadim_000\\.nuget\\packages\\",
+        "outputPath": "F:\\Epam\\File-Storage-Project\\BLL\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Вадим\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\vadim_000\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -30,8 +27,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "C:\\Misc\\EPAM Training\\FileStorage\\DAL\\DAL.csproj": {
-                "projectPath": "C:\\Misc\\EPAM Training\\FileStorage\\DAL\\DAL.csproj"
+              "F:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj": {
+                "projectPath": "F:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj"
               }
             }
           }
@@ -91,20 +88,17 @@
         }
       }
     },
-    "C:\\Misc\\EPAM Training\\FileStorage\\DAL\\DAL.csproj": {
+    "F:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Misc\\EPAM Training\\FileStorage\\DAL\\DAL.csproj",
+        "projectUniqueName": "F:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj",
         "projectName": "DAL",
-        "projectPath": "C:\\Misc\\EPAM Training\\FileStorage\\DAL\\DAL.csproj",
-        "packagesPath": "C:\\Users\\Вадим\\.nuget\\packages\\",
-        "outputPath": "C:\\Misc\\EPAM Training\\FileStorage\\DAL\\obj\\",
+        "projectPath": "F:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj",
+        "packagesPath": "C:\\Users\\vadim_000\\.nuget\\packages\\",
+        "outputPath": "F:\\Epam\\File-Storage-Project\\DAL\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Вадим\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\vadim_000\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -166,20 +160,17 @@
         }
       }
     },
-    "C:\\Misc\\EPAM Training\\FileStorage\\Middleware\\Middleware.csproj": {
+    "F:\\Epam\\File-Storage-Project\\Middleware\\Middleware.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Misc\\EPAM Training\\FileStorage\\Middleware\\Middleware.csproj",
+        "projectUniqueName": "F:\\Epam\\File-Storage-Project\\Middleware\\Middleware.csproj",
         "projectName": "Middleware",
-        "projectPath": "C:\\Misc\\EPAM Training\\FileStorage\\Middleware\\Middleware.csproj",
-        "packagesPath": "C:\\Users\\Вадим\\.nuget\\packages\\",
-        "outputPath": "C:\\Misc\\EPAM Training\\FileStorage\\Middleware\\obj\\",
+        "projectPath": "F:\\Epam\\File-Storage-Project\\Middleware\\Middleware.csproj",
+        "packagesPath": "C:\\Users\\vadim_000\\.nuget\\packages\\",
+        "outputPath": "F:\\Epam\\File-Storage-Project\\Middleware\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Вадим\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\vadim_000\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -192,11 +183,11 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "C:\\Misc\\EPAM Training\\FileStorage\\BLL\\BLL.csproj": {
-                "projectPath": "C:\\Misc\\EPAM Training\\FileStorage\\BLL\\BLL.csproj"
+              "F:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj": {
+                "projectPath": "F:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj"
               },
-              "C:\\Misc\\EPAM Training\\FileStorage\\DAL\\DAL.csproj": {
-                "projectPath": "C:\\Misc\\EPAM Training\\FileStorage\\DAL\\DAL.csproj"
+              "F:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj": {
+                "projectPath": "F:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj"
               }
             }
           }

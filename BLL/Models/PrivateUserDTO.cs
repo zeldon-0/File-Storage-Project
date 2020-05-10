@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace BLL.Models
 {
-    public class UserDTO
+    public class PrivateUserDTO
     {
         [Required]
         public int Id { get; set; }
@@ -14,5 +14,7 @@ namespace BLL.Models
         public string UserName { get; set; }
         [Required]
         public string Email { get; set; }
+        [Required]
+        public IEnumerable<string> Roles { get; set; }
     }
 }

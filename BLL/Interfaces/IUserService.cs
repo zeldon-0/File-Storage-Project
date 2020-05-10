@@ -8,14 +8,11 @@ namespace BLL.Interfaces
 {
     public interface IUserService :IDisposable
     {
-        Task<UserDTO> FindByEmail(string email);
-        Task<UserDTO> FindById(int id);
+        Task<PrivateUserDTO> FindByEmail(string email);
+        Task<PrivateUserDTO> FindById(int id);
+        Task EditUser(UserDTO user);
+        Task DeleteUser(string email);
         Task<IEnumerable<UserDTO>> GetAllUsers();
-        Task<UserDTO> GetFileOwner(Guid fileId);
-        Task<UserDTO> GetFolderOwner(Guid folderId);
-
-        Task<IEnumerable<UserDTO>> GetFileShareUsers(Guid fileId);
-        Task<IEnumerable<UserDTO>> GetFolderShareUsers(Guid folderId);
-
+        Task<IEnumerable<string>> GetUserRoles(string email);
     }
 }

@@ -10,3 +10,15 @@ C:\Misc\EPAM Training\FileStorage\BLL\bin\Debug\netcoreapp3.1\DAL.dll
 C:\Misc\EPAM Training\FileStorage\BLL\obj\Debug\netcoreapp3.1\BLL.csproj.CoreCompileInputs.cache
 C:\Misc\EPAM Training\FileStorage\BLL\bin\Debug\netcoreapp3.1\DAL.pdb
 C:\Misc\EPAM Training\FileStorage\BLL\obj\Debug\netcoreapp3.1\BLL.csproj.CopyComplete
+F:\Epam\File-Storage-Project\BLL\bin\Debug\netcoreapp3.1\BLL.deps.json
+F:\Epam\File-Storage-Project\BLL\bin\Debug\netcoreapp3.1\BLL.dll
+F:\Epam\File-Storage-Project\BLL\bin\Debug\netcoreapp3.1\BLL.pdb
+F:\Epam\File-Storage-Project\BLL\bin\Debug\netcoreapp3.1\DAL.dll
+F:\Epam\File-Storage-Project\BLL\bin\Debug\netcoreapp3.1\DAL.pdb
+F:\Epam\File-Storage-Project\BLL\obj\Debug\netcoreapp3.1\BLL.csprojAssemblyReference.cache
+F:\Epam\File-Storage-Project\BLL\obj\Debug\netcoreapp3.1\BLL.csproj.CoreCompileInputs.cache
+F:\Epam\File-Storage-Project\BLL\obj\Debug\netcoreapp3.1\BLL.AssemblyInfoInputs.cache
+F:\Epam\File-Storage-Project\BLL\obj\Debug\netcoreapp3.1\BLL.AssemblyInfo.cs
+F:\Epam\File-Storage-Project\BLL\obj\Debug\netcoreapp3.1\BLL.csproj.CopyComplete
+F:\Epam\File-Storage-Project\BLL\obj\Debug\netcoreapp3.1\BLL.dll
+F:\Epam\File-Storage-Project\BLL\obj\Debug\netcoreapp3.1\BLL.pdb

@@ -50,6 +50,15 @@ namespace WebAPI.Controllers
             return Ok(token);
 
         }
+
+        [HttpGet]
+        public async Task<ActionResult<PrivateUserDTO>> GetOwnInfo()
+        {
+            PrivateUserDTO info = await _accountService.GetOwnInfo
+                (User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value);
+
+            return Ok(info);
+        }
         
         [HttpPut("upgrade")]
         [Authorize(Roles ="User, Admin")]
@@ -68,7 +77,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> RevertAccountUpgrade()
         {
             var currentUser = this.User;
-            await _accountService.RemoveFromRole(
+            await _accountService.RemoveAccountFromRole(
                 currentUser.Claims.FirstOrDefault
                 (c => c.Type == ClaimTypes.Email).Value, "Corporate");
 
@@ -81,9 +90,7 @@ namespace WebAPI.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest("You did not fill all the required fields");
-            await _accountService.Edit(userInfo,
-                User.Claims.FirstOrDefault
-                (c => c.Type == ClaimTypes.Email).Value);
+            await _accountService.Edit(userInfo);
             return NoContent();
         }
 

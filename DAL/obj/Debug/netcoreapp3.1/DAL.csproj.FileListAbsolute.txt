@@ -7,3 +7,12 @@ C:\Misc\EPAM Training\FileStorage\DAL\obj\Debug\netcoreapp3.1\DAL.csproj.CoreCom
 C:\Misc\EPAM Training\FileStorage\DAL\obj\Debug\netcoreapp3.1\DAL.dll
 C:\Misc\EPAM Training\FileStorage\DAL\obj\Debug\netcoreapp3.1\DAL.pdb
 C:\Misc\EPAM Training\FileStorage\DAL\obj\Debug\netcoreapp3.1\DAL.csprojAssemblyReference.cache
+F:\Epam\File-Storage-Project\DAL\bin\Debug\netcoreapp3.1\DAL.deps.json
+F:\Epam\File-Storage-Project\DAL\bin\Debug\netcoreapp3.1\DAL.dll
+F:\Epam\File-Storage-Project\DAL\bin\Debug\netcoreapp3.1\DAL.pdb
+F:\Epam\File-Storage-Project\DAL\obj\Debug\netcoreapp3.1\DAL.csprojAssemblyReference.cache
+F:\Epam\File-Storage-Project\DAL\obj\Debug\netcoreapp3.1\DAL.csproj.CoreCompileInputs.cache
+F:\Epam\File-Storage-Project\DAL\obj\Debug\netcoreapp3.1\DAL.AssemblyInfoInputs.cache
+F:\Epam\File-Storage-Project\DAL\obj\Debug\netcoreapp3.1\DAL.AssemblyInfo.cs
+F:\Epam\File-Storage-Project\DAL\obj\Debug\netcoreapp3.1\DAL.dll
+F:\Epam\File-Storage-Project\DAL\obj\Debug\netcoreapp3.1\DAL.pdb
