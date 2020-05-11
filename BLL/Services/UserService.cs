@@ -25,9 +25,9 @@ namespace BLL.Services
             _mapper = mapper;
             _userManager = userManager;
         }
-        public async Task<PrivateUserDTO> FindByEmail(string email)
+        public async Task<PrivateUserDTO> FindByUserName(string userName)
         {
-            User user = await _userManager.FindByEmailAsync(email);
+            User user = await _userManager.FindByNameAsync(userName);
             if (user == null)
                 throw new NotFoundException("A user with the provided email is yet to be registerd.");
             PrivateUserDTO info = new PrivateUserDTO()
@@ -83,9 +83,9 @@ namespace BLL.Services
             }
         }
 
-        public async Task DeleteUser(string email)
+        public async Task DeleteUser(string userName)
         {
-            User currentUser = await _userManager.FindByEmailAsync(email);
+            User currentUser = await _userManager.FindByNameAsync(userName);
             if (currentUser == null)
                 throw new NotFoundException("Could bot find the user corresponding to the provided email.");
 
@@ -99,9 +99,9 @@ namespace BLL.Services
             }
         }
 
-        public async Task<IEnumerable<string>> GetUserRoles(string email)
+        public async Task<IEnumerable<string>> GetUserRoles(string userName)
         {
-            User user = await _userManager.FindByEmailAsync(email);
+            User user = await _userManager.FindByNameAsync(userName);
             if (user == null)
                 throw new NotFoundException("The user with the provided email is not registered.");
             IEnumerable<string> roles = await _userManager.GetRolesAsync(user);

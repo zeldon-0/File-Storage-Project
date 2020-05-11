@@ -7,14 +7,14 @@ namespace BLL.Interfaces
 {
     public interface ISharingService : IDisposable
     {
-        Task ShareFolder(Guid folderId, string email);
-        Task ShareFile(Guid fileId, string email);
+        Task ShareFolder(Guid folderId, string userName);
+        Task ShareFile(Guid fileId, string userName);
 
-        Task UnshareFolder(Guid folderId, string email);
-        Task UnshareFile(Guid fileId, string email);
+        Task UnshareFolder(Guid folderId, string userName);
+        Task UnshareFile(Guid fileId, string userName);
 
-        Task<IEnumerable<FileDTO>> GetSharedFiles(int userId);
-        Task<IEnumerable<FolderDTO>> GetSharedFolders(int userId);
+        Task<IEnumerable<FileDTO>> GetSharedFiles(int userName);
+        Task<IEnumerable<FolderDTO>> GetSharedFolders(int userName);
 
         Task<IEnumerable<UserDTO>> GetSharedFileUserList(Guid fileId);
         Task<IEnumerable<UserDTO>> GetSharedFolderUserList(Guid folderId);

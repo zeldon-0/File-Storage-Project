@@ -8,6 +8,8 @@ using BLL.AuthorizationHandlers;
 using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using BLL.Link_Generation;
+using BLL.Models;
 
 namespace Middleware.Configuration_Extension
 {
@@ -25,6 +27,8 @@ namespace Middleware.Configuration_Extension
 
             services.AddScoped<IAuthorizationHandler, FolderAuthorizationHandler>();
             services.AddScoped<IAuthorizationHandler, FileAuthorizationHandler>();
+
+            services.AddScoped<ILinkGenerator<FolderDTO>, FolderLinkGenerator>();
 
             MapperConfiguration mappingConfig = new MapperConfiguration(mc=>
                     mc.AddProfile(new MappingProfile())

@@ -12,7 +12,8 @@ using BLL.Models;
 using BLL.AuthorizationHandlers;
 using System.Security.Claims;
 using System;
-
+using BLL.Link_Generation;
+using DAL.Entities;
 
 namespace WebAPI.Controllers
 {
@@ -24,14 +25,17 @@ namespace WebAPI.Controllers
         private readonly IFolderService _folderService;
         private readonly IAuthorizationService _authorizationService;
         private readonly ISharingService _sharingService;
+        private readonly ILinkGenerator<FolderDTO> _linkGenerator;
 
         public FoldersController(IFolderService folderService,
                     IAuthorizationService authorizationService,
-                    ISharingService sharingService)
+                    ISharingService sharingService,
+                    ILinkGenerator<FolderDTO> linkGenerator)
         {
             _folderService = folderService;
             _authorizationService = authorizationService;
             _sharingService = sharingService;
+            _linkGenerator = linkGenerator;
         }
 
         [HttpPost]
@@ -69,12 +73,22 @@ namespace WebAPI.Controllers
             if (folder == null)
                 return NotFound();
 
-            if ((await _authorizationService.AuthorizeAsync(
+            if (!(await _authorizationService.AuthorizeAsync(
                 User, folder, Operations.Read)).Succeeded)
             {
-                return Ok(folder);
+                return Unauthorized("You are not authorized to access this folder.");
             }
-            return Unauthorized("You are not authorized to access this folder.");
+            if ((await _authorizationService.AuthorizeAsync(
+                User, folder, Operations.Create)).Succeeded)
+            {
+                folder.Links = _linkGenerator.GenerateAllLinks(User, folder);
+            }
+            else
+            {
+                folder.Links = _linkGenerator.GenerateRestrictedLinks(folder);
+            }
+            return Ok(folder);
+
         }
 
         [HttpGet]

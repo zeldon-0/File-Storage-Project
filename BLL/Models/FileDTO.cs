@@ -18,5 +18,7 @@ namespace BLL.Models
         public UserDTO Owner { get; set; }
         public Guid? FolderId { get; set; }
         public IEnumerable<UserDTO> UsersWithAccess { get; set; }
+
+        public IEnumerable<Link> Links { get; set; }
     }
 }

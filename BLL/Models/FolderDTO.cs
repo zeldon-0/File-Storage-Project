@@ -17,5 +17,6 @@ namespace BLL.Models
         public IEnumerable<FolderDTO> Subfolders { get; set; }
         public IEnumerable<FileDTO> Files { get; set; }
         public IEnumerable<UserDTO> UsersWithAccess { get; set; }
+        public IEnumerable<Link> Links { get; set; }
     }
 }

@@ -35,14 +35,85 @@ namespace BLL.Services
 
         public async Task MakeFolderShareable(FolderDTO folder)
         {
-            folder.ShareStatus = ShareStatusDTO.Shareable;
-            await _uow.Folders.Update(_mapper.Map<Folder>(folder));
+            await ShareFolderSubfolders(folder.Id);
         }
 
         public async Task MakeFolderUnshareable(FolderDTO folder)
         {
-            folder.ShareStatus = ShareStatusDTO.Private;
-            await _uow.Folders.Update(_mapper.Map<Folder>(folder));
+            await UnShareFolderSubfolders(folder.Id);
+        }
+
+        // Iterate over every child folder and share them 
+        private async Task ShareFolderSubfolders(Guid folderId)
+        {
+            Folder folder = await _uow.Folders.GetFolderById(folderId);
+            if (folder.Subfolders != null)
+            {
+                foreach (Folder subfolder in folder.Subfolders)
+                {
+                    await ShareFolderSubfolders(subfolder.Id);
+                    await ShareFolderFiles(subfolder.Id);
+                }
+            }
+            await ShareFolderFiles(folderId);
+            if (folder.ShareStatus == ShareStatus.Private)
+            {
+                folder.ShareStatus = ShareStatus.Shareable;
+                await _uow.Folders.Update(folder);
+            }
+        }
+        // Iterate over every file in the given folder
+        private async Task ShareFolderFiles(Guid folderId)
+        {
+            Folder folder = await _uow.Folders.GetFolderById(folderId);
+            if (folder.Subfolders != null)
+            {
+                foreach (File file in folder.Files)
+                {
+                    if (file.ShareStatus == ShareStatus.Private)
+                    {
+                        file.ShareStatus = ShareStatus.Shareable;
+                        await _uow.Files.Update(file);
+                    }
+                }
+            }
+        }
+
+        // Iterate over every child folder and share them 
+        private async Task UnShareFolderSubfolders(Guid folderId)
+        {
+            Folder folder = await _uow.Folders.GetFolderById(folderId);
+            if (folder.Subfolders != null)
+            {
+                foreach (Folder subfolder in folder.Subfolders)
+                {
+                    await UnShareFolderSubfolders(subfolder.Id);
+                    await UnShareFolderFiles(subfolder.Id);
+                }
+            }
+            await UnShareFolderFiles(folderId);
+            if (folder.ShareStatus == ShareStatus.Shareable)
+            {
+                folder.ShareStatus = ShareStatus.Private;
+                await _uow.Folders.Update(folder);
+            }
+
+        }
+        // Iterate over every file in the given folder
+        private async Task UnShareFolderFiles(Guid folderId)
+        {
+            Folder folder = await _uow.Folders.GetFolderById(folderId);
+            if (folder.Files != null)
+            { 
+                foreach (File file in folder.Files)
+                {
+                    if (file.ShareStatus == ShareStatus.Shareable)
+                    {
+                        file.ShareStatus = ShareStatus.Private;
+                        await _uow.Files.Update(file);
+                    }
+                }
+            }
         }
 
         private bool disposed = false;

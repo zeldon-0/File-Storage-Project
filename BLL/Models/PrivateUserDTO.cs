@@ -16,5 +16,6 @@ namespace BLL.Models
         public string Email { get; set; }
         [Required]
         public IEnumerable<string> Roles { get; set; }
+        public IEnumerable<Link> Links { get; set; }
     }
 }
