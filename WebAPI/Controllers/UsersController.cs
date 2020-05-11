@@ -22,19 +22,24 @@ namespace WebAPI.Controllers
     [Authorize(Roles = "Admin")]
     public class UsersController : ControllerBase
     {
-        IUserService _userService;
-        IAccountService _accountService;
+        private readonly IUserService _userService;
+        private readonly IAccountService _accountService;
+        private readonly ILinkGenerator<PrivateUserDTO> _linkGenerator;
         public UsersController(IUserService userService,
-            IAccountService accountService)
+            IAccountService accountService,
+            ILinkGenerator<PrivateUserDTO> linkGenerator)
         {
             _userService = userService;
             _accountService = accountService;
+            _linkGenerator = linkGenerator;
         }
 
         [HttpGet("{userName}")]
         public async Task<ActionResult<PrivateUserDTO>> GetUserByName(string userName)
         {
             PrivateUserDTO user = await _userService.FindByUserName(userName);
+
+            user.Links = _linkGenerator.GenerateAllLinks(User, user);
             return Ok(user);
         }
 

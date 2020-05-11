@@ -66,9 +66,9 @@ namespace WebAPI.Controllers
             return NoContent();
         }
 
-        [HttpPut("folders/{folderId}/share/{email}")]
+        [HttpPut("folders/{folderId}/share/{userName}")]
         [Authorize(Roles ="Corporate, Admin")]
-        public async Task<IActionResult> ShareFolderWithUser(Guid folderId, string email)
+        public async Task<IActionResult> ShareFolderWithUser(Guid folderId, string userName)
         {
             FolderDTO folder = await _folderService.GetFolderById(folderId);
             if (!(await _authorizationService.AuthorizeAsync
@@ -76,13 +76,13 @@ namespace WebAPI.Controllers
             {
                 return Unauthorized("You are not authorized to edit this folder.");
             }
-            await _sharingService.ShareFolder(folderId, email);
+            await _sharingService.ShareFolder(folderId, userName);
             return NoContent();
         }
 
-        [HttpPut("folders/{folderId}/unshare/{email}")]
+        [HttpPut("folders/{folderId}/unshare/{userName}")]
         [Authorize(Roles ="Corporate, Admin")]
-        public async Task<IActionResult> UnshareFolderWithUser(Guid folderId, string email)
+        public async Task<IActionResult> UnshareFolderWithUser(Guid folderId, string userName)
         {
             FolderDTO folder = await _folderService.GetFolderById(folderId);
             if (!(await _authorizationService.AuthorizeAsync
@@ -90,7 +90,7 @@ namespace WebAPI.Controllers
             {
                 return Unauthorized("You are not authorized to edit this folder.");
             }
-            await _sharingService.UnshareFolder(folderId, email);
+            await _sharingService.UnshareFolder(folderId, userName);
             return NoContent();
         }
 
@@ -138,9 +138,9 @@ namespace WebAPI.Controllers
             return NoContent();
         }
 
-        [HttpPut("files/{fileId}/share/{email}")]
+        [HttpPut("files/{fileId}/share/{userName}")]
         [Authorize(Roles = "Corporate, Admin")]
-        public async Task<IActionResult> ShareFileWithUser(Guid fileId, string email)
+        public async Task<IActionResult> ShareFileWithUser(Guid fileId, string userName)
         {
             FileDTO file = await _fileService.GetFileById(fileId);
             if (!(await _authorizationService.AuthorizeAsync
@@ -148,13 +148,13 @@ namespace WebAPI.Controllers
             {
                 return Unauthorized("You are not authorized to edit this file.");
             }
-            await _sharingService.ShareFile(fileId, email);
+            await _sharingService.ShareFile(fileId, userName);
             return NoContent();
         }
 
-        [HttpPut("files/{fileId}/unshare/{email}")]
+        [HttpPut("files/{fileId}/unshare/{userName}")]
         [Authorize(Roles = "Corporate, Admin")]
-        public async Task<IActionResult> UnshareFileWithUser(Guid fileId, string email)
+        public async Task<IActionResult> UnshareFileWithUser(Guid fileId, string userName)
         {
             FileDTO file = await _fileService.GetFileById(fileId);
             if (!(await _authorizationService.AuthorizeAsync
@@ -162,7 +162,7 @@ namespace WebAPI.Controllers
             {
                 return Unauthorized("You are not authorized to edit this file.");
             }
-            await _sharingService.UnshareFile(fileId, email);
+            await _sharingService.UnshareFile(fileId, userName);
             return NoContent();
         }
 

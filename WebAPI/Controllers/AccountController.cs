@@ -22,10 +22,12 @@ namespace WebAPI.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
-
-        public  AccountController(IAccountService accountService)
+        private readonly ILinkGenerator<PrivateUserDTO> _linkGenerator;
+        public AccountController(IAccountService accountService,
+            ILinkGenerator<PrivateUserDTO> linkGenerator)
         {
             _accountService = accountService;
+            _linkGenerator = linkGenerator;
         }
 
         [HttpPost("signUp")]
@@ -55,7 +57,8 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<PrivateUserDTO>> GetOwnInfo()
         {
             PrivateUserDTO info = await _accountService.GetOwnInfo
-                (User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value);
+                (User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value);
+            info.Links = _linkGenerator.GenerateAllLinks(User, info);
 
             return Ok(info);
         }
@@ -67,7 +70,7 @@ namespace WebAPI.Controllers
             var currentUser = this.User;
             await _accountService.AddAccountToRole(
                 currentUser.Claims.FirstOrDefault
-                (c => c.Type ==ClaimTypes.Email).Value, "Corporate");
+                (c => c.Type ==ClaimTypes.Name).Value, "Corporate");
 
             return NoContent();
         }
@@ -79,7 +82,7 @@ namespace WebAPI.Controllers
             var currentUser = this.User;
             await _accountService.RemoveAccountFromRole(
                 currentUser.Claims.FirstOrDefault
-                (c => c.Type == ClaimTypes.Email).Value, "Corporate");
+                (c => c.Type == ClaimTypes.Name).Value, "Corporate");
 
             return NoContent();
         }

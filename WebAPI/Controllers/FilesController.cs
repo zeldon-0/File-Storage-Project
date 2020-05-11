@@ -27,17 +27,19 @@ namespace WebAPI.Controllers
         private readonly IFolderService _folderService;
         private readonly IAuthorizationService _authorizationService;
         private readonly ISharingService _sharingService;
-
+        private readonly ILinkGenerator<FileDTO> _linkGenerator;
 
         public FilesController(IFileService fileService,
             IFolderService folderService,
             IAuthorizationService authorizationService,
-            ISharingService sharingService)
+            ISharingService sharingService,
+            ILinkGenerator<FileDTO> linkGenerator)
         {
             _fileService = fileService;
             _folderService = folderService;
             _authorizationService = authorizationService;
             _sharingService = sharingService;
+            _linkGenerator = linkGenerator;
         }
 
         [HttpPost("files")]
@@ -77,6 +79,15 @@ namespace WebAPI.Controllers
                 User, file, Operations.Read)).Succeeded)
             {
                 return Unauthorized("You are not authorized to access the file.");
+            }
+            if ((await _authorizationService.AuthorizeAsync(
+                User, file, Operations.Create)).Succeeded)
+            {
+                file.Links = _linkGenerator.GenerateAllLinks(User, file);
+            }
+            else
+            {
+                file.Links = _linkGenerator.GenerateRestrictedLinks(file);
             }
 
             return Ok(file);

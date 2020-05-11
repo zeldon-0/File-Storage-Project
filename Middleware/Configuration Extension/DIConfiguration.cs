@@ -29,6 +29,8 @@ namespace Middleware.Configuration_Extension
             services.AddScoped<IAuthorizationHandler, FileAuthorizationHandler>();
 
             services.AddScoped<ILinkGenerator<FolderDTO>, FolderLinkGenerator>();
+            services.AddScoped<ILinkGenerator<FileDTO>, FileLinkGenerator>();
+            services.AddScoped<ILinkGenerator<PrivateUserDTO>, AccountLinkGenerator>();
 
             MapperConfiguration mappingConfig = new MapperConfiguration(mc=>
                     mc.AddProfile(new MappingProfile())

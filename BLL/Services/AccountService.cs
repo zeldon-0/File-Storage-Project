@@ -32,7 +32,7 @@ namespace BLL.Services
             _userManager = userManager;
             _roleManager = roleManager;
         }
-        public async Task AddAccountToRole(string email, string role)
+        public async Task AddAccountToRole(string userName, string role)
         {
             if (! await _roleManager.RoleExistsAsync(role))
             {
@@ -41,7 +41,7 @@ namespace BLL.Services
                     { Name = role,
                       NormalizedName = role.ToUpper()});
             }
-            User user = await _userManager.FindByEmailAsync(email);
+            User user = await _userManager.FindByNameAsync(userName);
             if (user == null)
                 throw new NotFoundException("The requested user is not registered.");
 
@@ -105,11 +105,11 @@ namespace BLL.Services
         }
 
 
-        public async Task<PrivateUserDTO> GetOwnInfo(string email)
+        public async Task<PrivateUserDTO> GetOwnInfo(string userName)
         {
-            User user = await _userManager.FindByEmailAsync(email);
+            User user = await _userManager.FindByNameAsync(userName);
             if (user == null)
-                throw new NotFoundException("The user with the provided email is not registered.");
+                throw new NotFoundException("The user with the provided user name is not registered.");
 
             PrivateUserDTO info = new PrivateUserDTO()
             {
@@ -149,7 +149,7 @@ namespace BLL.Services
         {
             User currentModel = await _userManager.FindByIdAsync(user.Id.ToString());
             if (currentModel == null)
-                throw new NotFoundException("The user with the provided email does not exist");
+                throw new NotFoundException("The user with the provided id does not exist");
 
             currentModel.Email = user.Email;
             currentModel.UserName = user.UserName;
@@ -214,16 +214,16 @@ namespace BLL.Services
 
         }
 
-        public async Task RemoveAccountFromRole(string email, string role)
+        public async Task RemoveAccountFromRole(string userName, string role)
         {
             if (!await _roleManager.RoleExistsAsync(role))
             {
                 throw new NotFoundException("The specified role does not exist");
             }
-            User user = await _userManager.FindByEmailAsync(email);
+            User user = await _userManager.FindByNameAsync(userName);
 
             if (user == null)
-                throw new NotFoundException("The user with the provided email is not registered;");
+                throw new NotFoundException("The user with the provided user name is not registered;");
 
             IEnumerable<string> roles = await _userManager.GetRolesAsync(user);
             if (!roles.Any(r => r == role))
@@ -259,10 +259,7 @@ namespace BLL.Services
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-
         }
-
-
 
         ~AccountService()
         {

@@ -25,8 +25,6 @@ namespace BLL.Link_Generation
                 "move_to_folder", "PUT"),
                 new Link($"https://localhost:5001/api/folders/{resource.Id}",
                 "delete_folder", "DELETE"),
-                new Link($"https://localhost:5001/api/folders/{resource.Id}/move/folderId",
-                "move_to_folder", "PUT"),
                 new Link($"https://localhost:5001/api/folders/",
                 "update_folder", "PUT"),
                 new Link($"https://localhost:5001/api/folders/{resource.Id}/sharingInfo",
