@@ -7,7 +7,7 @@ using BLL.Models;
 using DAL.Interfaces;
 using DAL.Entities;
 using AutoMapper;
-
+using BLL.Exceptions;
 namespace BLL.Services
 {
     public class ShareStatusService : IShareStatusService
@@ -23,23 +23,38 @@ namespace BLL.Services
 
         public async Task MakeFileShareable(FileDTO file)
         {
+            File fileInDB = await _uow.Files.GetFileById(file.Id);
+            if (fileInDB == null)
+                throw new NotFoundException("The file corresponding to the model does not exist");
             file.ShareStatus = ShareStatusDTO.Shareable;
             await _uow.Files.Update(_mapper.Map<File>(file));
         }
 
         public async Task MakeFileUnshareable(FileDTO file)
         {
+            File fileInDB = await _uow.Files.GetFileById(file.Id);
+            if (fileInDB == null)
+                throw new NotFoundException("The file corresponding to the model does not exist");
+
             file.ShareStatus = ShareStatusDTO.Private;
             await _uow.Files.Update(_mapper.Map<File>(file));
         }
 
         public async Task MakeFolderShareable(FolderDTO folder)
         {
+            Folder folderInDB = await _uow.Folders.GetFolderById(folder.Id);
+            if (folderInDB == null)
+                throw new NotFoundException("The folder corresponding to the model does not exist");
+
             await ShareFolderSubfolders(folder.Id);
         }
 
         public async Task MakeFolderUnshareable(FolderDTO folder)
         {
+            Folder folderInDB = await _uow.Folders.GetFolderById(folder.Id);
+            if (folderInDB == null)
+                throw new NotFoundException("The folder corresponding to the model does not exist");
+
             await UnShareFolderSubfolders(folder.Id);
         }
 

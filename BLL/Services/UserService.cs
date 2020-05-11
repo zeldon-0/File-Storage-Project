@@ -29,7 +29,7 @@ namespace BLL.Services
         {
             User user = await _userManager.FindByNameAsync(userName);
             if (user == null)
-                throw new NotFoundException("A user with the provided email is yet to be registerd.");
+                throw new NotFoundException("A user with the provided user name is yet to be registerd.");
             PrivateUserDTO info = new PrivateUserDTO()
             {
                 Id = user.Id,
@@ -69,7 +69,7 @@ namespace BLL.Services
         {
             User currentUser = await _userManager.FindByIdAsync(user.Id.ToString());
             if (currentUser == null)
-                throw new NotFoundException("Could bot find the user corresponding to the provided model.");
+                throw new NotFoundException("Could not find the user corresponding to the provided model.");
 
             currentUser.Email = user.Email;
             currentUser.UserName = user.UserName;
@@ -103,7 +103,7 @@ namespace BLL.Services
         {
             User user = await _userManager.FindByNameAsync(userName);
             if (user == null)
-                throw new NotFoundException("The user with the provided email is not registered.");
+                throw new NotFoundException("The user with the provided user name is not registered.");
             IEnumerable<string> roles = await _userManager.GetRolesAsync(user);
 
             return roles;

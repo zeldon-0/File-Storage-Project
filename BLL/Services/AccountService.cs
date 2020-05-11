@@ -188,9 +188,12 @@ namespace BLL.Services
 
         public async Task<UserDTO> Register(SignUpDTO user)
         {
-            if (await _userManager.FindByEmailAsync(user.Email) != null ||
-                await _userManager.FindByNameAsync(user.UserName) != null)
-                throw new NotFoundException("The user with these credentials already exists.");
+            if (await _userManager.FindByEmailAsync(user.Email) != null) 
+                throw new NotFoundException("The user with this email already exists.");
+
+            if (await _userManager.FindByNameAsync(user.UserName) != null)
+                throw new NotFoundException("The user with this name already exists.");
+
             IdentityResult result = await _userManager.CreateAsync(new User()
                                         {
                                             UserName = user.UserName,

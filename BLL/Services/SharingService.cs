@@ -82,11 +82,11 @@ namespace BLL.Services
         {
             File file = await _uow.Files.GetFileById(fileId);
             if (file == null)
-                throw new NotFoundException("The file with the provided Id does not exist");
+                throw new NotFoundException("The file with the provided Id does not exist.");
             
             User user = await _userManager.FindByNameAsync(userName);
             if (user == null)
-                throw new NotFoundException("The user with the provided Id does not exist");
+                throw new NotFoundException("The user with the provided user name is not registered.");
 
             if (await _uow.FileShares.FileShareExists(fileId, user.Id))
                 throw new BadRequestException("The file is already shared with the user");
