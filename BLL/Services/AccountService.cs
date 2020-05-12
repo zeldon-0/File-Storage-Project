@@ -59,7 +59,7 @@ namespace BLL.Services
             }
         }
 
-        public async Task<string> Authenticate(SignInDTO credentials)
+        public async Task<JwtSecurityToken> Authenticate(SignInDTO credentials)
         {
             User user = await _userManager.FindByEmailAsync(credentials.Login)
                 ?? await _userManager.FindByNameAsync(credentials.Login);
@@ -90,17 +90,24 @@ namespace BLL.Services
             foreach (string role in userRoles)
                 claims.Add(new Claim(ClaimTypes.Role, role));
 
-            JwtSecurityToken tokenOptions =
+            /*JwtSecurityToken tokenOptions =
                 new JwtSecurityToken(
                     issuer: "http://localhost:5000",
                     audience: "http://localhost:5000",
                     claims: claims,
-                    expires: DateTime.Now.AddHours(10),
+                    expires: DateTime.Now.AddMinutes(10),
                     signingCredentials: signingCredentials
                    );
             string tokenString =
-                new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-            return tokenString;
+                new JwtSecurityTokenHandler().WriteToken(tokenOptions);*/
+            var token = new JwtSecurityToken(
+                    issuer: "http://localhost:5000",
+                    audience: "http://localhost:5000",
+                    claims: claims,
+                    expires: DateTime.Now.AddMinutes(10),
+                    signingCredentials: signingCredentials
+                   );
+            return token;
 
         }
 

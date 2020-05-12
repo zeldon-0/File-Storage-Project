@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using BLL.Models;
+using System.IdentityModel.Tokens.Jwt;
 
 
 namespace BLL.Interfaces
 {
     public interface IAccountService : IDisposable
     {
-        Task<string> Authenticate(SignInDTO credentials);
+        Task<JwtSecurityToken> Authenticate(SignInDTO credentials);
         Task<UserDTO> Register(SignUpDTO user);
         Task<PrivateUserDTO> GetOwnInfo(string email);
         Task Edit(UserDTO user);

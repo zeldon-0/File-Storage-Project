@@ -12,10 +12,11 @@ using BLL.Models;
 using System.Security.Claims;
 using System.Diagnostics;
 using System;
-using Microsoft.Extensions.Logging;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace WebAPI.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
@@ -44,12 +45,23 @@ namespace WebAPI.Controllers
         }
         [HttpPost("signIn")]
         [AllowAnonymous]
-        public async Task<ActionResult<string>> SignIn([FromBody] SignInDTO signInModel)
+        public async Task<IActionResult> SignIn([FromBody] SignInDTO signInModel)
         {
             if (!ModelState.IsValid)
                 return BadRequest("The provided user model is not valid.");
-            string token = await _accountService.Authenticate(signInModel);
-            return Ok(token);
+            
+            JwtSecurityToken token = await _accountService.Authenticate(signInModel);           
+
+            string tokenString =
+                new JwtSecurityTokenHandler().WriteToken(token);
+
+            return Ok(new {
+                Id = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value,
+                Username =  token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value,
+                Roles = token.Claims.Where(c => c.Type == ClaimTypes.Role)
+                    .Select(r => r.Value).ToArray(),
+                Token = tokenString
+            });
 
         }
 
