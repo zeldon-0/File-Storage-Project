@@ -90,21 +90,11 @@ namespace BLL.Services
             foreach (string role in userRoles)
                 claims.Add(new Claim(ClaimTypes.Role, role));
 
-            /*JwtSecurityToken tokenOptions =
-                new JwtSecurityToken(
-                    issuer: "http://localhost:5000",
-                    audience: "http://localhost:5000",
-                    claims: claims,
-                    expires: DateTime.Now.AddMinutes(10),
-                    signingCredentials: signingCredentials
-                   );
-            string tokenString =
-                new JwtSecurityTokenHandler().WriteToken(tokenOptions);*/
             var token = new JwtSecurityToken(
                     issuer: "http://localhost:5000",
                     audience: "http://localhost:5000",
                     claims: claims,
-                    expires: DateTime.Now.AddMinutes(10),
+                    expires: DateTime.Now.AddHours(5),
                     signingCredentials: signingCredentials
                    );
             return token;
@@ -217,7 +207,7 @@ namespace BLL.Services
                 throw new ServerErrorException(errMessage.ToString());
             }
 
-            await AddAccountToRole(user.Email, "User");
+            await AddAccountToRole(user.UserName, "User");
             User createdUser = await _userManager.FindByEmailAsync(user.Email);
 
             return _mapper.Map<UserDTO>(createdUser);

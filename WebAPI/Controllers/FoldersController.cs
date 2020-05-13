@@ -97,12 +97,12 @@ namespace WebAPI.Controllers
             int userId = Int32.Parse(User.Claims.FirstOrDefault
                 (c => c.Type == ClaimTypes.NameIdentifier).Value);
             IEnumerable<FolderDTO> ownFolders = await _folderService.GetUserFolders(userId);
-            IEnumerable<FolderDTO> sharedFolders = await _sharingService.GetSharedFolders(userId);
+            /*IEnumerable<FolderDTO> sharedFolders = await _sharingService.GetSharedFolders(userId);
             List<FolderDTO> allFolders = ownFolders.Concat(sharedFolders).ToList();
-
-            if (!allFolders.Any())
+            */
+            if (!ownFolders.Any())
                 return NoContent();
-            return Ok(allFolders);
+            return Ok(ownFolders);
 
         }
 

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "F:\\Epam\\File-Storage-Project\\WebAPI\\WebAPI.csproj": {}
+    "E:\\Epam\\File-Storage-Project\\WebAPI\\WebAPI.csproj": {}
   },
   "projects": {
-    "F:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj": {
+    "E:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj",
+        "projectUniqueName": "E:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj",
         "projectName": "BLL",
-        "projectPath": "F:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj",
-        "packagesPath": "C:\\Users\\vadim_000\\.nuget\\packages\\",
-        "outputPath": "F:\\Epam\\File-Storage-Project\\BLL\\obj\\",
+        "projectPath": "E:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj",
+        "packagesPath": "C:\\Users\\Vadym\\.nuget\\packages\\",
+        "outputPath": "E:\\Epam\\File-Storage-Project\\BLL\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\vadim_000\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Vadym\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -27,8 +27,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "F:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj": {
-                "projectPath": "F:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj"
+              "E:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj": {
+                "projectPath": "E:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj"
               }
             }
           }
@@ -84,21 +84,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.202\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "F:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj": {
+    "E:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj",
+        "projectUniqueName": "E:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj",
         "projectName": "DAL",
-        "projectPath": "F:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj",
-        "packagesPath": "C:\\Users\\vadim_000\\.nuget\\packages\\",
-        "outputPath": "F:\\Epam\\File-Storage-Project\\DAL\\obj\\",
+        "projectPath": "E:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj",
+        "packagesPath": "C:\\Users\\Vadym\\.nuget\\packages\\",
+        "outputPath": "E:\\Epam\\File-Storage-Project\\DAL\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\vadim_000\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Vadym\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -156,21 +156,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.202\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "F:\\Epam\\File-Storage-Project\\Middleware\\Middleware.csproj": {
+    "E:\\Epam\\File-Storage-Project\\Middleware\\Middleware.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\Epam\\File-Storage-Project\\Middleware\\Middleware.csproj",
+        "projectUniqueName": "E:\\Epam\\File-Storage-Project\\Middleware\\Middleware.csproj",
         "projectName": "Middleware",
-        "projectPath": "F:\\Epam\\File-Storage-Project\\Middleware\\Middleware.csproj",
-        "packagesPath": "C:\\Users\\vadim_000\\.nuget\\packages\\",
-        "outputPath": "F:\\Epam\\File-Storage-Project\\Middleware\\obj\\",
+        "projectPath": "E:\\Epam\\File-Storage-Project\\Middleware\\Middleware.csproj",
+        "packagesPath": "C:\\Users\\Vadym\\.nuget\\packages\\",
+        "outputPath": "E:\\Epam\\File-Storage-Project\\Middleware\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\vadim_000\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Vadym\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -183,11 +183,11 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "F:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj": {
-                "projectPath": "F:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj"
+              "E:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj": {
+                "projectPath": "E:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj"
               },
-              "F:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj": {
-                "projectPath": "F:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj"
+              "E:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj": {
+                "projectPath": "E:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj"
               }
             }
           }
@@ -237,21 +237,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.202\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "F:\\Epam\\File-Storage-Project\\WebAPI\\WebAPI.csproj": {
+    "E:\\Epam\\File-Storage-Project\\WebAPI\\WebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\Epam\\File-Storage-Project\\WebAPI\\WebAPI.csproj",
+        "projectUniqueName": "E:\\Epam\\File-Storage-Project\\WebAPI\\WebAPI.csproj",
         "projectName": "WebAPI",
-        "projectPath": "F:\\Epam\\File-Storage-Project\\WebAPI\\WebAPI.csproj",
-        "packagesPath": "C:\\Users\\vadim_000\\.nuget\\packages\\",
-        "outputPath": "F:\\Epam\\File-Storage-Project\\WebAPI\\obj\\",
+        "projectPath": "E:\\Epam\\File-Storage-Project\\WebAPI\\WebAPI.csproj",
+        "packagesPath": "C:\\Users\\Vadym\\.nuget\\packages\\",
+        "outputPath": "E:\\Epam\\File-Storage-Project\\WebAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\vadim_000\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Vadym\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -264,11 +264,11 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "F:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj": {
-                "projectPath": "F:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj"
+              "E:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj": {
+                "projectPath": "E:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj"
               },
-              "F:\\Epam\\File-Storage-Project\\Middleware\\Middleware.csproj": {
-                "projectPath": "F:\\Epam\\File-Storage-Project\\Middleware\\Middleware.csproj"
+              "E:\\Epam\\File-Storage-Project\\Middleware\\Middleware.csproj": {
+                "projectPath": "E:\\Epam\\File-Storage-Project\\Middleware\\Middleware.csproj"
               }
             }
           }
@@ -311,7 +311,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.202\\RuntimeIdentifierGraph.json"
         }
       }
     }

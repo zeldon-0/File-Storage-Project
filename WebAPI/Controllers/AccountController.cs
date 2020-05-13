@@ -20,6 +20,7 @@ namespace WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    [Produces("application/json")]
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
@@ -49,6 +50,7 @@ namespace WebAPI.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest("The provided user model is not valid.");
+            
             
             JwtSecurityToken token = await _accountService.Authenticate(signInModel);           
 

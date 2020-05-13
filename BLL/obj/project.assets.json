@@ -6229,19 +6229,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\vadim_000\\.nuget\\packages\\": {}
+    "C:\\Users\\Vadym\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj",
+      "projectUniqueName": "E:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj",
       "projectName": "BLL",
-      "projectPath": "F:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj",
-      "packagesPath": "C:\\Users\\vadim_000\\.nuget\\packages\\",
-      "outputPath": "F:\\Epam\\File-Storage-Project\\BLL\\obj\\",
+      "projectPath": "E:\\Epam\\File-Storage-Project\\BLL\\BLL.csproj",
+      "packagesPath": "C:\\Users\\Vadym\\.nuget\\packages\\",
+      "outputPath": "E:\\Epam\\File-Storage-Project\\BLL\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\vadim_000\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Vadym\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -6254,8 +6254,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "F:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj": {
-              "projectPath": "F:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj"
+            "E:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj": {
+              "projectPath": "E:\\Epam\\File-Storage-Project\\DAL\\DAL.csproj"
             }
           }
         }
@@ -6311,7 +6311,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.202\\RuntimeIdentifierGraph.json"
       }
     }
   }

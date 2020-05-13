@@ -26,3 +26,17 @@ F:\Epam\File-Storage-Project\Middleware\obj\Debug\netcoreapp3.1\Middleware.Assem
 F:\Epam\File-Storage-Project\Middleware\obj\Debug\netcoreapp3.1\Middleware.csproj.CopyComplete
 F:\Epam\File-Storage-Project\Middleware\obj\Debug\netcoreapp3.1\Middleware.dll
 F:\Epam\File-Storage-Project\Middleware\obj\Debug\netcoreapp3.1\Middleware.pdb
+E:\Epam\File-Storage-Project\Middleware\bin\Debug\netcoreapp3.1\Middleware.deps.json
+E:\Epam\File-Storage-Project\Middleware\bin\Debug\netcoreapp3.1\Middleware.dll
+E:\Epam\File-Storage-Project\Middleware\bin\Debug\netcoreapp3.1\Middleware.pdb
+E:\Epam\File-Storage-Project\Middleware\bin\Debug\netcoreapp3.1\BLL.dll
+E:\Epam\File-Storage-Project\Middleware\bin\Debug\netcoreapp3.1\DAL.dll
+E:\Epam\File-Storage-Project\Middleware\bin\Debug\netcoreapp3.1\BLL.pdb
+E:\Epam\File-Storage-Project\Middleware\bin\Debug\netcoreapp3.1\DAL.pdb
+E:\Epam\File-Storage-Project\Middleware\obj\Debug\netcoreapp3.1\Middleware.csprojAssemblyReference.cache
+E:\Epam\File-Storage-Project\Middleware\obj\Debug\netcoreapp3.1\Middleware.csproj.CoreCompileInputs.cache
+E:\Epam\File-Storage-Project\Middleware\obj\Debug\netcoreapp3.1\Middleware.AssemblyInfoInputs.cache
+E:\Epam\File-Storage-Project\Middleware\obj\Debug\netcoreapp3.1\Middleware.AssemblyInfo.cs
+E:\Epam\File-Storage-Project\Middleware\obj\Debug\netcoreapp3.1\Middleware.csproj.CopyComplete
+E:\Epam\File-Storage-Project\Middleware\obj\Debug\netcoreapp3.1\Middleware.dll
+E:\Epam\File-Storage-Project\Middleware\obj\Debug\netcoreapp3.1\Middleware.pdb

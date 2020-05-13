@@ -181,5 +181,33 @@ namespace WebAPI.Controllers
             return Ok(users);
         }
 
+        [HttpGet("files/shared)")]
+        public  async Task<ActionResult<IEnumerable<FileDTO>>> GetSharedFiles()
+        {
+            int userId = Int32.Parse(User.Claims.FirstOrDefault
+                (c => c.Type == ClaimTypes.NameIdentifier).Value);
+            
+            IEnumerable<FileDTO> sharedFiles = await _sharingService.GetSharedFiles(userId);
+
+            if (!sharedFiles.Any())
+                return NoContent();
+
+            return Ok(sharedFiles);
+        }
+
+
+        [HttpGet("folders/shared)")]
+        public async Task<ActionResult<IEnumerable<FolderDTO>>> GetSharedFolders()
+        {
+            int userId = Int32.Parse(User.Claims.FirstOrDefault
+                (c => c.Type == ClaimTypes.NameIdentifier).Value);
+
+            IEnumerable<FolderDTO> sharedFolders = await _sharingService.GetSharedFolders(userId);
+
+            if (!sharedFolders.Any())
+                return NoContent();
+
+            return Ok(sharedFolders);
+        }
     }
 }

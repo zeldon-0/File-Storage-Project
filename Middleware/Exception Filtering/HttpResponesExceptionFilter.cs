@@ -25,7 +25,8 @@ namespace Middleware.Exception_Filtering
             {
                 context.Result = new ObjectResult(exception401.Message)
                 {
-                    StatusCode = 401
+                    StatusCode = 401,
+
                 };
                 context.ExceptionHandled = true;
             }
@@ -34,6 +35,7 @@ namespace Middleware.Exception_Filtering
                 context.Result = new ObjectResult(exception404.Message)
                 {
                     StatusCode = 404
+                    
                 };
                 context.ExceptionHandled = true;
             }

@@ -133,12 +133,12 @@ namespace WebAPI.Controllers
             int userId = Int32.Parse(User.Claims.FirstOrDefault
                 (c => c.Type == ClaimTypes.NameIdentifier).Value);
             IEnumerable<FileDTO> ownFiles = await _fileService.GetUserFiles(userId);
-            IEnumerable<FileDTO> sharedFiles = await _sharingService.GetSharedFiles(userId);
+            /*IEnumerable<FileDTO> sharedFiles = await _sharingService.GetSharedFiles(userId);
             List<FileDTO> allFiles = ownFiles.Concat(sharedFiles).ToList();
-
-            if (!allFiles.Any())
+            */
+            if (!ownFiles.Any())
                 return NoContent();
-            return Ok(allFiles);
+            return Ok(ownFiles);
         }
         [HttpPut("files")]
         public async Task<IActionResult> UpdateFile([FromBody] FileDTO file)
