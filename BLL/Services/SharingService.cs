@@ -103,7 +103,7 @@ namespace BLL.Services
                 throw new NotFoundException("The file with the provided Id does not exist");
             User user = await _userManager.FindByNameAsync(userName);
             if (user == null)
-                throw new NotFoundException("The user with the provided Id does not exist");
+                throw new NotFoundException("The user with the provided user name does not exist");
             if (await _uow.FolderShares.FolderShareExists(folderId, user.Id))
                 throw new BadRequestException("The folder is already shared with the user");
 
@@ -119,7 +119,7 @@ namespace BLL.Services
 
             User user = await _userManager.FindByNameAsync(userName);
             if (user == null)
-                throw new NotFoundException("The user with the provided username is not yet registered.");
+                throw new NotFoundException("The user with the provided user name is not yet registered.");
 
             bool fileShareExists = await _uow.FileShares.FileShareExists(fileId, user.Id);
             if (!fileShareExists)
@@ -135,7 +135,7 @@ namespace BLL.Services
         {
             User user = await _userManager.FindByNameAsync(userName);
             if (user == null)
-                throw new NotFoundException("The user with the provided username is not yet registered.");
+                throw new NotFoundException("The user with the provided user name is not yet registered.");
             Folder folder = await _uow.Folders.GetFolderById(folderId);
 
             if (folder == null)

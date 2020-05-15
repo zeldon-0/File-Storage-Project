@@ -58,7 +58,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
                     User, parentFolder, Operations.Create)).Succeeded)
             {
-                return Unauthorized( "You are not authorized to create subfolders for this folder.");
+                return Forbid( "You are not authorized to create subfolders for this folder.");
             }
 
             FolderDTO created = await _folderService.CreateAtFolder(subFolder, id,
@@ -76,7 +76,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
                 User, folder, Operations.Read)).Succeeded)
             {
-                return Unauthorized("You are not authorized to access this folder.");
+                return Forbid("You are not authorized to access this folder.");
             }
             if ((await _authorizationService.AuthorizeAsync(
                 User, folder, Operations.Create)).Succeeded)
@@ -97,9 +97,7 @@ namespace WebAPI.Controllers
             int userId = Int32.Parse(User.Claims.FirstOrDefault
                 (c => c.Type == ClaimTypes.NameIdentifier).Value);
             IEnumerable<FolderDTO> ownFolders = await _folderService.GetUserFolders(userId);
-            /*IEnumerable<FolderDTO> sharedFolders = await _sharingService.GetSharedFolders(userId);
-            List<FolderDTO> allFolders = ownFolders.Concat(sharedFolders).ToList();
-            */
+
             if (!ownFolders.Any())
                 return NoContent();
             return Ok(ownFolders);
@@ -113,7 +111,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
             User, folder, Operations.Create)).Succeeded)
             {
-                return Unauthorized("You are not authorized to create copies of this folder.");
+                return Forbid("You are not authorized to create copies of this folder.");
             }
             FolderDTO copy = await _folderService.CopyFolder(id);
             return CreatedAtAction(nameof(CopyFolder), copy);
@@ -128,7 +126,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
                     User, folderToMove, Operations.Update)).Succeeded)
             {
-                return Unauthorized("You are not authorized to move this folder.");
+                return Forbid("You are not authorized to move this folder.");
             }
 
             FolderDTO folderToMoveTo = await _folderService.GetFolderById(folderId);
@@ -136,7 +134,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
                     User, folderToMoveTo, Operations.Update)).Succeeded)
             {
-                return Unauthorized("You are not authorized to edit the targer parent folder.");
+                return Forbid("You are not authorized to edit the targer parent folder.");
             }
             await _folderService.MoveToFolder(id, folderId);
 
@@ -152,7 +150,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
                     User, folder, Operations.Delete)).Succeeded)
             {
-                return Unauthorized("You are not authorized to delete this folder.");
+                return Forbid("You are not authorized to delete this folder.");
             }
             await _folderService.Delete(id);
             return NoContent();
@@ -167,7 +165,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
                     User, currentFolder, Operations.Update)).Succeeded)
             {
-                return Unauthorized("You are not authorized to edit this folder.");
+                return Forbid("You are not authorized to edit this folder.");
             }
             await _folderService.Update(newFolder);
             return NoContent();

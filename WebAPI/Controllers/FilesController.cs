@@ -63,7 +63,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
                 User, folder, Operations.Create)).Succeeded)
             {
-                return Unauthorized("You are not authorized to post files at this folder.");
+                return Forbid("You are not authorized to post files at this folder.");
             }
 
             FileDTO created = await _fileService.CreateAtFolder(file, id,
@@ -78,7 +78,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
                 User, file, Operations.Read)).Succeeded)
             {
-                return Unauthorized("You are not authorized to access the file.");
+                return Forbid("You are not authorized to access the file.");
             }
             if ((await _authorizationService.AuthorizeAsync(
                 User, file, Operations.Create)).Succeeded)
@@ -99,7 +99,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
                 User, file, Operations.Create)).Succeeded)
             {
-                return Unauthorized("You are not authorized to access the file.");
+                return Forbid("You are not authorized to access the file.");
             }
 
             FileDTO fileCopy = await _fileService.CopyFile(id);
@@ -113,14 +113,14 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
                 User, file, Operations.Update)).Succeeded)
             {
-                return Unauthorized("You are not authorized to access the file.");
+                return Forbid("You are not authorized to access the file.");
             }
 
             FolderDTO folder = await _folderService.GetFolderById(folderId);
             if (!(await _authorizationService.AuthorizeAsync(
                 User, folder, Operations.Update)).Succeeded)
             {
-                return Unauthorized("You are not authorized to access the folder.");
+                return Forbid("You are not authorized to access the folder.");
             }
 
             await _fileService.MoveToFolder(fileId, folderId);
@@ -133,9 +133,7 @@ namespace WebAPI.Controllers
             int userId = Int32.Parse(User.Claims.FirstOrDefault
                 (c => c.Type == ClaimTypes.NameIdentifier).Value);
             IEnumerable<FileDTO> ownFiles = await _fileService.GetUserFiles(userId);
-            /*IEnumerable<FileDTO> sharedFiles = await _sharingService.GetSharedFiles(userId);
-            List<FileDTO> allFiles = ownFiles.Concat(sharedFiles).ToList();
-            */
+
             if (!ownFiles.Any())
                 return NoContent();
             return Ok(ownFiles);
@@ -151,7 +149,7 @@ namespace WebAPI.Controllers
             if(!(await _authorizationService.AuthorizeAsync(
                 User, currentFile, Operations.Update)).Succeeded)
             {
-                return Unauthorized("You are not authorized to edit the file.");
+                return Forbid("You are not authorized to edit the file.");
             }
 
             await _fileService.Update(file);
@@ -165,7 +163,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
                 User, file, Operations.Delete)).Succeeded)
             {
-                return Unauthorized("You are not authorized to delete the file.");
+                return Forbid("You are not authorized to delete the file.");
             }
 
             await _fileService.Delete(id);

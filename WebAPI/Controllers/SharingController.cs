@@ -46,7 +46,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync
                 (User, folder, Operations.Update )).Succeeded)
             {
-                return Unauthorized("You are not authorized to edit this folder.");
+                return Forbid("You are not authorized to edit this folder.");
             }
             await _shareStatusService.MakeFolderShareable(folder);
             return NoContent();
@@ -60,7 +60,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync
                 (User, folder, Operations.Update)).Succeeded)
             {
-                return Unauthorized("You are not authorized to edit this folder.");
+                return Forbid("You are not authorized to edit this folder.");
             }
             await _shareStatusService.MakeFolderUnshareable(folder);
             return NoContent();
@@ -74,7 +74,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync
                 (User, folder, Operations.Update)).Succeeded)
             {
-                return Unauthorized("You are not authorized to edit this folder.");
+                return Forbid("You are not authorized to edit this folder.");
             }
             await _sharingService.ShareFolder(folderId, userName);
             return NoContent();
@@ -88,7 +88,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync
                 (User, folder, Operations.Update)).Succeeded)
             {
-                return Unauthorized("You are not authorized to edit this folder.");
+                return Forbid("You are not authorized to edit this folder.");
             }
             await _sharingService.UnshareFolder(folderId, userName);
             return NoContent();
@@ -101,7 +101,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync
                 (User, folder, Operations.Read)).Succeeded)
             {
-                return Unauthorized("You are not authorized to view this folder's information.");
+                return Forbid("You are not authorized to view this folder's information.");
             }
 
             IEnumerable<UserDTO> users =
@@ -118,7 +118,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync
                 (User, file, Operations.Update)).Succeeded)
             {
-                return Unauthorized("You are not authorized to edit this file.");
+                return Forbid("You are not authorized to edit this file.");
             }
             await _shareStatusService.MakeFileShareable(file);
             return NoContent();
@@ -132,7 +132,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync
                 (User, file, Operations.Update)).Succeeded)
             {
-                return Unauthorized("You are not authorized to edit this file.");
+                return Forbid("You are not authorized to edit this file.");
             }
             await _shareStatusService.MakeFileUnshareable(file);
             return NoContent();
@@ -146,7 +146,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync
                 (User, file, Operations.Update)).Succeeded)
             {
-                return Unauthorized("You are not authorized to edit this file.");
+                return Forbid("You are not authorized to edit this file.");
             }
             await _sharingService.ShareFile(fileId, userName);
             return NoContent();
@@ -160,20 +160,20 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync
                 (User, file, Operations.Update)).Succeeded)
             {
-                return Unauthorized("You are not authorized to edit this file.");
+                return Forbid("You are not authorized to edit this file.");
             }
             await _sharingService.UnshareFile(fileId, userName);
             return NoContent();
         }
 
-        [HttpGet("filess/{fileId}/sharingInfo")]
+        [HttpGet("files/{fileId}/sharingInfo")]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetFileSharedUsers(Guid fileId)
         {
             FileDTO file = await _fileService.GetFileById(fileId);
             if (!(await _authorizationService.AuthorizeAsync
                 (User, file, Operations.Read)).Succeeded)
             {
-                return Unauthorized("You are not authorized to view this file's information.");
+                return Forbid("You are not authorized to view this file's information.");
             }
 
             IEnumerable<UserDTO> users =
