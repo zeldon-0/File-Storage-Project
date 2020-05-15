@@ -193,6 +193,16 @@ namespace BLL.Services
 
         }
 
+        public async Task MoveToRoot(Guid folderId)
+        {
+            Folder folderToMove = await _uow.Folders.GetFolderById(folderId);
+            if (folderToMove == null)
+                throw new NotFoundException("The requested folder does not exist");
+
+            folderToMove.ParentId = null;
+            await _uow.Folders.Update(folderToMove);
+        }
+
         public async Task Update(FolderDTO folder)
         {
             if (folder == null)

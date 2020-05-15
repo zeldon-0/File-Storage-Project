@@ -127,6 +127,20 @@ namespace WebAPI.Controllers
             return NoContent();
         }
 
+        [HttpPut("files/{fileId}/move/")]
+        public async Task<IActionResult> MoveFileToRoot(Guid fileId)
+        {
+            FileDTO file = await _fileService.GetFileById(fileId);
+            if (!(await _authorizationService.AuthorizeAsync(
+                User, file, Operations.Update)).Succeeded)
+            {
+                return Forbid("You are not authorized to access the file.");
+            }
+
+            await _fileService.MoveToRoot(fileId);
+            return NoContent();
+        }
+
         [HttpGet("files")]
         public async Task<ActionResult<IEnumerable<FolderDTO>>> GetAvailableFiles()
         {

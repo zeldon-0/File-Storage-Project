@@ -15,6 +15,7 @@ namespace BLL.Interfaces
         Task<IEnumerable<FolderDTO>> GetFolderSubfolders(Guid folderId);
         Task<FolderDTO> CreateAtFolder(FolderDTO folder, Guid folderId, int userId);
         Task MoveToFolder(Guid subfolderId, Guid parentFolderId);
+        Task MoveToRoot(Guid folderId);
         Task<FolderDTO> CopyFolder(Guid folderId);
     }
 }

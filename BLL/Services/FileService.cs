@@ -33,6 +33,15 @@ namespace BLL.Services
             await _uow.Files.Update(fileToMove);
 
         }
+        public async Task MoveToRoot(Guid fileId)
+        {
+            File fileToMove = await _uow.Files.GetFileById(fileId);
+            if (fileToMove == null)
+                throw new NotFoundException("The requested file does not exist");
+
+            fileToMove.FolderId = null;
+            await _uow.Files.Update(fileToMove);
+        }
 
         public async Task<FileDTO> GetFileById(Guid fileId)
         {

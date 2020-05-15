@@ -141,6 +141,25 @@ namespace WebAPI.Controllers
             return NoContent();
 
         }
+
+        [HttpPut("{id}/move/")]
+        public async Task<IActionResult> MoveFolderToRoot(Guid id)
+        {
+
+            FolderDTO folderToMove = await _folderService.GetFolderById(id);
+
+            if (!(await _authorizationService.AuthorizeAsync(
+                    User, folderToMove, Operations.Update)).Succeeded)
+            {
+                return Forbid("You are not authorized to move this folder.");
+            }
+
+            await _folderService.MoveToRoot(id);
+
+            return NoContent();
+
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
