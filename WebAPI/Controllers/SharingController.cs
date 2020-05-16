@@ -181,7 +181,7 @@ namespace WebAPI.Controllers
             return Ok(users);
         }
 
-        [HttpGet("files/shared)")]
+        [HttpGet("files/shared")]
         public  async Task<ActionResult<IEnumerable<FileDTO>>> GetSharedFiles()
         {
             int userId = Int32.Parse(User.Claims.FirstOrDefault
@@ -196,7 +196,7 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpGet("folders/shared)")]
+        [HttpGet("folders/shared")]
         public async Task<ActionResult<IEnumerable<FolderDTO>>> GetSharedFolders()
         {
             int userId = Int32.Parse(User.Claims.FirstOrDefault
