@@ -71,7 +71,7 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<PrivateUserDTO>> GetOwnInfo()
         {
             PrivateUserDTO info = await _accountService.GetOwnInfo
-                (User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value);
+                (Int32.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value));
             info.Links = _linkGenerator.GenerateAllLinks(User, info);
 
             return Ok(info);

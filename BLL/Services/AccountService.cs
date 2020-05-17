@@ -102,11 +102,11 @@ namespace BLL.Services
         }
 
 
-        public async Task<PrivateUserDTO> GetOwnInfo(string userName)
+        public async Task<PrivateUserDTO> GetOwnInfo(int id)
         {
-            User user = await _userManager.FindByNameAsync(userName);
+            User user = await _userManager.FindByIdAsync(id.ToString());
             if (user == null)
-                throw new NotFoundException("The user with the provided user name is not registered.");
+                throw new NotFoundException("The user with the provided id is not registered.");
 
             PrivateUserDTO info = new PrivateUserDTO()
             {
@@ -168,7 +168,7 @@ namespace BLL.Services
 
             if (!await _userManager.CheckPasswordAsync(user, credentials.Password))
             {
-                throw new UnauthorizedException("Failed to auhenticate with the provided credentials.");
+                throw new UnauthorizedException("Failed to auhenticate with the provided password.");
             }
 
             IdentityResult result = await _userManager.ChangePasswordAsync(user,

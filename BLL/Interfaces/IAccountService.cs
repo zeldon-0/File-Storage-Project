@@ -12,12 +12,12 @@ namespace BLL.Interfaces
     {
         Task<JwtSecurityToken> Authenticate(SignInDTO credentials);
         Task<UserDTO> Register(SignUpDTO user);
-        Task<PrivateUserDTO> GetOwnInfo(string email);
+        Task<PrivateUserDTO> GetOwnInfo(int id);
         Task Edit(UserDTO user);
         Task ChangePassword(SignInDTO credentials, string newPassword);
         Task Delete(SignInDTO credentials);
-        Task AddAccountToRole(string email, string role);
-        Task RemoveAccountFromRole(string email, string role);
+        Task AddAccountToRole(string userName, string role);
+        Task RemoveAccountFromRole(string userName, string role);
 
     }
 }
