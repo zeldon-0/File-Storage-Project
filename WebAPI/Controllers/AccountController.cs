@@ -46,32 +46,32 @@ namespace WebAPI.Controllers
         }
         [HttpPost("signIn")]
         [AllowAnonymous]
-        public async Task<IActionResult> SignIn([FromBody] SignInDTO signInModel)
+        public async Task<ActionResult<AuthenticationDTO>> SignIn([FromBody] SignInDTO signInModel)
         {
             if (!ModelState.IsValid)
                 return BadRequest("The provided user model is not valid.");
             
             
-            JwtSecurityToken token = await _accountService.Authenticate(signInModel);           
+            return Ok(await _accountService.Authenticate(signInModel));
 
-            string tokenString =
-                new JwtSecurityTokenHandler().WriteToken(token);
+        }
 
-            return Ok(new {
-                Id = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value,
-                Username =  token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value,
-                Roles = token.Claims.Where(c => c.Type == ClaimTypes.Role)
-                    .Select(r => r.Value).ToArray(),
-                Token = tokenString
-            });
-
+        [HttpGet("refresh")]
+        public async Task<ActionResult<AuthenticationDTO>> RefreshToken([FromHeader] string refreshToken)
+        {
+            AuthenticationDTO userInfo = await _accountService
+                .UpdateAuthModel(
+                    refreshToken,
+                    User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value
+                );
+            return userInfo;
         }
 
         [HttpGet]
         public async Task<ActionResult<PrivateUserDTO>> GetOwnInfo()
         {
             PrivateUserDTO info = await _accountService.GetOwnInfo
-                (Int32.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value));
+                (User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
             info.Links = _linkGenerator.GenerateAllLinks(User, info);
 
             return Ok(info);
@@ -84,7 +84,7 @@ namespace WebAPI.Controllers
             var currentUser = this.User;
             await _accountService.AddAccountToRole(
                 currentUser.Claims.FirstOrDefault
-                (c => c.Type ==ClaimTypes.Name).Value, "Corporate");
+                (c => c.Type ==ClaimTypes.NameIdentifier).Value, "Corporate");
 
             return NoContent();
         }
@@ -96,13 +96,13 @@ namespace WebAPI.Controllers
             var currentUser = this.User;
             await _accountService.RemoveAccountFromRole(
                 currentUser.Claims.FirstOrDefault
-                (c => c.Type == ClaimTypes.Name).Value, "Corporate");
+                (c => c.Type == ClaimTypes.NameIdentifier).Value, "Corporate");
 
             return NoContent();
         }
 
 
-        [HttpPut("edit")]
+        [HttpPut]
         public async Task<IActionResult> EditAccount([FromBody] UserDTO userInfo)
         {
             if (!ModelState.IsValid)
@@ -125,11 +125,14 @@ namespace WebAPI.Controllers
             return NoContent();
         }
 
-        [HttpDelete("delete")]
-        public async Task<IActionResult> DeleteAccount([FromBody] SignInDTO credentials)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAccount()
         {
-            await _accountService.Delete(credentials);
+            await _accountService.Delete(
+                User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
             return NoContent();
         }
+
+
     }
 }

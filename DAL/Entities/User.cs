@@ -15,5 +15,6 @@ namespace DAL.Entities
         public IEnumerable<Folder> Folders { get; set; }
         public IEnumerable<FileShare> FileShares { get; set; }
         public IEnumerable<FolderShare> FolderShares { get; set; }
+        public IEnumerable<RefreshToken> RefreshTokens {get; set;}
     }
 }

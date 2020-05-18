@@ -12,8 +12,6 @@ namespace DAL.Interfaces
         IUserRepository Users { get; }
         IFileShareRepository FileShares { get; }
         IFolderShareRepository FolderShares { get; }
-
-
-
+        IRefreshTokenRepository RefreshTokens { get; }
     }
 }

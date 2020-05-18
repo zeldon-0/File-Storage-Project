@@ -34,10 +34,10 @@ namespace WebAPI.Controllers
             _linkGenerator = linkGenerator;
         }
 
-        [HttpGet("{userName}")]
-        public async Task<ActionResult<PrivateUserDTO>> GetUserByName(string userName)
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<PrivateUserDTO>> GetUserById(string userId)
         {
-            PrivateUserDTO user = await _userService.FindByUserName(userName);
+            PrivateUserDTO user = await _userService.FindById(userId);
 
             user.Links = _linkGenerator.GenerateAllLinks(User, user);
             return Ok(user);
@@ -58,26 +58,26 @@ namespace WebAPI.Controllers
 
             return NoContent();
         }
-        [HttpDelete("{userName}")]
-        public async Task<IActionResult> DeleteUser(string userName)
+        [HttpDelete("{userId}")]
+        public async Task<IActionResult> DeleteUser(string userId)
         {
-            await _userService.DeleteUser(userName);
+            await _userService.DeleteUser(userId);
             return NoContent();
         }
-        [HttpPut("{userName}/upgrade")]
-        public async Task<IActionResult> UpgradeAccount(string userName)
+        [HttpPut("{userId}/upgrade")]
+        public async Task<IActionResult> UpgradeAccount(string userId)
         {
 
-            await _accountService.AddAccountToRole(userName, "Corporate");
+            await _accountService.AddAccountToRole(userId, "Corporate");
 
             return NoContent();
         }
 
-        [HttpPut("{userName}/revertUpgrade")]
-        public async Task<IActionResult> RevertAccountUpgrade(string userName)
+        [HttpPut("{userId}/revertUpgrade")]
+        public async Task<IActionResult> RevertAccountUpgrade(string userId)
         {
 
-            await _accountService.RemoveAccountFromRole(userName, "Corporate");
+            await _accountService.RemoveAccountFromRole(userId, "Corporate");
 
             return NoContent();
         }

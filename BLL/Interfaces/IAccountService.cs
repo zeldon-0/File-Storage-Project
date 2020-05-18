@@ -10,14 +10,15 @@ namespace BLL.Interfaces
 {
     public interface IAccountService : IDisposable
     {
-        Task<JwtSecurityToken> Authenticate(SignInDTO credentials);
+        Task<AuthenticationDTO> Authenticate(SignInDTO credentials);
         Task<UserDTO> Register(SignUpDTO user);
-        Task<PrivateUserDTO> GetOwnInfo(int id);
+        Task<PrivateUserDTO> GetOwnInfo(string userId);
         Task Edit(UserDTO user);
         Task ChangePassword(SignInDTO credentials, string newPassword);
-        Task Delete(SignInDTO credentials);
-        Task AddAccountToRole(string userName, string role);
-        Task RemoveAccountFromRole(string userName, string role);
+        Task Delete(string userId);
+        Task AddAccountToRole(string userId, string role);
+        Task RemoveAccountFromRole(string userId, string role);
+        Task<AuthenticationDTO> UpdateAuthModel(string refreshToken, string userId);
 
     }
 }

@@ -13,7 +13,7 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using BLL.Exceptions;
-
+using System.Security.Cryptography;
 
 namespace BLL.Services
 {
@@ -32,45 +32,9 @@ namespace BLL.Services
             _userManager = userManager;
             _roleManager = roleManager;
         }
-        public async Task AddAccountToRole(string userName, string role)
+
+        private async Task<JwtSecurityToken> GenerateToken(User user)
         {
-            if (! await _roleManager.RoleExistsAsync(role))
-            {
-               await _roleManager.CreateAsync(
-                    new IdentityRole<int>() 
-                    { Name = role,
-                      NormalizedName = role.ToUpper()});
-            }
-            User user = await _userManager.FindByNameAsync(userName);
-            if (user == null)
-                throw new NotFoundException("The requested user is not registered.");
-
-            IEnumerable<string> roles = await _userManager.GetRolesAsync(user);
-            if (roles.Any(r => r == role))
-                throw new BadRequestException("The user is already given the role's privileges.");
-
-            IdentityResult result = await _userManager.AddToRoleAsync(user, role);
-            if (!result.Succeeded)
-            {
-                StringBuilder errMessage = new StringBuilder();
-                foreach (IdentityError err in result.Errors)
-                    errMessage.Append($"{err.Code}  {err.Description}/n");
-                throw new ServerErrorException(errMessage.ToString());
-            }
-        }
-
-        public async Task<JwtSecurityToken> Authenticate(SignInDTO credentials)
-        {
-            User user = await _userManager.FindByEmailAsync(credentials.Login)
-                ?? await _userManager.FindByNameAsync(credentials.Login);
-            if (user == null)
-                throw new NotFoundException("A user with the provided login does not exist.");
-
-            if (!await _userManager.CheckPasswordAsync(user, credentials.Password))
-            {
-                throw new UnauthorizedException("Failed to sign in with the provided login/password combination. Try again.");
-            }
-
             SymmetricSecurityKey secretKey =
                new SymmetricSecurityKey(Encoding.UTF8.GetBytes("JUGEMUjugemu123456789"));
 
@@ -98,13 +62,129 @@ namespace BLL.Services
                     signingCredentials: signingCredentials
                    );
             return token;
+        }
 
+        private string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+                return Convert.ToBase64String(randomNumber);
+            }
+        }
+
+        private async Task<String> GenerateRefreshToken(User user)
+        {
+            RefreshToken refreshToken = new RefreshToken()
+            {
+                Token = GenerateRefreshToken(),
+                Expiration = DateTime.UtcNow.AddHours(4),
+                UserId = user.Id 
+            };
+                        
+            RefreshToken createdToken =  await _uow.RefreshTokens.Create(refreshToken);
+            
+            return createdToken.Token;
+        }
+
+        public async Task<AuthenticationDTO> UpdateAuthModel(string refreshToken, string userId)
+        {
+            User user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                throw new NotFoundException("Could not update token: the user specified in the token does not exist.");
+            
+            RefreshToken token =await  _uow.RefreshTokens.FindToken(refreshToken, Int32.Parse(userId));
+
+            if (token != null)
+            {
+                await _uow.RefreshTokens.Delete(token.Id);
+                if(token.Expiration < DateTime.Now)
+                {    
+                    throw new BadRequestException("The provided refresh token is expired.");
+                }
+
+
+                JwtSecurityToken jwtToken = await GenerateToken(user);
+
+                string tokenString =
+                    new JwtSecurityTokenHandler().WriteToken(jwtToken);
+
+                AuthenticationDTO userInfo = new AuthenticationDTO() {
+                    Id = Int32.Parse(jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value),
+                    Username =  jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value,
+                    Roles = jwtToken.Claims.Where(c => c.Type == ClaimTypes.Role)
+                        .Select(r => r.Value).ToArray(),
+                    Token = tokenString,
+                    RefreshToken = await GenerateRefreshToken(user)
+                };
+                return userInfo;
+            }
+            
+            
+            throw new BadRequestException("The provided refresh token is not valid."); 
+            
+
+        } 
+        public async Task AddAccountToRole(string userId, string role)
+        {
+            if (! await _roleManager.RoleExistsAsync(role))
+            {
+               await _roleManager.CreateAsync(
+                    new IdentityRole<int>() 
+                    { Name = role,
+                      NormalizedName = role.ToUpper()});
+            }
+            User user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                throw new NotFoundException("The requested user is not registered.");
+
+            IEnumerable<string> roles = await _userManager.GetRolesAsync(user);
+            if (roles.Any(r => r == role))
+                throw new BadRequestException("The user is already given the role's privileges.");
+
+            IdentityResult result = await _userManager.AddToRoleAsync(user, role);
+            if (!result.Succeeded)
+            {
+                StringBuilder errMessage = new StringBuilder();
+                foreach (IdentityError err in result.Errors)
+                    errMessage.Append($"{err.Code}  {err.Description}/n");
+                throw new ServerErrorException(errMessage.ToString());
+            }
+        }
+
+        public async Task<AuthenticationDTO> Authenticate(SignInDTO credentials)
+        {
+            User user = await _userManager.FindByEmailAsync(credentials.Login)
+                ?? await _userManager.FindByNameAsync(credentials.Login);
+            if (user == null)
+                throw new NotFoundException("A user with the provided login does not exist.");
+
+            if (!await _userManager.CheckPasswordAsync(user, credentials.Password))
+            {
+                throw new UnauthorizedException("Failed to sign in with the provided login/password combination. Try again.");
+            }
+
+            JwtSecurityToken token = await GenerateToken(user);
+
+            string tokenString =
+                new JwtSecurityTokenHandler().WriteToken(token);
+
+            AuthenticationDTO userInfo = new AuthenticationDTO() {
+                Id = Int32.Parse(token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value),
+                Username =  token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value,
+                Roles = token.Claims.Where(c => c.Type == ClaimTypes.Role)
+                    .Select(r => r.Value).ToArray(),
+                Token = tokenString,
+                RefreshToken = await GenerateRefreshToken(user)
+            };
+            return userInfo;
         }
 
 
-        public async Task<PrivateUserDTO> GetOwnInfo(int id)
+        public async Task<PrivateUserDTO> GetOwnInfo(string userId)
         {
-            User user = await _userManager.FindByIdAsync(id.ToString());
+            User user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 throw new NotFoundException("The user with the provided id is not registered.");
 
@@ -119,17 +199,11 @@ namespace BLL.Services
             return info;
         }
 
-        public async Task Delete(SignInDTO credentials)
+        public async Task Delete(string userId)
         {
-            User user = await _userManager.FindByEmailAsync(credentials.Login)
-                ?? await _userManager.FindByNameAsync(credentials.Login);
+            User user = await _userManager.FindByIdAsync(userId);
             if (user == null)
-                throw new NotFoundException("The user with the provided login does not exist");
-
-            if(!await _userManager.CheckPasswordAsync(user, credentials.Password))
-            {
-                throw new UnauthorizedException("Failed to auhenticate with the provided credentials.");
-            }
+                throw new NotFoundException("The user with the provided id does not exist");
 
             IdentityResult result = await _userManager.DeleteAsync(user);
             if (!result.Succeeded)
@@ -168,7 +242,7 @@ namespace BLL.Services
 
             if (!await _userManager.CheckPasswordAsync(user, credentials.Password))
             {
-                throw new UnauthorizedException("Failed to auhenticate with the provided password.");
+                throw new BadRequestException("Failed to auhenticate with the provided password.");
             }
 
             IdentityResult result = await _userManager.ChangePasswordAsync(user,
@@ -207,20 +281,22 @@ namespace BLL.Services
                 throw new ServerErrorException(errMessage.ToString());
             }
 
-            await AddAccountToRole(user.UserName, "User");
             User createdUser = await _userManager.FindByEmailAsync(user.Email);
+            
+            await AddAccountToRole(createdUser.Id.ToString(), "User");
+            createdUser = await _userManager.FindByEmailAsync(user.Email);
 
             return _mapper.Map<UserDTO>(createdUser);
 
         }
 
-        public async Task RemoveAccountFromRole(string userName, string role)
+        public async Task RemoveAccountFromRole(string userId, string role)
         {
             if (!await _roleManager.RoleExistsAsync(role))
             {
                 throw new NotFoundException("The specified role does not exist");
             }
-            User user = await _userManager.FindByNameAsync(userName);
+            User user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
                 throw new NotFoundException("The user with the provided user name is not registered;");

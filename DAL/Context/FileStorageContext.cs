@@ -14,6 +14,7 @@ namespace DAL.Context
         public DbSet<Folder> Folders { get; set; }
         public DbSet<FileShare> FileShares { get; set; }
         public DbSet<FolderShare> FolderShares { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
 
         public FileStorageContext(DbContextOptions<FileStorageContext> options) 
@@ -33,6 +34,7 @@ namespace DAL.Context
             modelBuilder.ApplyConfiguration(new FolderConfiguration());
             modelBuilder.ApplyConfiguration(new FolderShareConfiguration());
             modelBuilder.ApplyConfiguration(new FileShareConfiguration());
+            modelBuilder.ApplyConfiguration(new RefreshTokenConfiguration());
 
         }
     }

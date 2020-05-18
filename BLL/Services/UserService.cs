@@ -42,9 +42,9 @@ namespace BLL.Services
 
         }
 
-        public async Task<PrivateUserDTO> FindById(int id)
+        public async Task<PrivateUserDTO> FindById(string userId)
         {
-            User user = await _userManager.FindByIdAsync(Convert.ToString(id));
+            User user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 throw new NotFoundException("A user with the provided id is yet to be registerd.");
             PrivateUserDTO info = new PrivateUserDTO()
@@ -83,9 +83,9 @@ namespace BLL.Services
             }
         }
 
-        public async Task DeleteUser(string userName)
+        public async Task DeleteUser(string userId)
         {
-            User currentUser = await _userManager.FindByNameAsync(userName);
+            User currentUser = await _userManager.FindByIdAsync(userId);
             if (currentUser == null)
                 throw new NotFoundException("Could bot find the user corresponding to the provided email.");
 

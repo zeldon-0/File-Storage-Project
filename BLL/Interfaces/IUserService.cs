@@ -9,9 +9,9 @@ namespace BLL.Interfaces
     public interface IUserService :IDisposable
     {
         Task<PrivateUserDTO> FindByUserName(string userName);
-        Task<PrivateUserDTO> FindById(int id);
+        Task<PrivateUserDTO> FindById(string userId);
         Task EditUser(UserDTO user);
-        Task DeleteUser(string userName);
+        Task DeleteUser(string userId);
         Task<IEnumerable<UserDTO>> GetAllUsers();
         Task<IEnumerable<string>> GetUserRoles(string userName);
     }

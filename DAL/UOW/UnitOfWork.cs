@@ -71,6 +71,17 @@ namespace DAL.UOW
             }
         }
 
+        private RefreshTokenRepository _refreshTokenRepository;
+        public IRefreshTokenRepository RefreshTokens
+        {
+            get
+            {
+                if (_refreshTokenRepository== null)
+                    _refreshTokenRepository = new RefreshTokenRepository(_context);
+                return _refreshTokenRepository;
+            }
+        }
+
 
         private bool disposed = false;
 
