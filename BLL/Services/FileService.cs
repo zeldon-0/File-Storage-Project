@@ -40,6 +40,7 @@ namespace BLL.Services
                 throw new NotFoundException("The requested file does not exist");
 
             fileToMove.FolderId = null;
+            fileToMove.Folder = null;
             await _uow.Files.Update(fileToMove);
         }
 

@@ -18,7 +18,7 @@ namespace BLL.Interfaces
         Task Delete(string userId);
         Task AddAccountToRole(string userId, string role);
         Task RemoveAccountFromRole(string userId, string role);
-        Task<AuthenticationDTO> UpdateAuthModel(string refreshToken, string userId);
+        Task<AuthenticationDTO> UpdateAuthModel(string refreshToken, string oldToken);
 
     }
 }

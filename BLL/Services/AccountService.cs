@@ -58,7 +58,7 @@ namespace BLL.Services
                     issuer: "http://localhost:5000",
                     audience: "http://localhost:5000",
                     claims: claims,
-                    expires: DateTime.Now.AddHours(5),
+                    expires: DateTime.Now.AddHours(4),
                     signingCredentials: signingCredentials
                    );
             return token;
@@ -79,7 +79,7 @@ namespace BLL.Services
             RefreshToken refreshToken = new RefreshToken()
             {
                 Token = GenerateRefreshToken(),
-                Expiration = DateTime.UtcNow.AddHours(4),
+                Expiration = DateTime.UtcNow.AddDays(1),
                 UserId = user.Id 
             };
                         
@@ -88,13 +88,16 @@ namespace BLL.Services
             return createdToken.Token;
         }
 
-        public async Task<AuthenticationDTO> UpdateAuthModel(string refreshToken, string userId)
+        public async Task<AuthenticationDTO> UpdateAuthModel(string refreshToken, string oldToken)
         {
+            ClaimsPrincipal claimsPrincipal = GetPrincipalFromExpiredToken(oldToken);
+            string userId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
             User user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 throw new NotFoundException("Could not update token: the user specified in the token does not exist.");
             
-            RefreshToken token =await  _uow.RefreshTokens.FindToken(refreshToken, Int32.Parse(userId));
+            RefreshToken token = await  _uow.RefreshTokens.FindToken(refreshToken, Int32.Parse(userId));
 
             if (token != null)
             {
@@ -122,7 +125,7 @@ namespace BLL.Services
             }
             
             
-            throw new BadRequestException("The provided refresh token is not valid."); 
+            throw new NotFoundException("The provided refresh token is not valid."); 
             
 
         } 
@@ -314,6 +317,32 @@ namespace BLL.Services
                     errMessage.Append($"{err.Code}  {err.Description}/n");
                 throw new ServerErrorException(errMessage.ToString());
             }
+        }
+
+
+        private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        {
+            var tokenValidationParameters =  new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = false,
+
+                    ValidIssuer = "http://localhost:5000",
+                    ValidAudience = "http://localhost:5000",
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes("JUGEMUjugemu123456789"))
+                };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken securityToken;
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
+            var jwtSecurityToken = securityToken as JwtSecurityToken;
+            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("Invalid token");
+
+            return principal;
         }
 
         private bool disposed = false;

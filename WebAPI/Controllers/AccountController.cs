@@ -57,12 +57,13 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("refresh")]
-        public async Task<ActionResult<AuthenticationDTO>> RefreshToken([FromHeader] string refreshToken)
+        [AllowAnonymous]
+        public async Task<ActionResult<AuthenticationDTO>> RefreshToken([FromHeader] string refreshToken, [FromHeader] string oldToken)
         {
             AuthenticationDTO userInfo = await _accountService
                 .UpdateAuthModel(
                     refreshToken,
-                    User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value
+                    oldToken
                 );
             return userInfo;
         }

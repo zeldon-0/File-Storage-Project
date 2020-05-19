@@ -25,6 +25,7 @@ namespace Middleware.Configuration_Extension
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
+                    ClockSkew = TimeSpan.Zero,
 
                     ValidIssuer = "http://localhost:5000",
                     ValidAudience = "http://localhost:5000",

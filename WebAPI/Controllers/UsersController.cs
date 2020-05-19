@@ -24,13 +24,20 @@ namespace WebAPI.Controllers
     {
         private readonly IUserService _userService;
         private readonly IAccountService _accountService;
+        private readonly IFileService _fileService;
+        private readonly IFolderService _folderService;
+
         private readonly ILinkGenerator<PrivateUserDTO> _linkGenerator;
         public UsersController(IUserService userService,
             IAccountService accountService,
+            IFileService fileService,
+            IFolderService folderService,
             ILinkGenerator<PrivateUserDTO> linkGenerator)
         {
             _userService = userService;
             _accountService = accountService;
+            _fileService = fileService;
+            _folderService = folderService;
             _linkGenerator = linkGenerator;
         }
 
@@ -80,6 +87,27 @@ namespace WebAPI.Controllers
             await _accountService.RemoveAccountFromRole(userId, "Corporate");
 
             return NoContent();
+        }
+        [HttpGet("{userId}/files")]
+        public async Task<ActionResult<IEnumerable<FileDTO>>> GetUserFiles(string userId)
+        {
+
+            IEnumerable<FileDTO> files =  
+                await _fileService.GetUserFiles(Int32.Parse(userId));
+
+            return Ok(files);
+        }
+
+
+        [HttpGet("{userId}/folders")]
+
+        public async Task<ActionResult<IEnumerable<FolderDTO>>> GetUserFolders(string userId)
+        {
+
+            IEnumerable<FolderDTO> folders =  
+                await _folderService.GetUserFolders(Int32.Parse(userId));
+
+            return Ok(folders);
         }
     }
 }

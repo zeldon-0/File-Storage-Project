@@ -22,7 +22,6 @@ namespace DAL.Repositories
         {
 
             return await _context.Files
-                   .AsNoTracking()
                    .Include(f => f.FileShares)
                         .ThenInclude(fs => fs.User)
                    .Include(f => f.Owner)
