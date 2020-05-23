@@ -13,6 +13,8 @@ namespace BLL.Models
         public string Description { get; set; }
         [Required]
         public string URL { get; set; }
+        public DateTime LastChange {get; set;}
+
         public ShareStatusDTO ShareStatus { get; set; }
         public int OwnerId { get; set; }
         public UserDTO Owner { get; set; }

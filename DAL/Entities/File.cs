@@ -11,6 +11,8 @@ namespace DAL.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public string URL { get; set; }
+        public DateTime LastChange {get; set;}
+
         public ShareStatus ShareStatus { get; set; }
         public int OwnerId { get; set; }
         public  User Owner { get; set; }

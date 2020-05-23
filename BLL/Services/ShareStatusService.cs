@@ -27,6 +27,7 @@ namespace BLL.Services
             if (fileInDB == null)
                 throw new NotFoundException("The file corresponding to the model does not exist");
             file.ShareStatus = ShareStatusDTO.Shareable;
+            file.LastChange = DateTime.Now;
             await _uow.Files.Update(_mapper.Map<File>(file));
         }
 
@@ -37,6 +38,7 @@ namespace BLL.Services
                 throw new NotFoundException("The file corresponding to the model does not exist");
 
             file.ShareStatus = ShareStatusDTO.Private;
+            file.LastChange = DateTime.Now;
             await _uow.Files.Update(_mapper.Map<File>(file));
         }
 
@@ -74,6 +76,7 @@ namespace BLL.Services
             if (folder.ShareStatus == ShareStatus.Private)
             {
                 folder.ShareStatus = ShareStatus.Shareable;
+                folder.LastChange = DateTime.Now;
                 await _uow.Folders.Update(folder);
             }
         }
@@ -88,6 +91,7 @@ namespace BLL.Services
                     if (file.ShareStatus == ShareStatus.Private)
                     {
                         file.ShareStatus = ShareStatus.Shareable;
+                        file.LastChange = DateTime.Now;
                         await _uow.Files.Update(file);
                     }
                 }
@@ -110,6 +114,7 @@ namespace BLL.Services
             if (folder.ShareStatus == ShareStatus.Shareable)
             {
                 folder.ShareStatus = ShareStatus.Private;
+                folder.LastChange = DateTime.Now;
                 await _uow.Folders.Update(folder);
             }
 
@@ -125,6 +130,7 @@ namespace BLL.Services
                     if (file.ShareStatus == ShareStatus.Shareable)
                     {
                         file.ShareStatus = ShareStatus.Private;
+                        file.LastChange = DateTime.Now;
                         await _uow.Files.Update(file);
                     }
                 }

@@ -30,6 +30,7 @@ namespace BLL.Services
             if (targetFolder == null)
                 throw new NotFoundException("The requested folder does not exist");
             fileToMove.FolderId = folderId;
+            fileToMove.LastChange = DateTime.Now;
             await _uow.Files.Update(fileToMove);
 
         }
@@ -41,6 +42,8 @@ namespace BLL.Services
 
             fileToMove.FolderId = null;
             fileToMove.Folder = null;
+            fileToMove.LastChange = DateTime.Now;
+
             await _uow.Files.Update(fileToMove);
         }
 
@@ -63,6 +66,8 @@ namespace BLL.Services
             }
             file.FolderId = folderId;
             file.OwnerId = userId;
+            file.LastChange = DateTime.Now;
+
             File createdFile = await _uow.Files.Create(_mapper.Map<File>(file));
             return _mapper.Map<FileDTO>(createdFile);
         }
@@ -74,6 +79,8 @@ namespace BLL.Services
                 throw new BadRequestException("The link is not provided in the correct format.");
             }
             file.OwnerId = userId;
+            file.LastChange = DateTime.Now;
+
             File createdFile = await _uow.Files.Create(_mapper.Map<File>(file));
             return _mapper.Map<FileDTO>(createdFile);
         }
@@ -116,6 +123,7 @@ namespace BLL.Services
             {
                 throw new BadRequestException("The link is not provided in the correct format.");
             }
+            file.LastChange = DateTime.Now;
             await _uow.Files.Update(_mapper.Map<File>(file));
         }
 
@@ -131,7 +139,9 @@ namespace BLL.Services
                 OwnerId = file.OwnerId,
                 Description = file.Description,
                 URL = file.URL,
-                FolderId = file.FolderId
+                FolderId = file.FolderId,
+                LastChange = DateTime.Now
+
             };
 
             fileCopy = await _uow.Files.Create(fileCopy);

@@ -38,7 +38,8 @@ namespace BLL.Services
                 Name = subfolder.Name,
                 Description = subfolder.Description,
                 OwnerId = subfolder.OwnerId,
-                ParentId = parentId
+                ParentId = parentId,
+                LastChange = DateTime.Now
             };
             newFolder = await _uow.Folders.Create(newFolder);
 
@@ -62,7 +63,8 @@ namespace BLL.Services
                             OwnerId = file.OwnerId,
                             Description = file.Description,
                             URL = file.URL,
-                            FolderId = newFolder.Id
+                            FolderId = newFolder.Id,
+                            LastChange = DateTime.Now
                         }
                     );
                 }
@@ -80,7 +82,8 @@ namespace BLL.Services
                 Description = folderCopy.Description,
                 OwnerId = folderCopy.OwnerId,
                 ParentId = folderCopy.ParentId,
-                ShareStatus = folderCopy.ShareStatus
+                ShareStatus = folderCopy.ShareStatus,
+                LastChange = DateTime.Now
             };
             newFolder = await _uow.Folders.Create(newFolder);
 
@@ -95,7 +98,8 @@ namespace BLL.Services
                             OwnerId = file.OwnerId,
                             Description = file.Description,
                             URL = file.URL,
-                            FolderId = newFolder.Id
+                            FolderId = newFolder.Id,
+                            LastChange = DateTime.Now
                         }
                     );
                 }
@@ -117,6 +121,7 @@ namespace BLL.Services
              
             folder.ParentId= folderId;
             folder.OwnerId = userId;
+            folder.LastChange = DateTime.Now;
             Folder createdFolder = await _uow.Folders.Create(_mapper.Map<Folder>(folder));
             return _mapper.Map<FolderDTO>(createdFolder);
         }
@@ -124,6 +129,7 @@ namespace BLL.Services
         public async Task<FolderDTO> CreateAtRoot(FolderDTO folder, int userId)
         {
             folder.OwnerId = userId;
+            folder.LastChange = DateTime.Now;
             Folder createdFolder = await _uow.Folders.Create(_mapper.Map<Folder>(folder));
             return _mapper.Map<FolderDTO>(createdFolder);
         }
@@ -189,6 +195,7 @@ namespace BLL.Services
             if (targetFolder == null)
                 throw new NotFoundException("The target folder does not exist");
             folderToMove.ParentId = parentFolderId;
+            folderToMove.LastChange = DateTime.Now;
             await _uow.Folders.Update(folderToMove);
 
         }
@@ -200,6 +207,7 @@ namespace BLL.Services
                 throw new NotFoundException("The requested folder does not exist");
 
             folderToMove.ParentId = null;
+            folderToMove.LastChange = DateTime.Now;
             await _uow.Folders.Update(folderToMove);
         }
 
@@ -207,6 +215,7 @@ namespace BLL.Services
         {
             if (folder == null)
                 throw new BadRequestException("Provided folder model is null.");
+            folder.LastChange = DateTime.Now;
             await _uow.Folders.Update(_mapper.Map<Folder>(folder));
         }
 

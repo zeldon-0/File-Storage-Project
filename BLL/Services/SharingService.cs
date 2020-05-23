@@ -93,6 +93,9 @@ namespace BLL.Services
 
             await _uow.FileShares.Create(
                 new FileShare() { FileId = fileId, UserId = user.Id });
+
+            file.LastChange = DateTime.Now; 
+            await _uow.Files.Update(file);
         }
 
 
@@ -108,6 +111,7 @@ namespace BLL.Services
                 throw new BadRequestException("The folder is already shared with the user");
 
             await ShareFolderSubfolders(folderId, user.Id);
+
         }
 
 
@@ -127,6 +131,9 @@ namespace BLL.Services
             else
             {
                 await _uow.FileShares.Delete(fileId, user.Id);
+                
+                file.LastChange = DateTime.Now;
+                await _uow.Files.Update(file);
             }
         }
 
@@ -146,7 +153,7 @@ namespace BLL.Services
                 throw new BadRequestException("The folder is not shared with the provided user");
             else
             {
-                await UnShareFolderSubfolders(folderId, user.Id); //_uow.FolderShares.Delete(folderId, user.Id);
+                await UnShareFolderSubfolders(folderId, user.Id); 
             }
         }
 
@@ -164,8 +171,13 @@ namespace BLL.Services
             }
             await ShareFolderFiles(folderId, userId);
             if (!(await _uow.FolderShares.FolderShareExists(folderId, userId)))
+            {
                 await _uow.FolderShares.Create(
                     new FolderShare() { FolderId = folderId, UserId = userId });
+                
+                folder.LastChange = DateTime.Now;
+                await _uow.Folders.Update(folder);
+            }
 
         }
         // Iterate over every file in the given folder
@@ -177,8 +189,13 @@ namespace BLL.Services
                 foreach (File file in folder.Files)
                 {
                     if (!(await _uow.FileShares.FileShareExists(file.Id, userId)))
+                    {
                         await _uow.FileShares.Create(
                             new FileShare() { FileId = file.Id, UserId = userId });
+                            
+                            file.LastChange = DateTime.Now;
+                            await _uow.Files.Update(file);
+                    }
                 }
             }
         }
@@ -197,7 +214,12 @@ namespace BLL.Services
             }
             await UnShareFolderFiles(folderId, userId);
             if (await _uow.FolderShares.FolderShareExists(folderId, userId))
+            {
                 await _uow.FolderShares.Delete(folderId, userId);
+                
+                folder.LastChange = DateTime.Now;
+                await _uow.Folders.Update(folder);
+            }
 
         }
         // Iterate over every file in the given folder
@@ -209,7 +231,12 @@ namespace BLL.Services
                 foreach (File file in folder.Files)
                 {
                     if (await _uow.FileShares.FileShareExists(file.Id, userId))
+                    {
                         await _uow.FileShares.Delete(file.Id, userId);
+                        
+                        file.LastChange = DateTime.Now;
+                        await _uow.Files.Update(file);
+                    }
                 }
             }
 

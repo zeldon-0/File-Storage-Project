@@ -10,6 +10,8 @@ namespace BLL.Models
         [Required]
         public string Name { get; set; }
         public string Description { get; set; }
+        public DateTime LastChange {get; set;}
+
         public ShareStatusDTO ShareStatus { get; set; }
         public int OwnerId { get; set; }
         public  UserDTO Owner { get; set; }
