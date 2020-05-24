@@ -58,7 +58,7 @@ namespace BLL.Services
                     issuer: "http://localhost:5000",
                     audience: "http://localhost:5000",
                     claims: claims,
-                    expires: DateTime.Now.AddHours(4),
+                    expires: DateTime.UtcNow.AddHours(4),
                     signingCredentials: signingCredentials
                    );
             return token;
@@ -101,8 +101,8 @@ namespace BLL.Services
 
             if (token != null)
             {
-                await _uow.RefreshTokens.Delete(token.Id);
-                if(token.Expiration < DateTime.Now)
+                await _uow.RefreshTokens.ClearExpiredTokens(Int32.Parse(userId));
+                if(token.Expiration < DateTime.UtcNow)
                 {    
                     throw new BadRequestException("The provided refresh token is expired.");
                 }

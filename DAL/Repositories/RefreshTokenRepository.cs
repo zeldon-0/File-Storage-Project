@@ -36,5 +36,21 @@ namespace DAL.Repositories
                 .FirstOrDefault(rt => rt.Token == refreshToken );
             return token;
         }
+
+        public async Task ClearExpiredTokens(int userId)
+        {
+            IEnumerable<RefreshToken> refreshTokens =
+                await _context.RefreshTokens
+                .Where(rt => rt.UserId == userId)
+                .ToListAsync();
+            
+            foreach(var token in refreshTokens)
+            {
+                if(token.Expiration < DateTime.UtcNow)
+                {
+                    await Delete(token.Id);
+                }
+            }
+        }
     }
 }

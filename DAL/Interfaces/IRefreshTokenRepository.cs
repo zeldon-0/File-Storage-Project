@@ -9,6 +9,7 @@ namespace DAL.Interfaces
 
         Task<IEnumerable<RefreshToken>> GetRefreshTokensByUser(int userId);
         Task<RefreshToken> FindToken(string refreshToken, int userId);
+        Task ClearExpiredTokens(int userId);
 
     }
 }
