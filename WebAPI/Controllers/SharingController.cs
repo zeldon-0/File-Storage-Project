@@ -46,7 +46,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync
                 (User, folder, Operations.Update )).Succeeded)
             {
-                return Forbid("You are not authorized to edit this folder.");
+                return NotFound("You cannot share the folder.");
             }
             await _shareStatusService.MakeFolderShareable(folder);
             return NoContent();
@@ -60,7 +60,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync
                 (User, folder, Operations.Update)).Succeeded)
             {
-                return Forbid("You are not authorized to edit this folder.");
+                return NotFound("You cannot unshare the folder.");
             }
             await _shareStatusService.MakeFolderUnshareable(folder);
             return NoContent();
@@ -74,7 +74,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync
                 (User, folder, Operations.Update)).Succeeded)
             {
-                return Forbid("You are not authorized to edit this folder.");
+                return NotFound("You cannot share the folder.");
             }
             await _sharingService.ShareFolder(folderId, userName);
             return NoContent();
@@ -88,7 +88,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync
                 (User, folder, Operations.Update)).Succeeded)
             {
-                return Forbid("You are not authorized to edit this folder.");
+                return NotFound("You cannot unshare the folder.");
             }
             await _sharingService.UnshareFolder(folderId, userName);
             return NoContent();
@@ -101,7 +101,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync
                 (User, folder, Operations.Read)).Succeeded)
             {
-                return Forbid("You are not authorized to view this folder's information.");
+                return NotFound("You cannot view the share list.");
             }
 
             IEnumerable<UserDTO> users =
@@ -118,7 +118,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync
                 (User, file, Operations.Update)).Succeeded)
             {
-                return Forbid("You are not authorized to edit this file.");
+                return NotFound("You cannot share the file.");
             }
             await _shareStatusService.MakeFileShareable(file);
             return NoContent();
@@ -132,7 +132,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync
                 (User, file, Operations.Update)).Succeeded)
             {
-                return Forbid("You are not authorized to edit this file.");
+                return NotFound("You cannot unshare the file.");
             }
             await _shareStatusService.MakeFileUnshareable(file);
             return NoContent();
@@ -146,7 +146,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync
                 (User, file, Operations.Update)).Succeeded)
             {
-                return Forbid("You are not authorized to edit this file.");
+                return NotFound("You cannot share the file.");
             }
             await _sharingService.ShareFile(fileId, userName);
             return NoContent();
@@ -160,7 +160,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync
                 (User, file, Operations.Update)).Succeeded)
             {
-                return Forbid("You are not authorized to edit this file.");
+                return NotFound("You cannot unshare the file.");
             }
             await _sharingService.UnshareFile(fileId, userName);
             return NoContent();
@@ -173,7 +173,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync
                 (User, file, Operations.Read)).Succeeded)
             {
-                return Forbid("You are not authorized to view this file's information.");
+                return NotFound("You cannot view the share list.");
             }
 
             IEnumerable<UserDTO> users =

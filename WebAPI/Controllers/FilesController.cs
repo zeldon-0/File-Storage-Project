@@ -63,7 +63,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
                 User, folder, Operations.Create)).Succeeded)
             {
-                return Forbid("You are not authorized to post files at this folder.");
+                return NotFound("Folder not found.");
             }
 
             FileDTO created = await _fileService.CreateAtFolder(file, id,
@@ -78,7 +78,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
                 User, file, Operations.Read)).Succeeded)
             {
-                return Forbid("You are not authorized to access the file.");
+                return NotFound("File not found");
             }
             if ((await _authorizationService.AuthorizeAsync(
                 User, file, Operations.Create)).Succeeded)
@@ -99,7 +99,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
                 User, file, Operations.Create)).Succeeded)
             {
-                return Forbid("You are not authorized to access the file.");
+                return NotFound("File not found.");
             }
 
             FileDTO fileCopy = await _fileService.CopyFile(id);
@@ -113,14 +113,14 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
                 User, file, Operations.Update)).Succeeded)
             {
-                return Forbid("You are not authorized to access the file.");
+                return NotFound("File not found.");
             }
 
             FolderDTO folder = await _folderService.GetFolderById(folderId);
             if (!(await _authorizationService.AuthorizeAsync(
                 User, folder, Operations.Update)).Succeeded)
             {
-                return Forbid("You are not authorized to access the folder.");
+                return NotFound("File not found");
             }
 
             await _fileService.MoveToFolder(fileId, folderId);
@@ -134,7 +134,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
                 User, file, Operations.Update)).Succeeded)
             {
-                return Forbid("You are not authorized to access the file.");
+                return NotFound("File not found.");
             }
 
             await _fileService.MoveToRoot(fileId);
@@ -163,7 +163,7 @@ namespace WebAPI.Controllers
             if(!(await _authorizationService.AuthorizeAsync(
                 User, currentFile, Operations.Update)).Succeeded)
             {
-                return Forbid("You are not authorized to edit the file.");
+                return NotFound("File not found.");
             }
 
             await _fileService.Update(file);
@@ -177,7 +177,7 @@ namespace WebAPI.Controllers
             if (!(await _authorizationService.AuthorizeAsync(
                 User, file, Operations.Delete)).Succeeded)
             {
-                return Forbid("You are not authorized to delete the file.");
+                return NotFound("File not found.");
             }
 
             await _fileService.Delete(id);
